@@ -1,3 +1,10 @@
+# dev notes
+
+To run the site locally:
+
+`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
+`npm run dev`
+
 # Astro Starter Kit: Blog
 
 ```sh
