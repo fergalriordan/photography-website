@@ -1,0 +1,14 @@
+---
+import { HERO_PHOTOS } from '../consts';
+---
+
+<div class="columns-3 gap-2 px-2">
+  {HERO_PHOTOS.map(({ src, alt }, i) => (
+    <img
+      src={src}
+      alt={alt || `Photo ${i + 1}`}
+      loading="lazy"
+      class="mb-2 w-full break-inside-avoid rounded-md shadow-sm"
+    />
+  ))}
+</div>
