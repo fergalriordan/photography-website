@@ -1,30 +1,20 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE } from "../consts";
+import { SITE_TITLE, SITE_TAGLINE } from "../consts";
 ---
 
 <header>
   <nav>
-    
-
     <div class="nav-left">
-      <h1>
-        <a href="/">{SITE_TITLE}</a>
-      </h1>
-      <div class="social-links">
-        <a href="https://instagram.com/fergalriordan/" target="_blank">
-          <span class="sr-only">Follow me on Instagram</span>
-          <svg class="instagram-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2m0-2A7.75 7.75 0 0 0 0 7.75v8.5A7.75 7.75 0 0 0 7.75 24h8.5A7.75 7.75 0 0 0 24 16.25v-8.5A7.75 7.75 0 0 0 16.25 0h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0-2a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm6.5.25a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0z"
-            ></path>
-          </svg>
+      <h1 class="site-title">
+        <a href="/">
+          <span class="main-title">{SITE_TITLE}</span>
+          <span class="sub-title">{SITE_TAGLINE}</span>
         </a>
-      </div>
+      </h1>
     </div>
-	
-	<button class="nav-toggle" aria-expanded="false">☰</button>
+
+    <button class="nav-toggle" aria-expanded="false">☰</button>
 
     <div class="internal-links">
       <HeaderLink href="/">Home</HeaderLink>
@@ -38,7 +28,7 @@ import { SITE_TITLE } from "../consts";
 <style>
   header {
     margin: 0;
-    padding: 1.5em;
+    padding: 1em 2em;
     background: white;
     box-shadow: 0 2px 8px rgba(var(--black), 5%);
   }
@@ -48,6 +38,24 @@ import { SITE_TITLE } from "../consts";
   }
   h1 a {
     text-decoration: none;
+  }
+  .site-title {
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .site-title .main-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+  }
+
+  .site-title .sub-title {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgb(var(--gray));
+    display: block;
+    margin-top: 0.25rem;
   }
   nav {
     display: flex;
@@ -60,7 +68,7 @@ import { SITE_TITLE } from "../consts";
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5em;
+    gap: 0;
   }
   .nav-left h1 {
     text-align: center;
@@ -82,44 +90,33 @@ import { SITE_TITLE } from "../consts";
   nav a.active {
     border-bottom-color: var(--accent);
   }
-  .social-links {
-    display: flex;
-    gap: 1em;
-  }
-  .social-links a {
-    text-decoration: none;
-    color: rgb(var(--gray));
-    display: flex;
-  }
-  .social-links a:hover {
-    color: rgb(var(--gray-dark));
-  }
-  .instagram-icon {
-    width: 32px;
-    height: 32px;
-  }
   .internal-links {
     display: flex;
     gap: 1em;
     align-items: center;
   }
   @media (max-width: 1080px) {
+    header {
+      padding: 0.1em;
+    }
+
     nav {
-      flex-direction: row;
-      align-items: flex-start;
-      flex-wrap: wrap;
+      position: relative; /* allow positioning inside nav */
+      flex-direction: column;
+      align-items: center;
     }
 
     .nav-toggle {
       display: block;
+      position: absolute;
+      top: 1.5em;
+      right: 1.5em;
     }
 
     .nav-left {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 0.5em;
+      text-align: center;
+      margin-top: 1em;
     }
 
     .internal-links {
@@ -128,16 +125,13 @@ import { SITE_TITLE } from "../consts";
       gap: 0.5em;
       margin-top: 1em;
       width: 100%;
+      align-items: center;
     }
 
     .internal-links.show {
       display: flex;
     }
 
-    .instagram-icon {
-      width: 24px;
-      height: 24px;
-    }
   }
 </style>
 
