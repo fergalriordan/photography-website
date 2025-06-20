@@ -27,31 +27,38 @@ import { SITE_TITLE, SITE_TAGLINE } from "../consts";
 
 <style>
   header {
+    position: fixed;
+    width: 100%;
+    max-width: 100%;
     margin: 0;
-    padding: 1em 2em;
+    padding: 0.2rem 1rem;
     background: white;
     box-shadow: 0 2px 8px rgba(var(--black), 5%);
+    overflow-x: hidden;
   }
+
   h1 {
-    margin: 0;
-    font-size: 1em;
-  }
+  margin: 0;
+  font-size: inherit;
+  line-height: 1;
+  padding: 0 1rem;
+}
   h1 a {
     text-decoration: none;
   }
   .site-title {
     text-align: center;
-    line-height: 1.2;
+    line-height: 1.1;
   }
 
   .site-title .main-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     display: block;
   }
 
   .site-title .sub-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 400;
     color: rgb(var(--gray));
     display: block;
@@ -61,28 +68,26 @@ import { SITE_TITLE, SITE_TAGLINE } from "../consts";
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2em;
+    gap: 1em;
     flex-wrap: wrap;
   }
   .nav-left {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
   }
   .nav-left h1 {
     text-align: center;
   }
   .nav-toggle {
     display: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.5em;
   }
   nav a {
-    padding: 1em 0.5em;
+    padding: 0.75rem 0.5rem;
     color: var(--black);
     border-bottom: 4px solid transparent;
     text-decoration: none;
@@ -95,13 +100,17 @@ import { SITE_TITLE, SITE_TAGLINE } from "../consts";
     gap: 1em;
     align-items: center;
   }
+  .internal-links a {
+  font-size: 1rem; /* or smaller like 0.8rem */
+  padding: 0.2rem 0.25rem;
+}
   @media (max-width: 1080px) {
     header {
-      padding: 0.1em;
+      padding: 0.2rem;
     }
 
     nav {
-      position: relative; /* allow positioning inside nav */
+      position: relative; 
       flex-direction: column;
       align-items: center;
     }
@@ -109,21 +118,20 @@ import { SITE_TITLE, SITE_TAGLINE } from "../consts";
     .nav-toggle {
       display: block;
       position: absolute;
-      top: 1.5em;
-      right: 1.5em;
+      top: 1em;
+      right: 1.5rem;
     }
 
     .nav-left {
       align-items: center;
       text-align: center;
-      margin-top: 1em;
+      margin-top: 0rem;
     }
 
     .internal-links {
       flex-direction: column;
       display: none;
-      gap: 0.5em;
-      margin-top: 1em;
+      gap: 1.5rem;
       width: 100%;
       align-items: center;
     }
