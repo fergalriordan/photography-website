@@ -1,0 +1,30 @@
+---
+interface Photo {
+  src: string;
+  alt?: string;
+}
+
+const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
+---
+
+<div class="columns-3 gap-2 px-2">
+  {photosEager.map(({ src, alt }: Photo, i: number) => (
+    <img
+      src={src}
+      alt={alt || `Photo ${i + 1}`}
+      loading="eager"
+      class="mb-2 w-full break-inside-avoid rounded-md shadow-sm"
+    />
+  ))}
+</div>
+
+<div class="columns-3 gap-2 px-2">
+  {photosLazy.map(({ src, alt }: Photo, i: number) => (
+    <img
+      src={src}
+      alt={alt || `Photo ${photosEager.length + i + 1}`}
+      loading="lazy"
+      class="mb-2 w-full break-inside-avoid rounded-md shadow-sm"
+    />
+  ))}
+</div>

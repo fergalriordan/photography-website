@@ -1,0 +1,113 @@
+---
+interface ImageItem {
+  src: string;
+  alt?: string;
+}
+
+interface Props {
+  images: ImageItem[];
+  mobileImages: ImageItem[];
+  alt?: string;
+}
+
+const props = Astro.props as Props;
+
+const images = props.images ?? [];
+const mobileImages = props.mobileImages ?? [];
+const alt = props.alt ?? "";
+
+const HEADER_HEIGHT = 80;
+
+const slidePairs = images.map((desktop, i) => ({
+  desktop,
+  mobile: mobileImages[i],
+}));
+---
+
+<section
+  class="relative w-full overflow-hidden"
+  style={`height: calc(100vh - ${HEADER_HEIGHT}px);`}
+>
+  <div class="relative w-full h-full">
+    {
+      slidePairs.map(
+        (pair: { desktop: ImageItem; mobile?: ImageItem }, index: number) => (
+          <picture
+            class={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+              index === 0 ? "opacity-100" : "opacity-0"
+            }`}
+            data-slide-index={index}
+          >
+            {pair.mobile && (
+              <source srcset={pair.mobile.src} media="(max-width: 767px)" />
+            )}
+            <img
+              src={pair.desktop?.src}
+              alt={
+                pair.desktop?.alt || pair.mobile?.alt || `${alt} ${index + 1}`
+              }
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </picture>
+        )
+      )
+    }
+
+    <!-- Indicators -->
+    <div
+      class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"
+    >
+      {
+        slidePairs.map((_, index: number) => (
+          <button
+            class="w-3 h-3 rounded-full bg-white/70 hover:bg-white"
+            aria-label={`Go to slide ${index + 1}`}
+            data-indicator-index={index}
+          />
+        ))
+      }
+    </div>
+
+    <!-- Arrows -->
+    <button
+      type="button"
+      class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-transparent hover:bg-white/20 transition-colors"
+      aria-label="Previous slide"
+      data-arrow="prev"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"
+        ></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-transparent hover:bg-white/20 transition-colors"
+      aria-label="Next slide"
+      data-arrow="next"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"
+        ></path>
+      </svg>
+    </button>
+  </div>
+</section>
+
+<script type="module" src="/src/scripts/photoCarousel.ts"></script>
