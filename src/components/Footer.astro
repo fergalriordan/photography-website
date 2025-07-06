@@ -2,10 +2,16 @@
 const today = new Date();
 ---
 
-<footer>
+<footer
+  class="px-4 py-8 md:py-16 bg-gradient-to-b from-[rgba(var(--gray-light),0.5)] to-white text-[rgb(var(--gray))] text-center"
+>
   &copy; {today.getFullYear()} Fergal Riordan. All rights reserved.
-  <div class="social-links">
-    <a href="https://instagram.com/fergalriordan/" target="_blank">
+  <div class="flex justify-center gap-4 mt-4">
+    <a
+      href="https://instagram.com/fergalriordan/"
+      target="_blank"
+      class="text-[rgb(var(--gray))] hover:text-[rgb(var(--gray-dark))] transition-colors"
+    >
       <span class="sr-only">Follow me on Instagram</span>
       <svg
         viewBox="0 0 24 24"
@@ -20,7 +26,11 @@ const today = new Date();
         ></path>
       </svg>
     </a>
-    <a href="https://www.linkedin.com/in/fergal-riordan/" target="_blank">
+    <a
+      href="https://www.linkedin.com/in/fergal-riordan/"
+      target="_blank"
+      class="text-[rgb(var(--gray))] hover:text-[rgb(var(--gray-dark))] transition-colors"
+    >
       <span class="sr-only">Connect with Fergal on LinkedIn</span>
       <svg
         viewBox="0 0 24 24"
@@ -35,7 +45,11 @@ const today = new Date();
         ></path>
       </svg>
     </a>
-    <a href="https://github.com/fergalriordan/" target="_blank">
+    <a
+      href="https://github.com/fergalriordan/"
+      target="_blank"
+      class="text-[rgb(var(--gray))] hover:text-[rgb(var(--gray-dark))] transition-colors"
+    >
       <span class="sr-only">Go to Astro's GitHub repo</span>
       <svg
         viewBox="0 0 16 16"
@@ -51,29 +65,3 @@ const today = new Date();
     </a>
   </div>
 </footer>
-<style>
-  footer {
-    padding: 2em 1em 4em 1em;
-    background: linear-gradient(var(--gray-gradient)) no-repeat;
-    color: rgb(var(--gray));
-    text-align: center;
-  }
-  .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 1em;
-    margin-top: 1em;
-  }
-  .social-links a {
-    text-decoration: none;
-    color: rgb(var(--gray));
-  }
-  .social-links a:hover {
-    color: rgb(var(--gray-dark));
-  }
-  @media (max-width: 1080px) {
-    footer {
-      padding: 0.75em 1em 0.5em 1em;
-    }
-  }
-</style>
