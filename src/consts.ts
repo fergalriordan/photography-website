@@ -5,6 +5,20 @@ export const SITE_TITLE = 'Fergal Riordan';
 export const SITE_TAGLINE = 'Travel, Nature, Photography';
 export const SITE_DESCRIPTION = 'Travel, nature, photography, blogs and more.';
 
+export const WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [  
+  { src: 'src/assets/widescreen_hero_photos/machu_picchu_town_centre.JPG', alt: 'Viewpoint of Machu Picchu town centre' },
+  { src: 'src/assets/widescreen_hero_photos/mules_salkantay_pass_alt.JPG', alt: 'Pack mules on the Salkantay trail in Peru' },
+  { src: 'src/assets/widescreen_hero_photos/studlagil.JPG', alt: 'Studlagil canyon in Iceland' },
+  { src: 'src/assets/widescreen_hero_photos/lake_atitlan.JPG', alt: 'Viewpoint of Lake Atitlán' },
+];
+
+export const NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
+  { src: 'src/assets/narrow_screen_hero_photos/laguna69.JPG', alt: 'High-altitude viewpoint on the Laguna 69 hike' }, 
+  { src: 'src/assets/narrow_screen_hero_photos/cusco_view.JPG', alt: 'View over Cusco rooftops and hills' },
+  { src: 'src/assets/narrow_screen_hero_photos/valladolid_church.jpg', alt: 'Church in Valladolid, Mexico' },
+  { src: 'src/assets/narrow_screen_hero_photos/antigua_arches.JPG', alt: 'Arches in town centre in Antigua, Guatemala' },
+];
+
 export const HOMEPAGE_COLLAGE_HERO_PHOTOS = [
   { src: 'src/assets/South_America/laguna69.jpg', alt: 'Blue glacial lake in the Andes (Laguna 69)' }, 
   { src: 'src/assets/Iceland/studlagil.JPG', alt: 'Studlagil canyon' },

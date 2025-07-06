@@ -1,21 +1,41 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION, HOMEPAGE_COLLAGE_HERO_PHOTOS, ADDITIONAL_HOMEPAGE_COLLAGE_PHOTOS} from '../consts';
-import PhotoCollage from '../components/PhotoCollage.astro';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import {
+  SITE_TITLE,
+  SITE_TAGLINE,
+  SITE_DESCRIPTION,
+  WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
+  NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
+} from "../consts";
+
+import PhotoCarousel from "../components/PhotoCarousel.astro";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={`${SITE_TITLE} | ${SITE_TAGLINE}`} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead
+      title={`${SITE_TITLE} | ${SITE_TAGLINE}`}
+      description={SITE_DESCRIPTION}
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <PhotoCarousel
+        images={WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
+        mobileImages={NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
+        alt="Hero image"
+      />
+      <section
+        class="w-full bg-accent text-black py-8 text-center text-2xl font-bold"
+      >
+        Welcome to my photography portfolio!
+      </section>
+      <!-- Add your collage and other sections below -->
+    </main>
+    <Footer />
+  </body>
 </html>
