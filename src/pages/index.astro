@@ -8,9 +8,12 @@ import {
   SITE_DESCRIPTION,
   WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
   NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
+  HOMEPAGE_COLLAGE_HERO_PHOTOS,
+  ADDITIONAL_HOMEPAGE_COLLAGE_PHOTOS,
 } from "../consts";
 
 import PhotoCarousel from "../components/PhotoCarousel.astro";
+import PhotoCollage from "../components/PhotoCollage.astro";
 ---
 
 <!doctype html>
@@ -23,18 +26,28 @@ import PhotoCarousel from "../components/PhotoCarousel.astro";
   </head>
   <body>
     <Header />
-    <main>
+    <main class="pt-16">
       <PhotoCarousel
         images={WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
         mobileImages={NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
         alt="Hero image"
       />
-      <section
-        class="w-full bg-accent text-black py-8 text-center text-2xl font-bold"
-      >
-        Welcome to my photography portfolio!
+      <section class="w-full bg-accent py-12 px-4 text-center">
+        <h2 class="text-3xl text-black md:text-4xl font-extrabold mb-4">
+          Welcome to My Photography Portfolio
+        </h2>
+        <p class="text-base md:text-lg text-[rgb(var(--gray))] max-w-2xl mx-auto">
+          Discover the world through my lens. Here you’ll find a curated
+          selection of my favorite moments — from breathtaking landscapes to
+          intimate street scenes — all captured with a passion for storytelling.
+        </p>
       </section>
+
       <!-- Add your collage and other sections below -->
+      <PhotoCollage
+        photosEager={HOMEPAGE_COLLAGE_HERO_PHOTOS}
+        photosLazy={ADDITIONAL_HOMEPAGE_COLLAGE_PHOTOS}
+      />
     </main>
     <Footer />
   </body>
