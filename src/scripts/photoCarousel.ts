@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
       slide.classList.toggle('opacity-100', i === index);
       slide.classList.toggle('opacity-0', i !== index);
     });
+    indicators.forEach((btn, i) => {
+      btn.classList.toggle('active', i === index);
+    });
     current = index;
 
     clearInterval(timer);
