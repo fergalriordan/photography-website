@@ -61,7 +61,9 @@ const slidePairs = images.map((desktop, i) => ({
       {
         slidePairs.map((_, index: number) => (
           <button
-            class="w-2 h-2 rounded-full bg-white/70 hover:bg-white"
+            class={`w-2 h-2 rounded-full bg-white/70 hover:bg-white transition-colors indicator-dot${
+              index === 0 ? " active" : ""
+            }`}
             aria-label={`Go to slide ${index + 1}`}
             data-indicator-index={index}
           />
@@ -84,7 +86,8 @@ const slidePairs = images.map((desktop, i) => ({
         stroke="currentColor"
         stroke-width="2"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"
+        ></path>
       </svg>
     </button>
 
@@ -102,7 +105,8 @@ const slidePairs = images.map((desktop, i) => ({
         stroke="currentColor"
         stroke-width="2"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"
+        ></path>
       </svg>
     </button>
   </div>
