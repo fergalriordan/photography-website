@@ -1,16 +1,3 @@
-:root {
-  --accent: #2337ff;
-  --accent-dark: #000d8a;
-  --black: 15, 18, 25;
-  --gray: 96, 115, 159;
-  --gray-light: 229, 233, 240;
-  --gray-dark: 34, 41, 57;
-  --gray-gradient: rgba(var(--gray-light), 50%), #fff;
-  --box-shadow:
-    0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-    0 16px 32px rgba(var(--gray), 33%);
-}
-
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter-Regular.woff2') format('woff2');
@@ -31,7 +18,7 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  color: rgb(var(--gray-dark));
+  color: theme('colors.gray.dark'); /* or just use text-gray-dark in markup */
   line-height: 1.7;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -45,7 +32,7 @@ img {
 
 code {
   padding: 2px 5px;
-  background-color: rgb(var(--gray-light));
+  background-color: #e5e5e5;
   border-radius: 2px;
 }
 
@@ -55,7 +42,7 @@ pre {
 }
 
 blockquote {
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid #6b8ca0;
   padding-left: 20px;
   font-size: 1.333em;
   margin: 0;
@@ -63,7 +50,7 @@ blockquote {
 
 hr {
   border: none;
-  border-top: 1px solid rgb(var(--gray-light));
+  border-top: 1px solid #e5e5e5;
 }
 
 .sr-only {
