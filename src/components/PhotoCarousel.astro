@@ -16,7 +16,7 @@ const images = props.images ?? [];
 const mobileImages = props.mobileImages ?? [];
 const alt = props.alt ?? "";
 
-const HEADER_HEIGHT = 80;
+const HEADER_HEIGHT = 65;
 
 const slidePairs = images.map((desktop, i) => ({
   desktop,
@@ -56,12 +56,12 @@ const slidePairs = images.map((desktop, i) => ({
 
     <!-- Indicators -->
     <div
-      class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"
+      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2"
     >
       {
         slidePairs.map((_, index: number) => (
           <button
-            class={`w-2 h-2 rounded-full bg-white/70 hover:bg-white transition-colors indicator-dot${
+            class={`w-1.5 h-1.5 rounded-full bg-white/70 hover:bg-white transition-colors indicator-dot${
               index === 0 ? " active" : ""
             }`}
             aria-label={`Go to slide ${index + 1}`}

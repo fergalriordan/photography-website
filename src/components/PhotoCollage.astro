@@ -7,7 +7,8 @@ interface Photo {
 const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
 ---
 
-<div class="columns-3 gap-2 px-5">
+<div class="bg-background columns-3 gap-2 px-5 pt-2">
+  {/* Eager photos container */}
   {photosEager.map(({ src, alt }: Photo, i: number) => (
     <img
       src={src}
@@ -19,7 +20,7 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
 </div>
 
 {/* Lazy photos container, initially hidden */}
-<div id="lazyPhotos" class="columns-3 gap-2 px-5 hidden">
+<div id="lazyPhotos" class="bg-background columns-3 gap-2 px-5 hidden">
   {photosLazy.map(({ src, alt }: Photo, i: number) => (
     <img
       src={src}
@@ -30,10 +31,10 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
   ))}
 </div>
 
-<div class="flex justify-center mt-6 mb-8">
+<div class="flex justify-center mt-6 pb-8">
   <button
     id="showMoreBtn"
-    class="px-6 py-3 rounded-full bg-[rgb(var(--gray))] text-white font-semibold shadow hover:bg-[rgb(var(--gray-dark))] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+    class="px-6 py-3 rounded-full bg-accent text-white font-semibold shadow hover:bg-accent-dark transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent"
     aria-expanded="false"
     aria-controls="lazyPhotos"
   >
