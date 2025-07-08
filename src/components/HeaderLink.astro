@@ -11,7 +11,13 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 
 <a
   href={href}
-  class:list={[className, { 'font-bold text-accent': isActive, 'inline-block text-text': true }]}
+class={
+  [
+    'inline-block',
+    className?.replace(/\btext-\S+/g, ''), // remove existing text color classes
+    isActive ? 'font-bold text-accent' : 'text-text',
+  ].filter(Boolean).join(' ')
+}
   {...props}
 >
   <slot />

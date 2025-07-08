@@ -4,22 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: ' #fafafa',
-        text: ' #1a1a1a',
+        background: '#fafafa',
+        text: '#1a1a1a',
 
         accent: {
-          DEFAULT: ' #6b8ca0',
-          light: ' #e6ecf0',
-          dark: ' #4b6a7a',
+          DEFAULT: '#6b8ca0',
+          light: '#e6ecf0',
+          dark: '#4b6a7a',
         },
 
-        seafoam: ' #8caea0',
-        slate: ' #707070',
+        seafoam: '#8caea0',
+        slate: '#707070',
 
         gray: {
-          light: ' #e5e5e5',
-          DEFAULT: ' #707070',
-          dark: ' #3a3a3a',
+          light: '#e5e5e5',
+          DEFAULT: '#707070',
+          dark: '#3a3a3a',
         },
       },
       boxShadow: {
