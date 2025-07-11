@@ -1,0 +1,53 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import DestinationSection from "../../components/DestinationSection.astro";
+
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  DESTINATIONS_AMAZON_HERO_PHOTOS,
+  DESTINATIONS_ICELAND_HERO_PHOTOS,
+  DESTINATIONS_MESOAMERICA_HERO_PHOTOS,
+  DESTINATIONS_SOUTH_AMERICA_HERO_PHOTOS,
+} from "../../consts";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+
+    <main class="bg-background pt-16">
+		<DestinationSection
+        title="THE AMAZON RIVER"
+        description="Gallery from three nights on a slow boat up the Amazon River from Leticia, Colombia to Iquitos Peru."
+        images={DESTINATIONS_AMAZON_HERO_PHOTOS}
+        galleryUrl="/galleries/amazon"
+      />      
+	  <DestinationSection
+        title="SOUTH AMERICA"
+        description="Gallery from Peru and Colombia."
+        images={DESTINATIONS_SOUTH_AMERICA_HERO_PHOTOS}
+        galleryUrl="/galleries/south-america"
+      />
+      <DestinationSection
+        title="ICELAND"
+        description="Gallery from a trip around the Icelandic ring road in 2023."
+        images={DESTINATIONS_ICELAND_HERO_PHOTOS}
+        galleryUrl="/galleries/iceland"
+      />
+      <DestinationSection
+        title="MESOAMERICA"
+        description="Gallery from travels through Mexico and Guatemala."
+        images={DESTINATIONS_MESOAMERICA_HERO_PHOTOS}
+        galleryUrl="/galleries/mesoamerica"
+      />
+    </main>
+    <Footer />
+  </body>
+</html>
