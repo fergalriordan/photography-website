@@ -18,7 +18,7 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  color: theme('colors.gray.dark'); /* or just use text-gray-dark in markup */
+  color: theme('colors.gray.dark'); 
   line-height: 1.7;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -27,7 +27,6 @@ body {
 img {
   max-width: 100%;
   height: auto;
-  /*border-radius: 8px;*/
 }
 
 code {
