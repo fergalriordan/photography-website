@@ -6,19 +6,18 @@ interface ImageItem {
 
 interface Props {
   title: string;
-  description: string;
   images: ImageItem[];
   galleryUrl: string;
+  class?: string;
 }
 
-const { title, description, images, galleryUrl } = Astro.props as Props;
+const { title, images, galleryUrl, class: extraClass = '' } = Astro.props as Props;
 ---
 
-<section class="w-full py-12 bg-background px-4">
+<section class={`w-full py-6 bg-background px-4 ${extraClass} scroll-mt-16`}>
   <!-- Banner -->
   <div class="text-center mb-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-text">{title}</h2>
-    <p class="text-slate mt-2">{description}</p>
+    <h2 class="text-3xl md:text-4xl text-text">{title}</h2>
   </div>
 
   <!-- Horizontal Scrollable Row -->
@@ -26,7 +25,7 @@ const { title, description, images, galleryUrl } = Astro.props as Props;
     <div class="grid auto-cols-max grid-flow-col gap-2 px-2">
       {
         images.map(({ src, alt }) => (
-          <img src={`/${src}`} alt={alt} class="w-80 object-cover snap-start" />
+          <img src={`/${src}`} alt={alt} class="object-cover snap-start" style={{ height: '35rem' }} />
         ))
       }
       <a
