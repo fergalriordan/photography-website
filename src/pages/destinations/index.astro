@@ -3,7 +3,6 @@ import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import DestinationSection from "../../components/DestinationSection.astro";
-
 import {
   SITE_TITLE,
   SITE_DESCRIPTION,
@@ -15,39 +14,38 @@ import {
 ---
 
 <!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
+<html lang="en" class="snap-y snap-proximity scroll-smooth">
+  <head> <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} /> </head>
+  <body class="bg-background pt-16">
     <Header />
-
-    <main class="bg-background pt-16">
-		<DestinationSection
+    <main>
+      <DestinationSection
         title="THE AMAZON RIVER"
-        description="Gallery from three nights on a slow boat up the Amazon River from Leticia, Colombia to Iquitos Peru."
         images={DESTINATIONS_AMAZON_HERO_PHOTOS}
         galleryUrl="/galleries/amazon"
-      />      
-	  <DestinationSection
-        title="SOUTH AMERICA"
-        description="Gallery from Peru and Colombia."
+        class="snap-start"
+      />
+      <DestinationSection
+        title="PERU & COLOMBIA"
         images={DESTINATIONS_SOUTH_AMERICA_HERO_PHOTOS}
         galleryUrl="/galleries/south-america"
+        class="snap-start"
       />
       <DestinationSection
         title="ICELAND"
-        description="Gallery from a trip around the Icelandic ring road in 2023."
         images={DESTINATIONS_ICELAND_HERO_PHOTOS}
         galleryUrl="/galleries/iceland"
+        class="snap-start"
       />
       <DestinationSection
-        title="MESOAMERICA"
-        description="Gallery from travels through Mexico and Guatemala."
+        title="MEXICO & GUATEMALA"
         images={DESTINATIONS_MESOAMERICA_HERO_PHOTOS}
         galleryUrl="/galleries/mesoamerica"
+        class="snap-start"
       />
+      <!-- Placeholder to allow snap onto footer -->
+      <div class="snap-start h-1 invisible"></div>
     </main>
-    <Footer />
+    <Footer class="snap-end" />
   </body>
 </html>

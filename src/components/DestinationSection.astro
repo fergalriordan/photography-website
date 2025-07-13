@@ -6,41 +6,60 @@ interface ImageItem {
 
 interface Props {
   title: string;
-  description: string;
   images: ImageItem[];
   galleryUrl: string;
+  class?: string;
 }
 
-const { title, description, images, galleryUrl } = Astro.props as Props;
+const { title, images, galleryUrl, class: extraClass = '' } = Astro.props as Props;
 ---
 
-<section class="w-full py-12 px-4">
+<section class={`w-full py-6 bg-background px-4 ${extraClass} scroll-mt-16`}>
   <!-- Banner -->
   <div class="text-center mb-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-text">{title}</h2>
-    <p class="text-slate mt-2">{description}</p>
+    <h2 class="text-3xl md:text-4xl text-text">{title}</h2>
   </div>
 
-  <!-- Horizontal Scrollable Row -->
-  <div class="relative">
-    <div class="overflow-x-auto scrollbar-hide">
-      <div class="flex gap-4">
+  <!-- Horizontal Scrollable Row with Arrows -->
+  <div class="relative group">
+    <!-- Left Arrow Indicator -->
+    <div class="scroll-arrow-left absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300">
+      <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </div>
+
+    <!-- Right Arrow Indicator -->
+    <div class="scroll-arrow-right absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300">
+      <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </div>
+
+    <!-- Floating Gallery Button -->
+    <div class="absolute top-4 right-4 z-20">
+      <a
+        href={galleryUrl}
+        class="bg-gray-dark/70 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-black/80 transition-all duration-300 flex items-center gap-2 shadow-lg"
+      >
+        <span>View Gallery</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Scrollable Container -->
+    <div class="scroll-container overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+      <div class="grid auto-cols-max grid-flow-col gap-2 px-2">
         {
           images.map(({ src, alt }) => (
-            <img
-              src={`/${src}`}
-              alt={alt}
-              class="w-80 object-cover rounded shadow-soft flex-shrink-0"
-            />
+            <img src={`/${src}`} alt={alt} class="object-cover snap-center" style={{ height: '35rem' }} />
           ))
         }
-        <a 
-          href={galleryUrl} 
-          class="flex items-center justify-center w-48 md:w-56 lg:w-64 bg-accent text-white font-semibold rounded shadow-soft hover:bg-accent-dark transition flex-shrink-0"
-        >
-          Go to Gallery →
-        </a>
       </div>
     </div>
   </div>
 </section>
+
+<script type="module" src="/src/scripts/destinationSection.ts"></script>

@@ -1,9 +1,8 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE, SITE_TAGLINE } from "../consts";
 ---
 
-<header class="fixed top-0 left-0 w-full bg-background shadow-soft py-2 z-50">
+<header class="fixed top-0 left-0 w-full bg-background border-b border-gray-300 py-2 z-50">
   <nav class="flex items-center justify-between flex-wrap w-full min-h-0 py-2">
     <h1 class="leading-none m-0 px-10 text-left md:text-left flex-none">
       <a href="/" class="no-underline text-text block px-5 m-0">
@@ -16,7 +15,7 @@ import { SITE_TITLE, SITE_TAGLINE } from "../consts";
     </h1>
 
     <button
-      class="md:hidden px-4 py-2 text-2xl text-text focus:outline-none"
+      class="md:hidden px-4 text-2xl text-text focus:outline-none"
       aria-label="Toggle navigation menu"
       id="burger-menu-btn"
       type="button"
