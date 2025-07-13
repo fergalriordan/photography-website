@@ -46,18 +46,20 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
   const btn = document.getElementById('showMoreBtn');
   const lazyPhotos = document.getElementById('lazyPhotos');
 
-  btn.addEventListener('click', () => {
-    const isHidden = lazyPhotos.classList.contains('hidden');
-    if (isHidden) {
-      lazyPhotos.classList.remove('hidden');
-      btn.textContent = 'Show Less';
-      btn.setAttribute('aria-expanded', 'true');
-    } else {
-      lazyPhotos.classList.add('hidden');
-      btn.textContent = 'Show More';
-      btn.setAttribute('aria-expanded', 'false');
-      // Optionally scroll to top of photos when collapsing:
-      // lazyPhotos.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
+  if (btn && lazyPhotos) {
+    btn.addEventListener('click', () => {
+      const isHidden = lazyPhotos.classList.contains('hidden');
+      if (isHidden) {
+        lazyPhotos.classList.remove('hidden');
+        btn.textContent = 'Show Less';
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        lazyPhotos.classList.add('hidden');
+        btn.textContent = 'Show More';
+        btn.setAttribute('aria-expanded', 'false');
+        // Optionally scroll to top of photos when collapsing:
+        // lazyPhotos.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
 </script>
