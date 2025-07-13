@@ -4,22 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#fafafa',
-        text: '#1a1a1a',
+        background: '#f4f5f7',      // very light cool grey
+        text: '#222222',            // almost black
 
         accent: {
-          DEFAULT: '#6b8ca0',
-          light: '#e6ecf0',
-          dark: '#4b6a7a',
+          DEFAULT: '#5f7a8e',       // muted steel blue
+          light: '#d7e0e9',         // soft light blue
+          dark: '#435463',          // dark slate blue
         },
 
-        seafoam: '#8caea0',
-        slate: '#707070',
+        bluegreen: '#a0b1b8',         // muted blue-green
+        slate: '#6d6d6d',
 
         gray: {
-          light: '#e5e5e5',
-          DEFAULT: '#707070',
-          dark: '#3a3a3a',
+          light: '#d9d9d9',
+          DEFAULT: '#6f6f6f',
+          dark: '#363636',
         },
       },
       boxShadow: {
