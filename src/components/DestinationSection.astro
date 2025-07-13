@@ -14,7 +14,7 @@ interface Props {
 const { title, description, images, galleryUrl } = Astro.props as Props;
 ---
 
-<section class="w-full py-12 px-4">
+<section class="w-full py-12 px-4 bg-background">
   <!-- Banner -->
   <div class="text-center mb-4">
     <h2 class="text-3xl md:text-4xl font-bold text-text">{title}</h2>
@@ -24,19 +24,19 @@ const { title, description, images, galleryUrl } = Astro.props as Props;
   <!-- Horizontal Scrollable Row -->
   <div class="relative">
     <div class="overflow-x-auto scrollbar-hide">
-      <div class="flex gap-4">
+      <div class="flex gap-2">
         {
           images.map(({ src, alt }) => (
             <img
               src={`/${src}`}
               alt={alt}
-              class="w-80 object-cover rounded shadow-soft flex-shrink-0"
+              class="w-80 object-cover flex-shrink-0"
             />
           ))
         }
         <a 
           href={galleryUrl} 
-          class="flex items-center justify-center w-48 md:w-56 lg:w-64 bg-accent text-white font-semibold rounded shadow-soft hover:bg-accent-dark transition flex-shrink-0"
+          class="flex items-center justify-center w-48 md:w-56 lg:w-64 bg-accent text-white font-semibold hover:bg-accent-dark transition flex-shrink-0"
         >
           Go to Gallery →
         </a>
