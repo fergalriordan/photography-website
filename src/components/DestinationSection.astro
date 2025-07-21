@@ -11,7 +11,12 @@ interface Props {
   class?: string;
 }
 
-const { title, images, galleryUrl, class: extraClass = '' } = Astro.props as Props;
+const {
+  title,
+  images,
+  galleryUrl,
+  class: extraClass = "",
+} = Astro.props as Props;
 ---
 
 <section class={`w-full py-6 bg-background px-4 ${extraClass} scroll-mt-16`}>
@@ -23,16 +28,34 @@ const { title, images, galleryUrl, class: extraClass = '' } = Astro.props as Pro
   <!-- Horizontal Scrollable Row with Arrows -->
   <div class="relative group">
     <!-- Left Arrow Indicator -->
-    <div class="scroll-arrow-left absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300">
-      <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+    <div
+      class="scroll-arrow-left absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300"
+    >
+      <svg
+        class="h-6 w-6 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"
+        ></path>
       </svg>
     </div>
 
     <!-- Right Arrow Indicator -->
-    <div class="scroll-arrow-right absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300">
-      <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+    <div
+      class="scroll-arrow-right absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300"
+    >
+      <svg
+        class="h-6 w-6 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"
+        ></path>
       </svg>
     </div>
 
@@ -43,18 +66,33 @@ const { title, images, galleryUrl, class: extraClass = '' } = Astro.props as Pro
         class="bg-gray-dark/70 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-black/80 transition-all duration-300 flex items-center gap-2 shadow-lg"
       >
         <span>View Gallery</span>
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"></path>
         </svg>
       </a>
     </div>
 
     <!-- Scrollable Container -->
-    <div class="scroll-container overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+    <div
+      class="scroll-container overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+    >
       <div class="grid auto-cols-max grid-flow-col gap-2 px-2">
         {
           images.map(({ src, alt }) => (
-            <img src={`/${src}`} alt={alt} class="object-cover snap-center" style={{ height: '35rem' }} />
+            <img
+              src={`/${src}`}
+              alt={alt}
+              class="object-cover snap-center h-[30rem] md:h-[35rem]"
+            />
           ))
         }
       </div>
