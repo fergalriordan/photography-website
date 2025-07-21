@@ -1,49 +1,58 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Find all destination sections
-    const sections = document.querySelectorAll('section[class*="scroll-mt-16"]');
-    
-    sections.forEach(section => {
-      const container = section.querySelector('.scroll-container') as HTMLElement;
-      const leftArrow = section.querySelector('.scroll-arrow-left') as HTMLElement;
-      const rightArrow = section.querySelector('.scroll-arrow-right') as HTMLElement;
-      
-      if (!container || !leftArrow || !rightArrow) return;
-      
-      function updateArrows() {
-        const { scrollLeft, scrollWidth, clientWidth } = container as HTMLElement;
-        
-        // More generous tolerance for snap behavior
-        const startTolerance = 10;
-        const endTolerance = 10;
-        
-        const isAtStart = scrollLeft <= startTolerance;
-        const isAtEnd = scrollLeft >= scrollWidth - clientWidth - endTolerance;
-        
-        // Debug logging (remove this later)
-        console.log('Scroll values:', { scrollLeft, scrollWidth, clientWidth, isAtStart, isAtEnd });
-        
-        // Show left arrow only if NOT at start (there's content to scroll back to)
-        if (isAtStart) {
-          leftArrow.style.opacity = '0';
-        } else {
-          leftArrow.style.opacity = '1';
+document.addEventListener('DOMContentLoaded', function () {
+  const sections = document.querySelectorAll('section[class*="scroll-mt-16"]');
+
+  sections.forEach(section => {
+    const container = section.querySelector('.scroll-container') as HTMLElement;
+    const leftArrow = section.querySelector('[data-arrow="prev"]') as HTMLElement;
+    const rightArrow = section.querySelector('[data-arrow="next"]') as HTMLElement;
+
+    if (!container || !leftArrow || !rightArrow) return;
+
+    const images = Array.from(container.querySelectorAll('img')) as HTMLElement[];
+
+    function updateArrows() {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+
+      const startTolerance = 10;
+      const endTolerance = 10;
+
+      const isAtStart = scrollLeft <= startTolerance;
+      const isAtEnd = scrollLeft >= scrollWidth - clientWidth - endTolerance;
+
+      leftArrow.style.opacity = isAtStart ? '0' : '1';
+      rightArrow.style.opacity = isAtEnd ? '0' : '1';
+    }
+
+    function scrollToSnap(forward: boolean) {
+      const currentScrollLeft = container.scrollLeft;
+
+      // Find current image (the closest snapped one)
+      let closestIndex = 0;
+      let minDiff = Infinity;
+
+      images.forEach((img, idx) => {
+        const imgLeft = img.offsetLeft;
+        const diff = Math.abs(imgLeft - currentScrollLeft);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = idx;
         }
-        
-        // Show right arrow only if NOT at end (there's content to scroll forward to)
-        if (isAtEnd) {
-          rightArrow.style.opacity = '0';
-        } else {
-          rightArrow.style.opacity = '1';
-        }
-      }
-      
-      // Initial check
-      updateArrows();
-      
-      // Update on scroll
-      container.addEventListener('scroll', updateArrows);
-      
-      // Handle resize
-      window.addEventListener('resize', updateArrows);
-    });
+      });
+
+      let targetIndex = forward
+        ? Math.min(closestIndex + 1, images.length - 1)
+        : Math.max(closestIndex - 1, 0);
+
+      const targetScrollLeft = images[targetIndex].offsetLeft;
+
+      container.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+    }
+
+    leftArrow.addEventListener('click', () => scrollToSnap(false));
+    rightArrow.addEventListener('click', () => scrollToSnap(true));
+
+    updateArrows();
+    container.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
   });
+});

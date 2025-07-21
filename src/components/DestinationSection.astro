@@ -27,11 +27,15 @@ const {
 
   <!-- Horizontal Scrollable Row with Arrows -->
   <div class="relative group">
-    <!-- Left Arrow Indicator -->
-    <div
-      class="scroll-arrow-left absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300"
+    <!-- Left Arrow Button -->
+    <button
+      type="button"
+      aria-label="Previous slide"
+      data-arrow="prev"
+      class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-transparent hover:bg-white/20 transition-opacity transition-colors opacity-0 z-10"
     >
       <svg
+        xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 text-white"
         fill="none"
         viewBox="0 0 24 24"
@@ -41,13 +45,17 @@ const {
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"
         ></path>
       </svg>
-    </div>
+    </button>
 
-    <!-- Right Arrow Indicator -->
-    <div
-      class="scroll-arrow-right absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 opacity-0 transition-opacity duration-300"
+    <!-- Right Arrow Button -->
+    <button
+      type="button"
+      aria-label="Next slide"
+      data-arrow="next"
+      class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-transparent hover:bg-white/20 transition-opacity transition-colors opacity-0 z-10"
     >
       <svg
+        xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 text-white"
         fill="none"
         viewBox="0 0 24 24"
@@ -57,7 +65,7 @@ const {
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"
         ></path>
       </svg>
-    </div>
+    </button>
 
     <!-- Floating Gallery Button -->
     <div class="absolute top-4 right-4 z-20">
