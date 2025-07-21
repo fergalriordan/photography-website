@@ -77,3 +77,14 @@ hr {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.masonry-columns {
+  column-count: 2;
+  column-gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .masonry-columns {
+    column-count: 4;
+  }
+}

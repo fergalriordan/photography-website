@@ -7,28 +7,30 @@ interface Photo {
 const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
 ---
 
-<div class="bg-background columns-3 gap-2 px-5 pt-2">
-  {/* Eager photos container */}
-  {photosEager.map(({ src, alt }: Photo, i: number) => (
-    <img
-      src={src}
-      alt={alt || `Photo ${i + 1}`}
-      loading="eager"
-      class="mb-2 w-full break-inside-avoid"
-    />
-  ))}
+<div class="bg-background px-5 pt-2">
+  <div class="masonry-columns">
+    {photosEager.map(({ src, alt }: Photo, i: number) => (
+      <img
+        src={src}
+        alt={alt || `Photo ${i + 1}`}
+        loading="eager"
+        class="mb-2 w-full break-inside-avoid"
+      />
+    ))}
+  </div>
 </div>
 
-{/* Lazy photos container, initially hidden */}
-<div id="lazyPhotos" class="bg-background columns-3 gap-2 px-5 hidden">
-  {photosLazy.map(({ src, alt }: Photo, i: number) => (
-    <img
-      src={src}
-      alt={alt || `Photo ${photosEager.length + i + 1}`}
-      loading="lazy"
-      class="mb-2 w-full break-inside-avoid"
-    />
-  ))}
+<div id="lazyPhotos" class="bg-background px-5 hidden">
+  <div class="masonry-columns">
+    {photosLazy.map(({ src, alt }: Photo, i: number) => (
+      <img
+        src={src}
+        alt={alt || `Photo ${photosEager.length + i + 1}`}
+        loading="lazy"
+        class="mb-2 w-full break-inside-avoid"
+      />
+    ))}
+  </div>
 </div>
 
 <div class="flex justify-center mt-6 pb-8">
@@ -42,24 +44,4 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
   </button>
 </div>
 
-<script>
-  const btn = document.getElementById('showMoreBtn');
-  const lazyPhotos = document.getElementById('lazyPhotos');
-
-  if (btn && lazyPhotos) {
-    btn.addEventListener('click', () => {
-      const isHidden = lazyPhotos.classList.contains('hidden');
-      if (isHidden) {
-        lazyPhotos.classList.remove('hidden');
-        btn.textContent = 'Show Less';
-        btn.setAttribute('aria-expanded', 'true');
-      } else {
-        lazyPhotos.classList.add('hidden');
-        btn.textContent = 'Show More';
-        btn.setAttribute('aria-expanded', 'false');
-        // Optionally scroll to top of photos when collapsing:
-        // lazyPhotos.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  }
-</script>
+<script type="module" src="/src/scripts/photoCollage.ts"></script>
