@@ -2,15 +2,13 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION } from "../data/site";
 import {
-  SITE_TITLE,
-  SITE_TAGLINE,
-  SITE_DESCRIPTION,
   WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
   NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
   HOMEPAGE_COLLAGE_HERO_PHOTOS,
   ADDITIONAL_HOMEPAGE_COLLAGE_PHOTOS,
-} from "../consts";
+} from "../data/homepage";
 
 import PhotoCarousel from "../components/PhotoCarousel.astro";
 import PhotoCollage from "../components/PhotoCollage.astro";
@@ -44,13 +42,16 @@ import PhotoCollage from "../components/PhotoCollage.astro";
           alt="Hero image"
         />
       </div>
-      
+
       <section class="w-full bg-background py-12 px-4 text-center snap-start">
         <h2 class="text-2xl text-text md:text-3xl mb-4">
           TRAVEL, NATURE & PHOTOGRAPHY
         </h2>
         <p class="text-base md:text-lg text-gray-dark max-w-2xl mx-auto">
-          This is a place to share blogs and photos from my travels and experiences in nature, both at home and abroad. It is intended as a means of recording my past adventures, as well as documenting the process of improving my photography skills.
+          This is a place to share blogs and photos from my travels and
+          experiences in nature, both at home and abroad. It is intended as a
+          means of recording my past adventures, as well as documenting the
+          process of improving my photography skills.
         </p>
       </section>
 
