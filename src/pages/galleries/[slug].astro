@@ -1,0 +1,56 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { galleries } from "../../data/galleries";
+
+export async function getStaticPaths() {
+  return galleries.map((gallery) => ({
+    params: { slug: gallery.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const gallery = galleries.find((g) => g.slug === slug);
+
+if (!gallery) {
+  throw new Error(`Gallery not found: ${slug}`);
+}
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={gallery.title} description={gallery.description.join(' ')} />
+  </head>
+  <body class="bg-background pt-16">
+    <Header />
+    <main class="px-2 py-4">
+      <h1 class="text-gray-dark text-lg md:text-3xl mb-4 text-center">
+        {gallery.name}
+      </h1>
+
+      <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
+
+      {gallery.description.map((paragraph) => (
+        <p class="text-gray text-xs md:text-base mb-4 px-4 md:px-20 text-center">
+            {paragraph}
+        </p>
+        ))}
+
+      <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
+
+      <div class="masonry-galleries">
+        {gallery.photos.map((photo, i) => (
+          <img
+            src={photo.src}
+            alt={photo.alt || `Photo ${i + 1}`}
+            loading="eager"
+            class="mb-2 w-full break-inside-avoid"
+          />
+        ))}
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>

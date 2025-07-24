@@ -6,7 +6,9 @@ type Props = HTMLAttributes<'a'>;
 const { href, class: className, ...props } = Astro.props;
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
 const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+let matchPath = '/' + (subpath?.[0] || '');
+if (matchPath === '/galleries') matchPath = '/destinations'; // Keep destinations link active on galleries page
+const isActive = href === pathname || href === matchPath;
 ---
 
 <a

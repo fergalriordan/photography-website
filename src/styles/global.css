@@ -88,3 +88,14 @@ hr {
     column-count: 4;
   }
 }
+
+.masonry-galleries {
+  column-count: 2;
+  column-gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .masonry-galleries {
+    column-count: 3;
+  }
+}
