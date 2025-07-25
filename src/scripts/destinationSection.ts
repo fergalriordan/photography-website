@@ -2,13 +2,69 @@ document.addEventListener('DOMContentLoaded', function () {
   const sections = document.querySelectorAll('section[class*="scroll-mt-16"]');
 
   sections.forEach(section => {
-    const container = section.querySelector('.scroll-container') as HTMLElement;
-    const leftArrow = section.querySelector('[data-arrow="prev"]') as HTMLElement;
-    const rightArrow = section.querySelector('[data-arrow="next"]') as HTMLElement;
+    const containerEl = section.querySelector('.scroll-container');
+    const leftArrowEl = section.querySelector('[data-arrow="prev"]');
+    const rightArrowEl = section.querySelector('[data-arrow="next"]');
 
-    if (!container || !leftArrow || !rightArrow) return;
+    // Ensure all required elements exist and are HTMLElements
+    if (!(containerEl instanceof HTMLElement) ||
+        !(leftArrowEl instanceof HTMLElement) ||
+        !(rightArrowEl instanceof HTMLElement)) return;
 
-    const images = Array.from(container.querySelectorAll('img')) as HTMLElement[];
+    const container = containerEl;
+    const leftArrow = leftArrowEl;
+    const rightArrow = rightArrowEl;
+
+    const images = Array.from(container.querySelectorAll('img')) as HTMLImageElement[];
+
+    // Overlay functionality
+    const overlayEl = section.querySelector('.overlay-text');
+    const galleryBtnEl = section.querySelector('.gallery-button');
+
+    if (overlayEl instanceof HTMLElement && galleryBtnEl instanceof HTMLElement) {
+      const overlay = overlayEl;
+      const galleryButton = galleryBtnEl;
+      const startTolerance = 10;
+
+      const showOverlay = () => {
+        overlay.style.opacity = '1';
+        overlay.style.transform = 'translate(0, 0)';
+        galleryButton.style.opacity = '0';
+      };
+
+      const hideOverlay = () => {
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'translate(0, 1rem)';
+        galleryButton.style.opacity = '1';
+      };
+
+      const updateOverlayVisibility = () => {
+        const isAtStart = container.scrollLeft <= startTolerance;
+        if (isAtStart) {
+          showOverlay();
+        } else {
+          hideOverlay();
+        }
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setTimeout(() => updateOverlayVisibility(), 200);
+          } else {
+            overlay.style.opacity = '0';
+            overlay.style.transform = 'translate(0, 1rem)';
+            galleryButton.style.opacity = '0';
+          }
+        });
+      }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -10% 0px'
+      });
+
+      container.addEventListener('scroll', updateOverlayVisibility);
+      observer.observe(section);
+    }
 
     function updateArrows() {
       const { scrollLeft, scrollWidth, clientWidth } = container;
@@ -26,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function scrollToSnap(forward: boolean) {
       const currentScrollLeft = container.scrollLeft;
 
-      // Find current image (the closest snapped one)
       let closestIndex = 0;
       let minDiff = Infinity;
 
