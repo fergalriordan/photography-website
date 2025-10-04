@@ -1,11 +1,11 @@
 // Home Page Carousel Photos
 
 export const WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [  
-  { src: '../assets/HeroPhotos/hero_photos_wide/mules_salkantay_pass_alt.JPG', alt: 'Pack mules on the Salkantay trail in Peru' },
-  { src: '../assets/HeroPhotos/hero_photos_wide/studlagil.JPG', alt: 'Studlagil canyon in Iceland' },
-  { src: '../assets/HeroPhotos/hero_photos_wide/machu_picchu_town_centre.JPG', alt: 'Viewpoint of Machu Picchu town centre' },
-  { src: '../assets/HeroPhotos/hero_photos_wide/lake_atitlan.JPG', alt: 'Viewpoint of Lake Atitlán' },
-  { src: '../assets/HeroPhotos/hero_photos_wide/iceland_sheep_lying.JPG', alt: 'Sheep lying in the grass in Iceland' },
+  { src: '/images/HeroPhotos/hero_photos_wide/mules_salkantay_pass_alt.JPG', alt: 'Pack mules on the Salkantay trail in Peru' },
+  { src: '/images/HeroPhotos/hero_photos_wide/studlagil.JPG', alt: 'Studlagil canyon in Iceland' },
+  { src: '/images/HeroPhotos/hero_photos_wide/machu_picchu_town_centre.JPG', alt: 'Viewpoint of Machu Picchu town centre' },
+  { src: '/images/HeroPhotos/hero_photos_wide/lake_atitlan.JPG', alt: 'Viewpoint of Lake Atitlán' },
+  { src: '/images/HeroPhotos/hero_photos_wide/iceland_sheep_lying.JPG', alt: 'Sheep lying in the grass in Iceland' },
 ];
 
 export const NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
