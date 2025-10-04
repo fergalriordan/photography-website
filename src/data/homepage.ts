@@ -1,19 +1,19 @@
 // Home Page Carousel Photos
 
 export const WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [  
-  { src: 'src/assets/HeroPhotos/hero_photos_wide/mules_salkantay_pass_alt.JPG', alt: 'Pack mules on the Salkantay trail in Peru' },
-  { src: 'src/assets/HeroPhotos/hero_photos_wide/studlagil.JPG', alt: 'Studlagil canyon in Iceland' },
-  { src: 'src/assets/HeroPhotos/hero_photos_wide/machu_picchu_town_centre.JPG', alt: 'Viewpoint of Machu Picchu town centre' },
-  { src: 'src/assets/HeroPhotos/hero_photos_wide/lake_atitlan.JPG', alt: 'Viewpoint of Lake Atitlán' },
-  { src: 'src/assets/HeroPhotos/hero_photos_wide/iceland_sheep_lying.JPG', alt: 'Sheep lying in the grass in Iceland' },
+  { src: '../assets/HeroPhotos/hero_photos_wide/mules_salkantay_pass_alt.JPG', alt: 'Pack mules on the Salkantay trail in Peru' },
+  { src: '../assets/HeroPhotos/hero_photos_wide/studlagil.JPG', alt: 'Studlagil canyon in Iceland' },
+  { src: '../assets/HeroPhotos/hero_photos_wide/machu_picchu_town_centre.JPG', alt: 'Viewpoint of Machu Picchu town centre' },
+  { src: '../assets/HeroPhotos/hero_photos_wide/lake_atitlan.JPG', alt: 'Viewpoint of Lake Atitlán' },
+  { src: '../assets/HeroPhotos/hero_photos_wide/iceland_sheep_lying.JPG', alt: 'Sheep lying in the grass in Iceland' },
 ];
 
 export const NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
-  { src: 'src/assets/HeroPhotos/hero_photos_narrow/laguna69.JPG', alt: 'High-altitude viewpoint on the Laguna 69 hike' }, 
-  { src: 'src/assets/HeroPhotos/hero_photos_narrow/thorshofn_plane_crash_horse.jpg', alt: 'Horse by crashed plane near Thorshofn' },
-  { src: 'src/assets/HeroPhotos/hero_photos_narrow/valladolid_church.jpg', alt: 'Church in Valladolid, Mexico' },
-  { src: 'src/assets/HeroPhotos/hero_photos_narrow/antigua_arches.JPG', alt: 'Arches in town centre in Antigua, Guatemala' },
-  { src: 'src/assets/HeroPhotos/hero_photos_narrow/cusco_view.JPG', alt: 'View over Cusco rooftops and hills' },
+  { src: '../assets/HeroPhotos/hero_photos_narrow/laguna69.JPG', alt: 'High-altitude viewpoint on the Laguna 69 hike' }, 
+  { src: '../assets/HeroPhotos/hero_photos_narrow/thorshofn_plane_crash_horse.jpg', alt: 'Horse by crashed plane near Thorshofn' },
+  { src: '../assets/HeroPhotos/hero_photos_narrow/valladolid_church.jpg', alt: 'Church in Valladolid, Mexico' },
+  { src: '../assets/HeroPhotos/hero_photos_narrow/antigua_arches.JPG', alt: 'Arches in town centre in Antigua, Guatemala' },
+  { src: '../assets/HeroPhotos/hero_photos_narrow/cusco_view.JPG', alt: 'View over Cusco rooftops and hills' },
 ];
 
 // Home Page Collage Photos
