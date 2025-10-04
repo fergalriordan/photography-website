@@ -1,4 +1,6 @@
 ---
+import initPhotoCarousel from '../scripts/photoCarousel';
+
 interface ImageItem {
   src: string;
   alt?: string;
@@ -112,4 +114,7 @@ const slidePairs = images.map((desktop, i) => ({
   </div>
 </section>
 
-<script type="module" src="/src/scripts/photoCarousel.ts"></script>
+<script type="module">
+  import initPhotoCarousel from '../scripts/photoCarousel';
+  initPhotoCarousel();
+</script>
