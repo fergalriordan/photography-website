@@ -44,4 +44,7 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
   </button>
 </div>
 
-<script type="module" src="/src/scripts/photoCollage.ts"></script>
+<script>
+  import initPhotoCollage from '../scripts/photoCollage.ts';
+  initPhotoCollage();
+</script>
