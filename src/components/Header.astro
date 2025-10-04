@@ -1,5 +1,6 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
+import Logo from "../assets/logos/initials_logo_black.png";
 ---
 
 <header class="fixed top-0 left-0 w-full bg-background border-b border-gray-300 py-2 z-50">
@@ -7,7 +8,7 @@ import HeaderLink from "./HeaderLink.astro";
     <h1 class="leading-none m-0 px-10 text-left md:text-left flex-none">
       <a href="/" class="no-underline text-text block px-5 m-0">
         <img
-          src="/src/assets/logos/initials_logo_black.png"
+          src={Logo.src}
           alt="Fergal Riordan Photography Logo"
           class="h-8 w-auto block"
         />
