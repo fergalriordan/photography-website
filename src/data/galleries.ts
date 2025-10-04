@@ -53,8 +53,8 @@ export const galleries = [
     name: "Colombia & Peru",
     title: "South America Gallery - Fergal's Photography",
     description: [
-    "In the summer of 2024, after completing my Master's degree, I spent four months travelling through Latin America. My trip started in Colombia, with the original plan being to travel south through the Amazon into Peru, and then continue south to Bolivia. However, due to political unrest in Bolivia, I had to change my plans, and instead spent the final month of my trip in Central America, visiting Costa Rica and Nicaragua.",
-    "This gallery contains photos from my time in South America, primarily in Peru. In Colombia I primarily used my phone for photography, primarily due to laziness, but to some extent also due to the fear of theft. However, in the Andes of Peru, I used my film camera extensively, on treks in the Huaraz region, the Sacred Valley, and the Salkantay Trek to Machu Picchu."
+    "In the summer of 2024, after completing my Master's degree, I spent four months travelling through Latin America. My trip started in Colombia, with the original plan being to travel south through the Amazon into Peru, and then continue south to Bolivia. However, due to political unrest in Bolivia I changed my plans, and instead spent the final month of my trip in Central America, visiting Costa Rica and Nicaragua.",
+    "This gallery contains photos from my time in South America, primarily in Peru. In Colombia I primarily used my phone for photography, mainly due to laziness. However, in the Peruvian Andes I used my camera on treks in the Huaraz region, the Sacred Valley, and the Salkantay Trek to Machu Picchu."
     ],
     photos: [
     { src: "/src/assets/Galleries/South_America/img1.JPG", alt: "" },
@@ -93,7 +93,7 @@ export const galleries = [
     title: "Iceland Gallery - Fergal's Photography",
     description: [
     "In May 2023, at the end of my Erasmus semester in Reykjavík, I travelled around the Ring Road of Iceland, spending 8 days driving 2500km around the country, starting in Reykjavík before heading south, to Vík, then east to Höfn, north to Akureyri, and then to the remote Westfjords, before finally returning to Reykjavík.",
-    "The trip rounded off an incredible five months in Iceland, which remains the most unique and naturally beautiful country I have ever visited. Unfortunately, one roll of film was corrupted, so my photos from the second half of the trip (Akureyri and the Westfjords) are lost forever. However, I still have a large collection of digital photos from the trip, which I may eventually incorporate into this gallery."
+    "The trip rounded off an incredible five months in Iceland, which remains the most unique and naturally beautiful country I have ever visited. Unfortunately, one roll of film was damaged, so my photos from the second half of the trip (Akureyri and the Westfjords) are lost forever. However, I still have a large collection of digital photos from the trip, which I may eventually incorporate into this gallery."
     ],
     photos: [
     { src: "/src/assets/Galleries/Iceland/img1.JPG", alt: "" },
