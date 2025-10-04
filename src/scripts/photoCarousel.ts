@@ -1,5 +1,5 @@
 export default function initPhotoCarousel() {
-  document.addEventListener('DOMContentLoaded', () => {
+  const init = () => {
     const slides = Array.from(document.querySelectorAll<HTMLElement>('[data-slide-index]'));
     const indicators = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-indicator-index]'));
     const prevBtn = document.querySelector<HTMLButtonElement>('[data-arrow="prev"]');
@@ -43,5 +43,12 @@ export default function initPhotoCarousel() {
     });
 
     autoSlide();
-  });
+  };
+
+  // Run immediately if DOM is already loaded, otherwise wait for it
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 }
