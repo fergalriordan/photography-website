@@ -1,4 +1,10 @@
+let isInitialized = false;
+
 export default function initDestinationSection() {
+  // Prevent multiple initializations
+  if (isInitialized) return;
+  isInitialized = true;
+
   const init = () => {
     const sections = document.querySelectorAll('section[class*="scroll-mt-16"]');
 
@@ -17,6 +23,9 @@ export default function initDestinationSection() {
       const rightArrow = rightArrowEl;
 
       const images = Array.from(container.querySelectorAll('img')) as HTMLImageElement[];
+
+      // CRITICAL: Reset scroll position to start
+      container.scrollLeft = 0;
 
       // Overlay functionality
       const overlayEl = section.querySelector('.overlay-text');
@@ -51,6 +60,8 @@ export default function initDestinationSection() {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
+              // Force scroll to start when section becomes visible
+              container.scrollLeft = 0;
               setTimeout(() => updateOverlayVisibility(), 200);
             } else {
               overlay.style.opacity = '0';
@@ -65,6 +76,9 @@ export default function initDestinationSection() {
 
         container.addEventListener('scroll', updateOverlayVisibility);
         observer.observe(section);
+
+        // Initial state
+        updateOverlayVisibility();
       }
 
       function updateArrows() {
@@ -111,6 +125,11 @@ export default function initDestinationSection() {
       container.addEventListener('scroll', updateArrows);
       window.addEventListener('resize', updateArrows);
     });
+
+    // Prevent browser scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
   };
 
   // Run immediately if DOM is already loaded, otherwise wait for it
@@ -120,6 +139,3 @@ export default function initDestinationSection() {
     init();
   }
 }
-
-// Auto-initialize
-initDestinationSection();
