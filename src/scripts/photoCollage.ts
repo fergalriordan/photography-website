@@ -1,17 +1,26 @@
+import { initMasonry, recalcGrid } from './masonry';
+
 export default function initPhotoCollage() {
   const init = () => {
-    const btn = document.getElementById('showMoreBtn');
-    const lazyPhotos = document.getElementById('lazyPhotos');
+    initMasonry();
 
-    if (btn && lazyPhotos) {
+    const btn = document.getElementById('showMoreBtn');
+    const photoGrid = document.getElementById('photoGrid') as HTMLElement | null;
+
+    if (btn && photoGrid) {
+      let expanded = false;
+
       btn.addEventListener('click', () => {
-        const isHidden = lazyPhotos.classList.contains('hidden');
-        if (isHidden) {
-          lazyPhotos.classList.remove('hidden');
+        expanded = !expanded;
+        const lazyPhotos = photoGrid.querySelectorAll<HTMLElement>('[data-lazy]');
+
+        if (expanded) {
+          lazyPhotos.forEach(img => (img.style.display = ''));
+          recalcGrid(photoGrid);
           btn.textContent = 'Show Less';
           btn.setAttribute('aria-expanded', 'true');
         } else {
-          lazyPhotos.classList.add('hidden');
+          lazyPhotos.forEach(img => (img.style.display = 'none'));
           btn.textContent = 'Show More';
           btn.setAttribute('aria-expanded', 'false');
         }
@@ -19,7 +28,6 @@ export default function initPhotoCollage() {
     }
   };
 
-  // Run immediately if DOM is already loaded, otherwise wait for it
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
