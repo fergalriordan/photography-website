@@ -105,7 +105,7 @@ export const galleries = [
     name: "São Vicente",
     title: "São Vicente Gallery - Fergal's Photography",
     description: [
-      "São Vicente is home to Mindelo,the cultural heart of the archipelago. Known for its vibrant music scene, colourful colonial architecture, and lively waterfront, Mindelo has a distinct atmosphere unlike anywhere else in Cape Verde. This collection captures the city's streets, waterfront, and local markets."
+      "São Vicente is home to Mindelo, the cultural heart of the archipelago. Known for its vibrant music scene, colourful colonial architecture, and lively waterfront, Mindelo has a distinct atmosphere unlike anywhere else in Cape Verde. This collection captures the city's streets, waterfront, and local markets."
     ],
     photos: [
     { src: "/images/Galleries/Sao_Vicente/img1.webp", alt: "", width: 1400, height: 938 },
