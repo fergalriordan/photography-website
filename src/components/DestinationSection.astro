@@ -2,22 +2,26 @@
 interface ImageItem {
   src: string;
   alt: string;
+  width?: number;
+  height?: number;
 }
 
 interface Props {
   title: string;
   images: ImageItem[];
   galleryUrl: string;
-  description?: string[]; 
+  description?: string[];
   class?: string;
+  firstSection?: boolean;
 }
 
 const {
   title,
   images,
   galleryUrl,
-  description = ["Explore this photo gallery"], 
+  description = ["Explore this photo gallery"],
   class: extraClass = "",
+  firstSection = false,
 } = Astro.props as Props;
 ---
 
@@ -105,15 +109,21 @@ const {
     >
       <div class="grid auto-cols-max grid-flow-col gap-2 px-2">
         {
-          images.map(({ src, alt }, index) => (
-            <img
-              src={src}
-              alt={alt}
-              class="object-cover snap-center h-[30rem] md:h-[35rem]"
-              loading={index === 0 ? "eager" : "lazy"}
-              decoding="async"
-            />
-          ))
+          images.map(({ src, alt, width, height }, index) => {
+            const isEager = firstSection && index < 4;
+            const isHero  = firstSection && index === 0;
+            return (
+              <img
+                src={src}
+                alt={alt}
+                style={width && height ? `aspect-ratio: ${width} / ${height}` : undefined}
+                class="object-cover snap-center h-[30rem] md:h-[35rem]"
+                loading={isEager ? "eager" : "lazy"}
+                fetchpriority={isHero ? "high" : undefined}
+                decoding={isHero ? "sync" : "async"}
+              />
+            );
+          })
         }
       </div>
     </div>

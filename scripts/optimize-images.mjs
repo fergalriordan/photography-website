@@ -12,7 +12,7 @@ const folderConfigs = [
   { folder: 'Galleries',                     maxWidth: 1400, quality: 80 },
   { folder: 'HeroPhotos/hero_photos_wide',   maxWidth: 1920, quality: 85 },
   { folder: 'HeroPhotos/hero_photos_narrow', maxWidth:  900, quality: 85 },
-  { folder: 'DestinationsHeroPhotos',        maxWidth: 1600, quality: 85 },
+  { folder: 'DestinationsHeroPhotos',        maxWidth:  800, quality: 80 },
   { folder: 'HomePageCollage',               maxWidth: 1400, quality: 80 },
 ];
 
