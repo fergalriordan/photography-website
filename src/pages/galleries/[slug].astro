@@ -21,25 +21,46 @@ if (!gallery) {
 <html lang="en">
   <head>
     <BaseHead title={gallery.title} description={gallery.description.join(' ')} />
+    <style>
+      .header-fade-in {
+        animation: headerFadeIn 0.9s ease both;
+      }
+      @keyframes headerFadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      .grid-fade-up {
+        opacity: 0;
+        transform: translateY(16px);
+        animation: gridFadeUp 0.8s ease 0.3s both;
+      }
+      @keyframes gridFadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+    </style>
   </head>
   <body class="bg-background pt-16">
     <Header />
     <main class="px-2 py-4">
-      <h1 class="text-gray-dark text-lg md:text-3xl tracking-[0.15em] mb-4 text-center">
-        {gallery.name}
-      </h1>
+      <div class="header-fade-in">
+        <h1 class="text-gray-dark text-lg md:text-3xl tracking-[0.15em] mb-4 text-center">
+          {gallery.name}
+        </h1>
 
-      <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
+        <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
 
-      {gallery.description.map((paragraph) => (
-        <p class="text-gray text-xs md:text-base mb-4 px-4 md:px-20 text-center">
-            {paragraph}
-        </p>
-        ))}
+        {gallery.description.map((paragraph) => (
+          <p class="text-gray text-xs md:text-base mb-4 px-4 md:px-20 text-center">
+              {paragraph}
+          </p>
+          ))}
 
-      <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
+        <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
+      </div>
 
-      <div class="masonry-galleries">
+      <div class="masonry-galleries grid-fade-up">
         {gallery.photos.map((photo, i) => (
           <img
             src={photo.src}

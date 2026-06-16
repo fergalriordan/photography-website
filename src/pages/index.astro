@@ -30,12 +30,30 @@ import PhotoCollage from "../components/PhotoCollage.astro";
         scroll-margin-top: 64px;
         scroll-snap-stop: normal;
       }
+
+      .hero-fade-in {
+        animation: heroFadeIn 1s ease both;
+      }
+      @keyframes heroFadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.75s ease, transform 0.75s ease;
+      }
+      .scroll-reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
     </style>
   </head>
   <body>
     <Header />
     <main class="bg-background pt-16">
-      <div class="snap-start">
+      <div class="snap-start hero-fade-in">
         <PhotoCarousel
           images={WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
           mobileImages={NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
@@ -44,7 +62,7 @@ import PhotoCollage from "../components/PhotoCollage.astro";
         />
       </div>
 
-      <div class="snap-start">
+      <div class="scroll-reveal">
         <div class="px-5 pt-6 pb-3 border-t border-gray-light">
           <span class="text-sm tracking-[0.3em] uppercase text-gray">Selected Work</span>
         </div>
@@ -55,5 +73,20 @@ import PhotoCollage from "../components/PhotoCollage.astro";
       </div>
     </main>
     <Footer />
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.05 }
+      );
+      document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+    </script>
   </body>
 </html>
