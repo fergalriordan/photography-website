@@ -47,7 +47,9 @@ const slidePairs = images.map((desktop, i) => ({
                 pair.desktop?.alt || pair.mobile?.alt || `${alt} ${index + 1}`
               }
               class="w-full h-full object-cover rounded-none"
-              loading="lazy"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "low"}
+              decoding={index === 0 ? "sync" : "async"}
             />
           </picture>
         )
