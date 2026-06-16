@@ -15,7 +15,7 @@ const isActive = href === pathname || href === matchPath;
   href={href}
 class={
   [
-    'inline-block',
+    'inline-block text-sm tracking-[0.12em]',
     className?.replace(/\btext-\S+/g, ''), // remove existing text color classes
     isActive ? 'font-bold text-accent' : 'text-text',
   ].filter(Boolean).join(' ')

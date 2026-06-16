@@ -8,6 +8,7 @@ interface Props {
   images: ImageItem[];
   mobileImages: ImageItem[];
   alt?: string;
+  overlayText?: string;
 }
 
 const props = Astro.props as Props;
@@ -15,6 +16,7 @@ const props = Astro.props as Props;
 const images = props.images ?? [];
 const mobileImages = props.mobileImages ?? [];
 const alt = props.alt ?? "";
+const overlayText = props.overlayText;
 
 const HEADER_HEIGHT = 64;
 
@@ -56,9 +58,24 @@ const slidePairs = images.map((desktop, i) => ({
       )
     }
 
+    <!-- Bottom gradient -->
+    <div
+      class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Text overlay -->
+    {overlayText && (
+      <div class="absolute bottom-14 left-8 md:left-12 max-w-xs md:max-w-sm pointer-events-none">
+        <p class="inline-block bg-black/30 backdrop-blur-sm px-4 py-2 text-sm md:text-base text-white/90 font-light italic leading-relaxed">
+          {overlayText}
+        </p>
+      </div>
+    )}
+
     <!-- Indicators -->
     <div
-      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2"
+      class="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2"
     >
       {
         slidePairs.map((_, index: number) => (
