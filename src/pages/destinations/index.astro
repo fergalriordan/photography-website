@@ -5,6 +5,9 @@ import Footer from "../../components/Footer.astro";
 import DestinationSection from "../../components/DestinationSection.astro";
 import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION } from "../../data/site";
 import {
+  DESTINATIONS_SANTO_ANTAO_HERO_PHOTOS,
+  DESTINATIONS_SAO_VICENTE_HERO_PHOTOS,
+  DESTINATIONS_MIZEN_PENINSULA_HERO_PHOTOS,
   DESTINATIONS_AMAZON_HERO_PHOTOS,
   DESTINATIONS_ICELAND_HERO_PHOTOS,
   DESTINATIONS_MESOAMERICA_HERO_PHOTOS,
@@ -24,12 +27,33 @@ import {
     <Header />
     <main>
       <DestinationSection
+        title="SANTO ANTÃO"
+        images={DESTINATIONS_SANTO_ANTAO_HERO_PHOTOS}
+        galleryUrl="/galleries/santo-antao"
+        description={["Hiking through the volcanic valleys and terraced hillsides of Cape Verde's most rugged island."]}
+        class="snap-start"
+        firstSection={true}
+      />
+      <DestinationSection
+        title="SÃO VICENTE"
+        images={DESTINATIONS_SAO_VICENTE_HERO_PHOTOS}
+        galleryUrl="/galleries/sao-vicente"
+        description={["Scenes from Mindelo, Cape Verde's cultural capital."]}
+        class="snap-start"
+      />
+      <DestinationSection
+        title="MIZEN PENINSULA"
+        images={DESTINATIONS_MIZEN_PENINSULA_HERO_PHOTOS}
+        galleryUrl="/galleries/mizen-peninsula"
+        description={["Shots from Three Castle Head in West Cork, Ireland."]}
+        class="snap-start"
+      />
+      <DestinationSection
         title="THE AMAZON RIVER"
         images={DESTINATIONS_AMAZON_HERO_PHOTOS}
         galleryUrl="/galleries/amazon"
         description={["Three nights on a ferry up the Amazon River from Leticia, Colombia to Iquitos, Peru."]}
         class="snap-start"
-        firstSection={true}
       />
       <DestinationSection
         title="COLOMBIA & PERU"

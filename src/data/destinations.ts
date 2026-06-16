@@ -1,5 +1,29 @@
 // Destinations Hero Photos
 
+export const DESTINATIONS_SANTO_ANTAO_HERO_PHOTOS = [
+  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_4939.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_5222.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_5205.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_5234.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_4915.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+];
+
+export const DESTINATIONS_SAO_VICENTE_HERO_PHOTOS = [
+  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_4987.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5117.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5238.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5247.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5196.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+];
+
+export const DESTINATIONS_MIZEN_PENINSULA_HERO_PHOTOS = [
+  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3791.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3798.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3808.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3818.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3822.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+];
+
 export const DESTINATIONS_ICELAND_HERO_PHOTOS = [
   { src: '/images/DestinationsHeroPhotos/iceland/iceland_sheep.webp', alt: 'Sheep in Iceland', width: 800, height: 1201 },
   { src: '/images/DestinationsHeroPhotos/iceland/IMG_7826.webp', alt: 'Icelandic horse grazing', width: 800, height: 1201 },
