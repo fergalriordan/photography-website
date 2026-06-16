@@ -1,8 +1,10 @@
 import { initMasonry, recalcGrid } from './masonry';
+import { initLightbox } from './lightbox';
 
 export default function initPhotoCollage() {
   const init = () => {
     initMasonry();
+    initLightbox('.masonry-columns img');
 
     const btn = document.getElementById('showMoreBtn');
     const photoGrid = document.getElementById('photoGrid') as HTMLElement | null;

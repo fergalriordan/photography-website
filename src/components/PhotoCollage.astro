@@ -53,6 +53,16 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
   </button>
 </div>
 
+<style is:global>
+  .masonry-columns img {
+    cursor: pointer;
+    transition: filter 0.2s ease;
+  }
+  .masonry-columns img:hover {
+    filter: brightness(0.88);
+  }
+</style>
+
 <script>
   import initPhotoCollage from '../scripts/photoCollage.ts';
   initPhotoCollage();

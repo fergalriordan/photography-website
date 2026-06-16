@@ -1,6 +1,6 @@
-export function initLightbox() {
+export function initLightbox(selector = '.masonry-galleries img') {
   const galleryImgs = Array.from(
-    document.querySelectorAll<HTMLImageElement>('.masonry-galleries img')
+    document.querySelectorAll<HTMLImageElement>(selector)
   );
 
   if (galleryImgs.length === 0) return;
