@@ -25,9 +25,9 @@ const {
 } = Astro.props as Props;
 ---
 
-<section class={`destination-section w-full py-6 bg-background px-4 ${extraClass} scroll-mt-16`}>
+<section class={`destination-section w-full pt-6 pb-4 bg-background border-t border-gray-light ${extraClass} scroll-mt-16`}>
   <!-- Banner -->
-  <div class="text-center mb-4">
+  <div class="text-center mb-5 px-5">
     <h2 class="text-xl md:text-4xl text-text tracking-[0.2em]">{title}</h2>
   </div>
 
@@ -107,7 +107,7 @@ const {
       class="scroll-container overflow-x-auto scrollbar-hide snap-x snap-mandatory"
       data-scroll-target
     >
-      <div class="grid auto-cols-max grid-flow-col gap-2 px-2">
+      <div class="grid auto-cols-max grid-flow-col gap-2">
         {
           images.map(({ src, alt, width, height }, index) => {
             const isEager = firstSection && index < 4;
