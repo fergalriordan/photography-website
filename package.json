@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "optimize": "node scripts/optimize-images.mjs",
+    "scaffold": "node scripts/scaffold-gallery.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",

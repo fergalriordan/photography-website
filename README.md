@@ -5,6 +5,8 @@ To run the site locally:
 `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
 `npm run dev`
 
+For the image upload/editing workflow, see [IMAGES.md](IMAGES.md).
+
 # Astro Starter Kit: Blog
 
 ```sh

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(__dirname, '..', 'public', 'images');
+const force = process.argv.includes('--force');
 
 // Max width and quality per image category
 const folderConfigs = [
@@ -39,7 +40,8 @@ async function processImage(inputPath, maxWidth, quality) {
 
   try {
     await fs.access(webpPath);
-    return { skipped: true };
+    if (!force) return { skipped: true };
+    await fs.unlink(webpPath);
   } catch {}
 
   const origSize = (await fs.stat(inputPath)).size;
