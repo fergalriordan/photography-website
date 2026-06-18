@@ -1,21 +1,21 @@
 // Home Page Carousel Photos
 
 export const WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
-    { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_fishing_boat.webp', alt: 'Fishing boat in Santo Antão, Cape Verde' },
+  { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_fishing_boat.webp', alt: 'Fishing boat in Santo Antão, Cape Verde' },
   { src: '/images/HeroPhotos/hero_photos_wide/mules_salkantay_pass_alt.webp', alt: 'Pack mules on the Salkantay trail in Peru' },
   { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_viewpoint.webp', alt: 'Viewpoint in Santo Antão, Cape Verde' },
   { src: '/images/HeroPhotos/hero_photos_wide/machu_picchu_town_centre.webp', alt: 'Viewpoint of Machu Picchu town centre' },
-  { src: '/images/HeroPhotos/hero_photos_wide/lake_atitlan.webp', alt: 'Viewpoint of Lake Atitlán' },
   { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_north_coast.webp', alt: 'View of the north coastline of Santo Antão, Cape Verde' },
+  { src: '/images/HeroPhotos/hero_photos_wide/lake_atitlan.webp', alt: 'Viewpoint of Lake Atitlán' },
 ];
 
 export const NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
-  { src: '/images/HeroPhotos/hero_photos_narrow/laguna69.webp', alt: 'High-altitude viewpoint on the Laguna 69 hike' },
+  { src: '/images/HeroPhotos/hero_photos_narrow/sao_vicente_sunset_portrait.webp', alt: 'Sunset in Sao Vicente, Cape Verde' },
+  { src: '/images/HeroPhotos/hero_photos_narrow/santo_antao_fishing_boat.webp', alt: 'Close up shot on board a fishing boat off Santo Antão, Cape Verde' },
   { src: '/images/HeroPhotos/hero_photos_narrow/sao_vicente_fish_market.webp', alt: 'Image of fish being processed outside a market in Sao Vicente, Cape Verde' },
   { src: '/images/HeroPhotos/hero_photos_narrow/thorshofn_plane_crash_horse.webp', alt: 'Horse by crashed plane near Thorshofn' },
   { src: '/images/HeroPhotos/hero_photos_narrow/valladolid_church.webp', alt: 'Church in Valladolid, Mexico' },
   { src: '/images/HeroPhotos/hero_photos_narrow/antigua_arches.webp', alt: 'Arches in town centre in Antigua, Guatemala' },
-  { src: '/images/HeroPhotos/hero_photos_narrow/santo_antao_fishing_boat.webp', alt: 'Close up shot on board a fishing boat off Santo Antão, Cape Verde' },
 ];
 
 // Home Page Collage Photos
@@ -23,7 +23,7 @@ export const NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
 export const HOMEPAGE_COLLAGE_HERO_PHOTOS = [
   { src: '/images/HomePageCollage/home_page_collage_eager/thorshofn_plane_crash_andreas.webp', alt: 'Crashed plane near Thorshofn', width: 1400, height: 2101 },
   { src: '/images/HomePageCollage/home_page_collage_eager/hammocks_amazon_slow_boat.webp', alt: 'Row of hammocks on an Amazon river slow boat', width: 1400, height: 937 },
-  { src: '/images/HomePageCollage/home_page_collage_eager/sao_vicente_sunset_portrait.webp', alt: 'Sunset in Sao Vicente, Cape Verde', width: 1400, height: 2090 },
+  { src: '/images/HomePageCollage/home_page_collage_eager/laguna69.webp', alt: 'Laguna 69 in Huaraz, Peru', width: 1232, height: 1840 },
   { src: '/images/HomePageCollage/home_page_collage_lazy/cusco_view.webp', alt: 'View over Cusco rooftops and hills', width: 1232, height: 1840 },
   { src: '/images/HomePageCollage/home_page_collage_eager/tikal_spider_monkeys.webp', alt: 'Spider monkeys in Tikal, Guatemala.', width: 1400, height: 2112 },
   { src: '/images/HomePageCollage/home_page_collage_eager/cows_and_valley_laguna69_trek.webp', alt: 'Cows grazing in a valley in the Andes near Laguna 69.', width: 1400, height: 937 },
@@ -68,6 +68,6 @@ export const ADDITIONAL_HOMEPAGE_COLLAGE_PHOTOS = [
   { src: '/images/HomePageCollage/home_page_collage_lazy/iceland_road_trip_pit_stop.webp', alt: 'Road trip pit stop in Iceland', width: 1400, height: 933 },
   { src: '/images/HomePageCollage/home_page_collage_lazy/santo_antao_north_coast.webp', alt: 'View of the north coastline of Santo Antão, Cape Verde', width: 1400, height: 2090 },
   { src: '/images/HomePageCollage/home_page_collage_lazy/river_salkantay_trek.webp', alt: 'Mountain river along the Salkantay trek', width: 1232, height: 1840 },
-  { src: '/images/HomePageCollage/home_page_collage_lazy/laguna69.webp', alt: 'Laguna 69 in Huaraz, Peru', width: 1232, height: 1840 },
+  { src: '/images/HomePageCollage/home_page_collage_lazy/sao_vicente_sunset_portrait.webp', alt: 'Sunset in Sao Vicente, Cape Verde', width: 1400, height: 2090 },
   { src: '/images/HomePageCollage/home_page_collage_lazy/mules_salkantay_pass.webp', alt: 'Mules on the Salkantay Pass', width: 1400, height: 937 },
 ];
