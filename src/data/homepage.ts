@@ -1,12 +1,12 @@
 // Home Page Carousel Photos
 
 export const WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
+  { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_north_coast.webp', alt: 'View of the north coastline of Santo Antão, Cape Verde' },
   { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_fishing_boat.webp', alt: 'Fishing boat in Santo Antão, Cape Verde' },
-  { src: '/images/HeroPhotos/hero_photos_wide/mules_salkantay_pass_alt.webp', alt: 'Pack mules on the Salkantay trail in Peru' },
   { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_viewpoint.webp', alt: 'Viewpoint in Santo Antão, Cape Verde' },
   { src: '/images/HeroPhotos/hero_photos_wide/machu_picchu_town_centre.webp', alt: 'Viewpoint of Machu Picchu town centre' },
-  { src: '/images/HeroPhotos/hero_photos_wide/santo_antao_north_coast.webp', alt: 'View of the north coastline of Santo Antão, Cape Verde' },
   { src: '/images/HeroPhotos/hero_photos_wide/lake_atitlan.webp', alt: 'Viewpoint of Lake Atitlán' },
+  { src: '/images/HeroPhotos/hero_photos_wide/mules_salkantay_pass_alt.webp', alt: 'Pack mules on the Salkantay trail in Peru' },
 ];
 
 export const NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
