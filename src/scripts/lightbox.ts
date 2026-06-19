@@ -169,9 +169,15 @@ export function initLightbox(selector = '.masonry-galleries img') {
 
   let touchStartX = 0;
   let hasDragged = false;
+  let isPinching = false;
 
   container.addEventListener('touchstart', (e) => {
     if (isAnimating) return;
+    if (e.touches.length > 1) {
+      isPinching = true;
+      return;
+    }
+    isPinching = false;
     touchStartX = e.touches[0].clientX;
     hasDragged = false;
     track.style.transition = 'none';
@@ -179,13 +185,23 @@ export function initLightbox(selector = '.masonry-galleries img') {
 
   container.addEventListener('touchmove', (e) => {
     if (isAnimating) return;
+    if (e.touches.length > 1) {
+      // Second finger joined — treat as pinch, abort any swipe in progress.
+      isPinching = true;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(-33.333%)';
+      hasDragged = false;
+      return;
+    }
+    if (isPinching) return;
     const deltaX = e.touches[0].clientX - touchStartX;
-    if (Math.abs(deltaX) > 5) hasDragged = true;
+    if (Math.abs(deltaX) > 10) hasDragged = true;
     track.style.transform = `translateX(calc(-33.333% + ${deltaX}px))`;
   }, { passive: true });
 
   container.addEventListener('touchend', (e) => {
-    if (isAnimating || !hasDragged) return;
+    if (e.touches.length === 0) isPinching = false;
+    if (isAnimating || !hasDragged || isPinching) return;
     const deltaX = e.changedTouches[0].clientX - touchStartX;
 
     if (Math.abs(deltaX) > 50) {
@@ -201,6 +217,7 @@ export function initLightbox(selector = '.masonry-galleries img') {
   });
 
   container.addEventListener('touchcancel', () => {
+    isPinching = false;
     if (!isAnimating) {
       track.style.transition = 'transform 0.25s ease';
       track.style.transform = 'translateX(-33.333%)';
