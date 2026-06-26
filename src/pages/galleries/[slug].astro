@@ -64,7 +64,7 @@ if (!gallery) {
         {gallery.photos.map((photo, i) => (
           <img
             src={photo.src}
-            alt={photo.alt || `Photo ${i + 1}`}
+            alt={photo.alt || `${gallery.name} — photo ${i + 1}`}
             loading={i < 3 ? "eager" : "lazy"}
             decoding="async"
             width={photo.width}
