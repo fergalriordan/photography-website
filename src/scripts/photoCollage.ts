@@ -94,6 +94,15 @@ export default function initPhotoCollage() {
         layout();
         btn.textContent = expanded ? 'Show Less' : 'Show More';
         btn.setAttribute('aria-expanded', String(expanded));
+        // Collapsing shrinks the page; if we were scrolled past the new bottom
+        // the browser leaves the view stranded below all content (blank screen)
+        // until the next scroll. Clamp back into bounds so the button stays put.
+        if (!expanded) {
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          if (window.scrollY > maxScroll) {
+            window.scrollTo({ top: Math.max(maxScroll, 0) });
+          }
+        }
       });
     }
 
