@@ -12,6 +12,14 @@ import {
 
 import PhotoCarousel from "../components/PhotoCarousel.astro";
 import PhotoCollage from "../components/PhotoCollage.astro";
+
+// Tiny blurred previews (~120 bytes) of the first hero slide, shown behind the
+// carousel until the full image paints. Generated with Sharp from the first
+// wide/narrow hero images; regenerate if those change.
+const HERO_PLACEHOLDER_DESKTOP =
+  "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAwBACdASoYAA4APu1orU2ppqSiMAgBMB2JQBdgBEPpnbMnROIiuVu/ZoAA/slck3TSdCaGVY08qNZhcbbuxehhL64Ef5tZSyiKfx921A70JowlIzO4ibcX2NfuLwy1RP0MEAAA";
+const HERO_PLACEHOLDER_MOBILE =
+  "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwBACdASoYACQAPulgpU2pJaMiMAqpIB0JZQDDZ6HESy7n93UfsVI6bAAA/vBIYiyaEUp0PgYIUjGxqK+3KzsyYeOiqk1D/IB3R7MXM06HTKdvYhmxKmiYAwH1WqGinMC7ym5gAAA=";
 ---
 
 <!doctype html>
@@ -20,6 +28,25 @@ import PhotoCollage from "../components/PhotoCollage.astro";
     <BaseHead
       title={`${SITE_TITLE} | ${SITE_TAGLINE}`}
       description={SITE_DESCRIPTION}
+    />
+    <!--
+      Preload the first hero image so it starts downloading during HTML parse
+      instead of after the carousel <img> is discovered in the body. Two links
+      mirror the wide/narrow <source> split in PhotoCarousel.astro.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      href={WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS[0].src}
+      media="(min-width: 768px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS[0].src}
+      media="(max-width: 767px)"
+      fetchpriority="high"
     />
     <style>
       .hero-fade-in {
@@ -50,6 +77,8 @@ import PhotoCollage from "../components/PhotoCollage.astro";
           mobileImages={NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
           alt="Hero image"
           overlayText="Travel, nature and film photography — across Europe, the Americas, Africa, and beyond."
+          placeholderDesktop={HERO_PLACEHOLDER_DESKTOP}
+          placeholderMobile={HERO_PLACEHOLDER_MOBILE}
         />
       </div>
 

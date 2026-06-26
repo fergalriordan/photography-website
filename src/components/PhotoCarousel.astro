@@ -9,6 +9,9 @@ interface Props {
   mobileImages: ImageItem[];
   alt?: string;
   overlayText?: string;
+  /** Tiny blurred data-URI shown behind the carousel until the first image paints. */
+  placeholderDesktop?: string;
+  placeholderMobile?: string;
 }
 
 const props = Astro.props as Props;
@@ -17,6 +20,11 @@ const images = props.images ?? [];
 const mobileImages = props.mobileImages ?? [];
 const alt = props.alt ?? "";
 const overlayText = props.overlayText;
+const placeholderDesktop = props.placeholderDesktop;
+const placeholderMobile = props.placeholderMobile ?? props.placeholderDesktop;
+// Wrap the data-URIs as CSS url() values (data URIs contain no double quotes).
+const phDesktopCss = placeholderDesktop ? `url("${placeholderDesktop}")` : "none";
+const phMobileCss = placeholderMobile ? `url("${placeholderMobile}")` : "none";
 
 const HEADER_HEIGHT = 64;
 
@@ -27,7 +35,7 @@ const slidePairs = images.map((desktop, i) => ({
 ---
 
 <section
-  class="relative w-full overflow-hidden"
+  class:list={["relative w-full overflow-hidden", { "hero-placeholder": placeholderDesktop }]}
   style={`height: calc(100vh - ${HEADER_HEIGHT}px);`}
 >
   <div class="relative w-full h-full group">
@@ -130,6 +138,20 @@ const slidePairs = images.map((desktop, i) => ({
     </button>
   </div>
 </section>
+
+<style define:vars={{ phDesktopCss, phMobileCss }}>
+  .hero-placeholder {
+    background-image: var(--phDesktopCss);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  @media (max-width: 767px) {
+    .hero-placeholder {
+      background-image: var(--phMobileCss);
+    }
+  }
+</style>
 
 <script>
   import initPhotoCarousel from '../scripts/photoCarousel';
