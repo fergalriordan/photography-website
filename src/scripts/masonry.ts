@@ -19,7 +19,7 @@ export function recalcGrid(grid: HTMLElement) {
 
 export function initMasonry() {
   const grids = Array.from(
-    document.querySelectorAll<HTMLElement>('.masonry-columns, .masonry-galleries')
+    document.querySelectorAll<HTMLElement>('.masonry-galleries')
   );
 
   grids.forEach(grid => recalcGrid(grid));

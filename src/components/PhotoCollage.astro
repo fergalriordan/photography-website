@@ -7,34 +7,32 @@ interface Photo {
 }
 
 const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
+
+// Each image is snapped to one of two fixed aspect ratios (landscape 3:2 /
+// portrait 2:3) so the masonry packer deals with just two tile heights and can
+// produce perfectly level columns. The source photos are already very close to
+// these ratios, so the object-cover crop is minimal.
+const orientation = (p: Photo) => (p.width >= p.height ? "landscape" : "portrait");
 ---
 
 <div class="bg-background px-5 pt-2">
-  <div class="masonry-columns" id="photoGrid">
-    {photosEager.map(({ src, alt, width, height }: Photo, i: number) => (
+  <div class="collage-columns" id="photoGrid">
+    {photosEager.map((photo: Photo, i: number) => (
       <img
-        src={src}
-        alt={alt || `Photo ${i + 1}`}
+        src={photo.src}
+        alt={photo.alt || `Photo ${i + 1}`}
         loading="eager"
         decoding="async"
-        width={width}
-        height={height}
-        data-w={width}
-        data-h={height}
-        class="w-full block"
+        class={`w-full block ${orientation(photo)}`}
       />
     ))}
-    {photosLazy.map(({ src, alt, width, height }: Photo, i: number) => (
+    {photosLazy.map((photo: Photo, i: number) => (
       <img
-        src={src}
-        alt={alt || `Photo ${photosEager.length + i + 1}`}
+        src={photo.src}
+        alt={photo.alt || `Photo ${photosEager.length + i + 1}`}
         loading="lazy"
         decoding="async"
-        width={width}
-        height={height}
-        data-w={width}
-        data-h={height}
-        class="w-full block"
+        class={`w-full block ${orientation(photo)}`}
         data-lazy="true"
         style="display: none"
       />
@@ -54,11 +52,33 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
 </div>
 
 <style is:global>
-  .masonry-columns img {
+  /* Before JS runs the images stack full-width (graceful fallback). */
+  .collage-columns.cols-ready {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .collage-col {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .collage-columns img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
     cursor: pointer;
     transition: filter 0.2s ease;
   }
-  .masonry-columns img:hover {
+  .collage-columns img.landscape {
+    aspect-ratio: 3 / 2;
+  }
+  .collage-columns img.portrait {
+    aspect-ratio: 2 / 3;
+  }
+  .collage-columns img:hover {
     filter: brightness(0.88);
   }
 </style>
