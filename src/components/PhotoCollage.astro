@@ -1,9 +1,12 @@
 ---
+import { galleries } from "../data/galleries";
+
 interface Photo {
   src: string;
   alt?: string;
   width: number;
   height: number;
+  gallery?: string;
 }
 
 const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
@@ -13,6 +16,15 @@ const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
 // produce perfectly level columns. The source photos are already very close to
 // these ratios, so the object-cover crop is minimal.
 const orientation = (p: Photo) => (p.width >= p.height ? "landscape" : "portrait");
+
+// Resolve a collage photo's `gallery` slug to the link label shown in the
+// lightbox. Photos without a (known) gallery get no link — the lightbox keys
+// off the presence of these data attributes.
+const galleryLabels = new Map(
+  galleries.map((g) => [g.slug, (g as { shortName?: string }).shortName ?? g.name])
+);
+const galleryLabel = (p: Photo) =>
+  p.gallery ? galleryLabels.get(p.gallery) : undefined;
 ---
 
 <div class="bg-background px-5 pt-2">
@@ -24,6 +36,8 @@ const orientation = (p: Photo) => (p.width >= p.height ? "landscape" : "portrait
         loading="eager"
         decoding="async"
         class={`w-full block ${orientation(photo)}`}
+        data-gallery-slug={galleryLabel(photo) ? photo.gallery : undefined}
+        data-gallery-label={galleryLabel(photo)}
       />
     ))}
     {photosLazy.map((photo: Photo, i: number) => (
@@ -34,6 +48,8 @@ const orientation = (p: Photo) => (p.width >= p.height ? "landscape" : "portrait
         decoding="async"
         class={`w-full block ${orientation(photo)}`}
         data-lazy="true"
+        data-gallery-slug={galleryLabel(photo) ? photo.gallery : undefined}
+        data-gallery-label={galleryLabel(photo)}
         style="display: none"
       />
     ))}

@@ -195,3 +195,26 @@ hr {
 .lightbox-counter.visible {
   opacity: 1;
 }
+.lightbox-gallery-link {
+  position: absolute;
+  bottom: 2.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #a0b1b8;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: color 0.15s ease, opacity 0.4s ease;
+}
+.lightbox-gallery-link.visible {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+.lightbox-gallery-link:hover {
+  color: #ffffff;
+  opacity: 1;
+}

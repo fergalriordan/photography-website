@@ -189,6 +189,7 @@ export const galleries = [
   {
     slug: "amazon",
     name: "Amazon River Slow Boat",
+    shortName: "Amazon River",
     title: "The Amazon River Gallery - Fergal's Photography",
     description: [
     "In 2024, I spent three nights travelling up the Amazon River on a slow boat from Leticia, Colombia to Iquitos, Peru. The ferry along the river is the primary means of transportation and trade for locals in this part of the Amazon. The ferry stops constantly at small inlets and remote communities, offloading and onboarding passengers, livestock, food, and other goods. The journey provides a unique insight into the way of life of the people who live in this remote region."
@@ -277,6 +278,7 @@ export const galleries = [
   {
     slug: "iceland",
     name: "Iceland: The Ring Road",
+    shortName: "Iceland",
     title: "Iceland Gallery - Fergal's Photography",
     description: [
     "In May 2023, at the end of my Erasmus semester in Reykjavík, I travelled around the Ring Road of Iceland, spending 8 days driving 2500km around the country, starting in Reykjavík before heading south, to Vík, then east to Höfn, north to Akureyri, and then to the remote Westfjords, before finally returning to Reykjavík.",

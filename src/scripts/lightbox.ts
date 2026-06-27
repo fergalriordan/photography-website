@@ -58,10 +58,18 @@ export function initLightbox(selector = '.masonry-galleries img') {
   const counter = document.createElement('span');
   counter.className = 'lightbox-counter';
 
+  // Optional "<Name> Gallery →" link, shown only for images that carry
+  // data-gallery-slug/label (the homepage collage). Stays visible the whole
+  // time the lightbox is open, unlike the auto-hiding counter.
+  const galleryLink = document.createElement('a');
+  galleryLink.className = 'lightbox-gallery-link';
+  galleryLink.addEventListener('click', (e) => e.stopPropagation());
+
   overlay.appendChild(container);
   overlay.appendChild(closeBtn);
   overlay.appendChild(prevBtn);
   overlay.appendChild(nextBtn);
+  overlay.appendChild(galleryLink);
   overlay.appendChild(counter);
   document.body.appendChild(overlay);
 
@@ -85,6 +93,17 @@ export function initLightbox(selector = '.masonry-galleries img') {
     counter.classList.add('visible');
     clearTimeout(hideCounterTimer);
     hideCounterTimer = setTimeout(() => counter.classList.remove('visible'), 2000);
+  }
+
+  function updateGalleryLink() {
+    const { gallerySlug, galleryLabel } = getItem(currentIndex).dataset;
+    if (gallerySlug && galleryLabel) {
+      galleryLink.href = `/galleries/${gallerySlug}`;
+      galleryLink.textContent = `${galleryLabel} Gallery →`;
+      galleryLink.classList.add('visible');
+    } else {
+      galleryLink.classList.remove('visible');
+    }
   }
 
   // Rotate slot roles so the just-visible slot becomes center — its src is
@@ -111,6 +130,7 @@ export function initLightbox(selector = '.masonry-galleries img') {
     setOrders();
     resetTrack();
     showCounter();
+    updateGalleryLink();
     isAnimating = false;
   }
 
@@ -136,6 +156,7 @@ export function initLightbox(selector = '.masonry-galleries img') {
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     showCounter();
+    updateGalleryLink();
   }
 
   function close() {
@@ -143,6 +164,7 @@ export function initLightbox(selector = '.masonry-galleries img') {
     document.body.style.overflow = '';
     clearTimeout(hideCounterTimer);
     counter.classList.remove('visible');
+    galleryLink.classList.remove('visible');
     setTimeout(() => { slotImgs.forEach(img => { img.src = ''; }); }, 250);
   }
 
