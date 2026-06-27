@@ -40,7 +40,7 @@ export const ADDITIONAL_HOMEPAGE_COLLAGE_PHOTOS = [
   { src: '/images/HomePageCollage/home_page_collage_lazy/dogs.webp', alt: 'Image of two collies, Ireland.', width: 1400, height: 2112 },
   { src: '/images/HomePageCollage/home_page_collage_lazy/salento_palm_tree.webp', alt: 'Tall palm trees in Salento, Colombia', width: 1232, height: 1840, gallery: 'south-america' },
   { src: '/images/HomePageCollage/home_page_collage_lazy/thorshofn_plane_crash_horse.webp', alt: 'Horse by the crashed plane near Thorshofn', width: 1400, height: 2101, gallery: 'iceland' },
-  { src: '/images/HomePageCollage/home_page_collage_lazy/bus_interior_cape_verde.webp', alt: 'Bus interior shot in Cape Verde', width: 1400, height: 938 },
+  { src: '/images/HomePageCollage/home_page_collage_lazy/bus_interior_cape_verde.webp', alt: 'Bus interior shot in Cape Verde', width: 1400, height: 938, gallery: 'santo-antao' },
   { src: '/images/HomePageCollage/home_page_collage_lazy/antigua_arches.webp', alt: 'Arches in town centre in Antigua, Guatemala', width: 1400, height: 2112, gallery: 'mesoamerica' },
   { src: '/images/HomePageCollage/home_page_collage_lazy/coca_cola_shops.webp', alt: 'Shops covered in Coca-Cola branding in Baccalar, Mexico', width: 1400, height: 928, gallery: 'mesoamerica' },
   { src: '/images/HomePageCollage/home_page_collage_lazy/cargo_loading_amazon_slow_boat.webp', alt: 'Cargo area of Amazon slow boat with supplies', width: 1400, height: 937, gallery: 'amazon' },
