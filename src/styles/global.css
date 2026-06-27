@@ -218,3 +218,10 @@ hr {
   color: #ffffff;
   opacity: 1;
 }
+/* Desktop has more vertical breathing room below the image than mobile; nudge
+   the link down a touch so it doesn't sit squashed against the image bottom. */
+@media (min-width: 768px) {
+  .lightbox-gallery-link {
+    bottom: 1.9rem;
+  }
+}
