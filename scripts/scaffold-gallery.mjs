@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const targetDir = process.argv[2];
 if (!targetDir) {
   console.error('Usage: npm run scaffold -- <folder-path>');
-  console.error('Example: npm run scaffold -- public/images/Galleries/Iceland');
+  console.error('Example: npm run scaffold -- public/images/Galleries/iceland');
   process.exit(1);
 }
 

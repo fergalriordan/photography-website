@@ -8,7 +8,7 @@ Static photography portfolio: **Astro 5** + **Tailwind** (`@astrojs/tailwind`). 
 - `npm run build` — production build to `dist/`
 - `npm run preview` — serve the production build
 - `npm run optimize` — convert source JPG/PNG under `public/images/` to resized WebP (see Image pipeline). `-- --force` re-converts images that already have a `.webp`.
-- `npm run scaffold -- <folder>` — print a paste-ready array of `{ src, alt, width, height }` for every WebP in a folder, e.g. `npm run scaffold -- public/images/Galleries/Iceland`
+- `npm run scaffold -- <folder>` — print a paste-ready array of `{ src, alt, width, height }` for every WebP in a folder, e.g. `npm run scaffold -- public/images/Galleries/iceland`
 
 No test/lint/format tooling configured.
 
@@ -27,7 +27,7 @@ Photo collections are **plain TypeScript arrays in `src/data/`, not a content co
 The MDX blog (`src/content/`, `pages/blog/`) is unmodified Astro starter scaffolding, not linked in nav — don't use it as a convention reference.
 
 ### Image pipeline
-Source images in `public/images/` by feature folder (`Galleries/`, `HeroPhotos/`, `DestinationsHeroPhotos/`, `HomePageCollage/`). `scripts/optimize-images.mjs` walks them with Sharp, applies EXIF rotation, resizes to a per-folder max width, writes sibling `.webp` at per-folder quality (config: `folderConfigs` at top of script). Data arrays reference the `.webp` paths. Existing WebP skipped unless `--force`.
+Source images in `public/images/` by feature folder (`Galleries/`, `HeroPhotos/`, `DestinationsHeroPhotos/`, `HomePageCollage/`). Per-gallery subfolders under `Galleries/` and `DestinationsHeroPhotos/` are **kebab-case matching the gallery `slug`** (e.g. `santo-antao`) — folder name == slug in both places. `scripts/optimize-images.mjs` walks them with Sharp, applies EXIF rotation, resizes to a per-folder max width, writes sibling `.webp` at per-folder quality (config: `folderConfigs` at top of script). Data arrays reference the `.webp` paths. Existing WebP skipped unless `--force`.
 
 ### Client-side interaction (`src/scripts/`)
 Interactivity lives in these TS modules, imported via `<script>`:
