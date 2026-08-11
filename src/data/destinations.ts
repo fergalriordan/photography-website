@@ -55,3 +55,11 @@ export const DESTINATIONS_AMAZON_HERO_PHOTOS = [
   { src: '/images/DestinationsHeroPhotos/amazon/CNV00030.webp', alt: 'Side view of Amazon slow boat', width: 800, height: 1195 },
   { src: '/images/DestinationsHeroPhotos/amazon/CNV00031__.webp', alt: 'Large old tree in the Amazon', width: 800, height: 1195 },
 ];
+
+export const DESTINATIONS_LISBON_HERO_PHOTOS = [
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340820031.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340840002.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340840022.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340820030.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340840025.webp", alt: "Lisbon", width: 800, height: 1207 },
+];
