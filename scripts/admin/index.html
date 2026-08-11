@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gallery Admin</title>
+    <style>
+      :root { --border: #d8d4cc; --accent: #3a5a40; --bg: #faf8f4; --muted: #6b6b6b; }
+      * { box-sizing: border-box; }
+      body { font-family: system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: #222; }
+      header { padding: 20px 28px; border-bottom: 1px solid var(--border); background: #fff; }
+      header h1 { margin: 0; font-size: 20px; letter-spacing: 0.05em; }
+      header p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+      main { max-width: 1000px; margin: 0 auto; padding: 24px 28px 80px; }
+      fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin: 0 0 20px; background: #fff; }
+      legend { font-weight: 600; padding: 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+      label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
+      .hint { font-weight: 400; color: var(--muted); font-size: 12px; }
+      input[type="text"], textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit; background: #fff; }
+      textarea { min-height: 70px; resize: vertical; }
+      .row { display: flex; gap: 16px; }
+      .row > div { flex: 1; }
+      #dropzone { border: 2px dashed var(--border); border-radius: 8px; padding: 30px; text-align: center; color: var(--muted); cursor: pointer; background: #fff; }
+      #dropzone.drag { border-color: var(--accent); background: #f0f4ef; }
+      #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-top: 16px; }
+      .card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+      .card.dragging { opacity: 0.4; }
+      .card.over { outline: 2px solid var(--accent); }
+      .thumb { position: relative; aspect-ratio: 3/2; background: #eee; }
+      .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .idx { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 10px; }
+      .handle { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 12px; padding: 2px 7px; border-radius: 4px; cursor: grab; }
+      .card .body { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+      .card .body input[type="text"] { font-size: 12px; padding: 5px 7px; }
+      .hero-row { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
+      .bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--border); padding: 12px 28px; display: flex; align-items: center; gap: 16px; justify-content: flex-end; }
+      #status { margin-right: auto; font-size: 13px; color: var(--muted); }
+      #status.err { color: #b00020; }
+      #status.ok { color: var(--accent); }
+      button { font: inherit; font-weight: 600; padding: 9px 20px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+      button:disabled { opacity: 0.5; cursor: default; }
+      .slug-warn { color: #b00020; font-size: 12px; margin-top: 4px; display: none; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Add a Gallery</h1>
+      <p>Runs locally. On Save, images are optimized and the data files are rewritten &mdash; review <code>git diff</code> before committing.</p>
+    </header>
+    <main>
+      <fieldset>
+        <legend>Gallery details</legend>
+        <div class="row">
+          <div>
+            <label>Name <span class="hint">display name</span></label>
+            <input type="text" id="name" placeholder="Santo Antão" />
+          </div>
+          <div>
+            <label>Slug <span class="hint">folder + URL, auto from name</span></label>
+            <input type="text" id="slug" placeholder="santo-antao" />
+            <div class="slug-warn" id="slugWarn">A gallery with this slug already exists.</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Short name <span class="hint">optional</span></label>
+            <input type="text" id="shortName" placeholder="" />
+          </div>
+          <div>
+            <label>Page title <span class="hint">auto if blank</span></label>
+            <input type="text" id="title" placeholder="Santo Antão Gallery - Fergal's Photography" />
+          </div>
+        </div>
+        <label>Gallery description <span class="hint">blank line = new paragraph</span></label>
+        <textarea id="description" placeholder="A few sentences about this gallery..."></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>Destinations page</legend>
+        <div class="row">
+          <div>
+            <label>Section title <span class="hint">auto-uppercased if blank</span></label>
+            <input type="text" id="destTitle" placeholder="SANTO ANTÃO" />
+          </div>
+          <div>
+            <label>Section blurb <span class="hint">short overlay caption</span></label>
+            <input type="text" id="destBlurb" placeholder="Hiking the volcanic valleys of Cape Verde." />
+          </div>
+        </div>
+        <p class="hint" style="margin:10px 0 0">Hero carousel uses the photos you mark <strong>Hero</strong> below (defaults to the first 3).</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Photos</legend>
+        <div id="dropzone">Drag photos here, or click to choose. Drag cards to reorder.</div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png" multiple hidden />
+        <div id="grid"></div>
+      </fieldset>
+    </main>
+
+    <div class="bar">
+      <span id="status"></span>
+      <button id="saveBtn" disabled>Save Gallery</button>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      let photos = []; // { file, url, alt, isHero }
+
+      // --- slug derivation ---
+      function slugify(s) {
+        return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      }
+      let slugEdited = false;
+      $('name').addEventListener('input', () => {
+        if (!slugEdited) $('slug').value = slugify($('name').value);
+        validateSlug();
+        refreshSave();
+      });
+      $('slug').addEventListener('input', () => { slugEdited = true; validateSlug(); });
+
+      async function validateSlug() {
+        const slug = slugify($('slug').value);
+        if (!slug) { $('slugWarn').style.display = 'none'; return; }
+        try {
+          const r = await fetch('/validate-slug', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug }),
+          });
+          const { exists } = await r.json();
+          $('slugWarn').style.display = exists ? 'block' : 'none';
+        } catch {}
+      }
+
+      // --- file intake ---
+      const dz = $('dropzone');
+      dz.addEventListener('click', () => $('fileInput').click());
+      $('fileInput').addEventListener('change', (e) => addFiles(e.target.files));
+      ['dragover', 'dragenter'].forEach((ev) =>
+        dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add('drag'); }));
+      ['dragleave', 'drop'].forEach((ev) =>
+        dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove('drag'); }));
+      dz.addEventListener('drop', (e) => addFiles(e.dataTransfer.files));
+
+      function addFiles(fileList) {
+        for (const file of fileList) {
+          if (!/^image\/(jpeg|png)$/.test(file.type)) continue;
+          photos.push({ file, url: URL.createObjectURL(file), alt: '', isHero: false });
+        }
+        // default first 3 as hero if none chosen yet
+        if (!photos.some((p) => p.isHero)) photos.slice(0, 3).forEach((p) => (p.isHero = true));
+        render();
+      }
+
+      // --- render grid ---
+      function render() {
+        const grid = $('grid');
+        grid.innerHTML = '';
+        photos.forEach((p, i) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.draggable = true;
+          card.dataset.i = i;
+          card.innerHTML =
+            '<div class="thumb"><span class="idx">' + (i + 1) + '</span>' +
+            '<span class="handle" title="Drag to reorder">⠿</span>' +
+            '<img src="' + p.url + '" /></div>' +
+            '<div class="body">' +
+            '<input type="text" class="alt" placeholder="alt text" value="' + escapeAttr(p.alt) + '" />' +
+            '<label class="hero-row"><input type="checkbox" class="hero" ' + (p.isHero ? 'checked' : '') + ' /> Hero</label>' +
+            '</div>';
+          card.querySelector('.alt').addEventListener('input', (e) => (p.alt = e.target.value));
+          card.querySelector('.hero').addEventListener('change', (e) => (p.isHero = e.target.checked));
+          addDrag(card);
+          grid.appendChild(card);
+        });
+        refreshSave();
+      }
+
+      function escapeAttr(s) { return s.replace(/"/g, '&quot;'); }
+
+      // --- drag to reorder ---
+      let dragIdx = null;
+      function addDrag(card) {
+        card.addEventListener('dragstart', () => { dragIdx = +card.dataset.i; card.classList.add('dragging'); });
+        card.addEventListener('dragend', () => card.classList.remove('dragging'));
+        card.addEventListener('dragover', (e) => { e.preventDefault(); card.classList.add('over'); });
+        card.addEventListener('dragleave', () => card.classList.remove('over'));
+        card.addEventListener('drop', (e) => {
+          e.preventDefault();
+          card.classList.remove('over');
+          const to = +card.dataset.i;
+          if (dragIdx === null || dragIdx === to) return;
+          const [moved] = photos.splice(dragIdx, 1);
+          photos.splice(to, 0, moved);
+          dragIdx = null;
+          render();
+        });
+      }
+
+      function refreshSave() {
+        $('saveBtn').disabled = !($('name').value.trim() && photos.length);
+      }
+
+      // --- save ---
+      $('saveBtn').addEventListener('click', save);
+      async function save() {
+        const btn = $('saveBtn');
+        btn.disabled = true;
+        setStatus('', '');
+        try {
+          // 1. upload each file to staging with a unique name
+          const items = [];
+          for (let i = 0; i < photos.length; i++) {
+            const staged = i + '__' + photos[i].file.name;
+            setStatus('Uploading ' + (i + 1) + ' / ' + photos.length + '…', '');
+            await fetch('/upload/' + encodeURIComponent(staged), { method: 'PUT', body: photos[i].file });
+            items.push({ file: staged, alt: photos[i].alt, isHero: photos[i].isHero });
+          }
+          // 2. save
+          setStatus('Optimizing & writing files…', '');
+          const r = await fetch('/save', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: $('name').value, slug: $('slug').value, shortName: $('shortName').value,
+              title: $('title').value, description: $('description').value,
+              destTitle: $('destTitle').value, destBlurb: $('destBlurb').value, photos: items,
+            }),
+          });
+          const res = await r.json();
+          if (!r.ok) throw new Error(res.error || 'Save failed');
+          setStatus(
+            '✓ Saved “' + res.slug + '”: ' + res.galleryCount + ' photos, ' + res.heroCount +
+            ' hero. Review git diff, run npm run dev, then commit.', 'ok');
+        } catch (err) {
+          setStatus('✗ ' + err.message, 'err');
+          btn.disabled = false;
+        }
+      }
+      function setStatus(msg, cls) { const s = $('status'); s.textContent = msg; s.className = cls; }
+    </script>
+  </body>
+</html>

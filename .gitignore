@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# admin tool staging (local gallery-upload uploads)
+scripts/admin/.staging/
