@@ -12,10 +12,10 @@
 
 ## Adding new photos to a gallery
 
-**1. Drop the source JPG/PNG** into the gallery folder:
+**1. Drop the source JPG/PNG** into the gallery folder. Folder names are **kebab-case, matching the gallery `slug`** (e.g. `santo-antao`):
 
 ```
-public/images/Galleries/{GalleryName}/
+public/images/Galleries/{gallery-slug}/
 ```
 
 **2. Convert to WebP:**
@@ -27,7 +27,7 @@ npm run optimize
 **3. Scaffold the TypeScript entries.** This reads the dimensions from the WebP files and prints a ready-to-paste array:
 
 ```
-npm run scaffold -- public/images/Galleries/{GalleryName}
+npm run scaffold -- public/images/Galleries/{gallery-slug}
 ```
 
 Copy the output, paste it into `src/data/galleries.ts` under the correct gallery's `photos` array, then fill in the `alt` text for each entry.
@@ -76,9 +76,9 @@ Run `npm run scaffold -- public/images/HomePageCollage/home_page_collage_eager` 
 
 ## Adding new destinations
 
-Place hero images in:
+Place hero images in a **kebab-case folder matching the gallery `slug`** (same name as the gallery folder):
 ```
-public/images/DestinationsHeroPhotos/{destination}/
+public/images/DestinationsHeroPhotos/{gallery-slug}/
 ```
 
 Run `npm run optimize`, then add `src` + `alt` entries (no dimensions needed) to `src/data/destinations.ts`.
@@ -89,11 +89,11 @@ Run `npm run optimize`, then add `src` + `alt` entries (no dimensions needed) to
 
 | Folder | Used by | Max width | Quality |
 |---|---|---|---|
-| `public/images/Galleries/{Name}/` | Gallery pages | 1400px | 80 |
+| `public/images/Galleries/{gallery-slug}/` | Gallery pages | 1400px | 80 |
 | `public/images/HeroPhotos/hero_photos_wide/` | Homepage carousel (desktop) | 1920px | 85 |
 | `public/images/HeroPhotos/hero_photos_narrow/` | Homepage carousel (mobile) | 900px | 85 |
 | `public/images/HomePageCollage/` | Homepage collage grid | 1400px | 80 |
-| `public/images/DestinationsHeroPhotos/{Name}/` | Destination carousels | 1600px | 85 |
+| `public/images/DestinationsHeroPhotos/{gallery-slug}/` | Destination carousels | 800px | 80 |
 
 ---
 

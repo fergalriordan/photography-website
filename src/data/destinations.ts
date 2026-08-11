@@ -1,27 +1,27 @@
 // Destinations Hero Photos
 
 export const DESTINATIONS_SANTO_ANTAO_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_4939.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_5222.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_5205.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_5234.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo_antao/IMG_4915.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_4939.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_5222.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_5205.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_5234.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_4915.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
 ];
 
 export const DESTINATIONS_SAO_VICENTE_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_4987.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5117.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5238.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5247.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao_vicente/IMG_5196.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_4987.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5117.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5238.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5247.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5196.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
 ];
 
 export const DESTINATIONS_MIZEN_PENINSULA_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3791.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3798.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3808.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3818.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen_peninsula/IMG_3822.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3791.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3798.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3808.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3818.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3822.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
 ];
 
 export const DESTINATIONS_ICELAND_HERO_PHOTOS = [
@@ -41,11 +41,11 @@ export const DESTINATIONS_MESOAMERICA_HERO_PHOTOS = [
 ];
 
 export const DESTINATIONS_SOUTH_AMERICA_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/south_america/CNV00024.webp', alt: 'Landscape on the Salkantay trek, Peru', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south_america/laguna_69_trek.webp', alt: 'View on the Laguna 69 trek, Peru', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south_america/machu_picchu_viewpoint.webp', alt: 'View on Machu Picchu trek, Peru', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south_america/salento_palm_tree.webp', alt: 'Palm tree in Salento, Colombia', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south_america/CNV00020.webp', alt: 'Stone stacks on Salkanty Pass, Peru', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/south-america/CNV00024.webp', alt: 'Landscape on the Salkantay trek, Peru', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/south-america/laguna_69_trek.webp', alt: 'View on the Laguna 69 trek, Peru', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/south-america/machu_picchu_viewpoint.webp', alt: 'View on Machu Picchu trek, Peru', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/south-america/salento_palm_tree.webp', alt: 'Palm tree in Salento, Colombia', width: 800, height: 1195 },
+  { src: '/images/DestinationsHeroPhotos/south-america/CNV00020.webp', alt: 'Stone stacks on Salkanty Pass, Peru', width: 800, height: 1195 },
 ];
 
 export const DESTINATIONS_AMAZON_HERO_PHOTOS = [
@@ -54,4 +54,12 @@ export const DESTINATIONS_AMAZON_HERO_PHOTOS = [
   { src: '/images/DestinationsHeroPhotos/amazon/CNV00008.webp', alt: 'Hammocks on Amazon slow boat', width: 800, height: 1195 },
   { src: '/images/DestinationsHeroPhotos/amazon/CNV00030.webp', alt: 'Side view of Amazon slow boat', width: 800, height: 1195 },
   { src: '/images/DestinationsHeroPhotos/amazon/CNV00031__.webp', alt: 'Large old tree in the Amazon', width: 800, height: 1195 },
+];
+
+export const DESTINATIONS_LISBON_HERO_PHOTOS = [
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340820031.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340840002.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340840022.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340820030.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/DestinationsHeroPhotos/lisbon/000340840025.webp", alt: "Lisbon", width: 800, height: 1207 },
 ];

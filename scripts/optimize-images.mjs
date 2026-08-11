@@ -2,19 +2,11 @@ import sharp from 'sharp';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { folderConfigs } from './image-config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(__dirname, '..', 'public', 'images');
 const force = process.argv.includes('--force');
-
-// Max width and quality per image category
-const folderConfigs = [
-  { folder: 'Galleries',                     maxWidth: 1400, quality: 80 },
-  { folder: 'HeroPhotos/hero_photos_wide',   maxWidth: 1920, quality: 85 },
-  { folder: 'HeroPhotos/hero_photos_narrow', maxWidth:  900, quality: 85 },
-  { folder: 'DestinationsHeroPhotos',        maxWidth:  800, quality: 80 },
-  { folder: 'HomePageCollage',               maxWidth: 1400, quality: 80 },
-];
 
 async function findImages(dir) {
   const results = [];

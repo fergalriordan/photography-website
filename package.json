@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "optimize": "node scripts/optimize-images.mjs",
-    "scaffold": "node scripts/scaffold-gallery.mjs"
+    "scaffold": "node scripts/scaffold-gallery.mjs",
+    "admin": "node scripts/admin/server.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
