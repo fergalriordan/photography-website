@@ -25,3 +25,12 @@ pnpm-debug.log*
 
 # admin tool staging (local gallery-upload uploads)
 scripts/admin/.staging/
+
+# image sources — only the served WebP derivatives are committed. Keep the
+# Lightroom exports locally; `npm run optimize -- --force` needs them present.
+public/images/**/*.jpg
+public/images/**/*.jpeg
+public/images/**/*.JPG
+public/images/**/*.JPEG
+public/images/**/*.png
+public/images/**/*.PNG
