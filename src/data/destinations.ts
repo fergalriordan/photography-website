@@ -1,65 +1,65 @@
 // Destinations Hero Photos
 
 export const DESTINATIONS_SANTO_ANTAO_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_4939.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_5222.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_5205.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_5234.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/santo-antao/IMG_4915.webp', alt: 'Santo Antao, Cape Verde', width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/santo-antao/santo-antao-02.webp", alt: "Jagged peak above terraced fields on the coast of Santo Antão, Cape Verde", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/santo-antao/santo-antao-15.webp", alt: "Colourful houses on a ridge in Santo Antão, Cape Verde", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/santo-antao/santo-antao-18.webp", alt: "Donkey on a terraced hillside in Santo Antão, Cape Verde", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/santo-antao/santo-antao-20.webp", alt: "Banana terraces above a rooftop in Santo Antão, Cape Verde", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/santo-antao/santo-antao-27.webp", alt: "Cloud spilling over green ridges in Santo Antão, Cape Verde", width: 800, height: 1195 },
 ];
 
 export const DESTINATIONS_SAO_VICENTE_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_4987.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5117.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5238.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5247.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/sao-vicente/IMG_5196.webp', alt: 'Sao Vicente, Cape Verde', width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/sao-vicente/sao-vicente-12.webp", alt: "Cleaning fish outside the market in Mindelo, São Vicente", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/sao-vicente/sao-vicente-02.webp", alt: "Petrol station in Mindelo, São Vicente", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/sao-vicente/sao-vicente-18.webp", alt: "People silhouetted on the shoreline at sunset in São Vicente, Cape Verde", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/sao-vicente/sao-vicente-19.webp", alt: "Street shaded by a large tree in Mindelo, São Vicente", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/sao-vicente/sao-vicente-04.webp", alt: "Fishermen on the pier at Mindelo, São Vicente", width: 800, height: 1194 },
 ];
 
-export const DESTINATIONS_MIZEN_PENINSULA_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3791.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3798.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3808.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3818.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/mizen-peninsula/IMG_3822.webp', alt: 'Mizen Peninsula, County Cork, Ireland', width: 800, height: 1195 },
-];
-
-export const DESTINATIONS_ICELAND_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/iceland/iceland_sheep.webp', alt: 'Sheep in Iceland', width: 800, height: 1201 },
-  { src: '/images/DestinationsHeroPhotos/iceland/IMG_7826.webp', alt: 'Icelandic horse grazing', width: 800, height: 1201 },
-  { src: '/images/DestinationsHeroPhotos/iceland/IMG_7843.webp', alt: 'Studlagil canyon iceland', width: 800, height: 1201 },
-  { src: '/images/DestinationsHeroPhotos/iceland/east_fjords_fishing_boat.webp', alt: 'Fishing boat in the east of iceland', width: 800, height: 1201 },
-  { src: '/images/DestinationsHeroPhotos/iceland/hengifoss_waterfalls.webp', alt: 'Hengifoss waterfalls in Iceland', width: 800, height: 1201 },
-];
-
-export const DESTINATIONS_MESOAMERICA_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/mesoamerica/IMG_5953.webp', alt: 'Boat in front of volcano in Lake Atitlan, Guatemala', width: 800, height: 1207 },
-  { src: '/images/DestinationsHeroPhotos/mesoamerica/baccalar_bike.webp', alt: 'Man riding a bicycle under colourful bunting', width: 800, height: 1207 },
-  { src: '/images/DestinationsHeroPhotos/mesoamerica/IMG_5130.webp', alt: 'Max with Tikal ruins poking through the jungle in the background', width: 800, height: 1207 },
-  { src: '/images/DestinationsHeroPhotos/mesoamerica/IMG_5116.webp', alt: 'Old ladies walking together in Baccalar, Mexico', width: 800, height: 1207 },
-  { src: '/images/DestinationsHeroPhotos/mesoamerica/pole_performance.webp', alt: 'Traditional cultural performance in Baccalar, Mexico', width: 800, height: 1207 },
-];
-
-export const DESTINATIONS_SOUTH_AMERICA_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/south-america/CNV00024.webp', alt: 'Landscape on the Salkantay trek, Peru', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south-america/laguna_69_trek.webp', alt: 'View on the Laguna 69 trek, Peru', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south-america/machu_picchu_viewpoint.webp', alt: 'View on Machu Picchu trek, Peru', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south-america/salento_palm_tree.webp', alt: 'Palm tree in Salento, Colombia', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/south-america/CNV00020.webp', alt: 'Stone stacks on Salkanty Pass, Peru', width: 800, height: 1195 },
+export const DESTINATIONS_THREE_CASTLE_HEAD_HERO_PHOTOS = [
+  { src: "/images/destinations-hero-photos/three-castle-head/three-castle-head-17.webp", alt: "Sailboat passing the cliffs at Three Castle Head, County Cork", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/three-castle-head/three-castle-head-12.webp", alt: "Dunlough Castle ruins above the lake at Three Castle Head", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/three-castle-head/three-castle-head-21.webp", alt: "Rocky inlet on the coast at Three Castle Head", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/three-castle-head/three-castle-head-23.webp", alt: "Sheep grazing on the clifftop at Three Castle Head", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/three-castle-head/three-castle-head-05.webp", alt: "Ruined tower on the headland at Three Castle Head", width: 800, height: 1195 },
 ];
 
 export const DESTINATIONS_AMAZON_HERO_PHOTOS = [
-  { src: '/images/DestinationsHeroPhotos/amazon/CNV00027.webp', alt: 'Cargo loading area on Amazon slow boat', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/amazon/CNV00010.webp', alt: 'Captain\'s cabin on Amazon slow boat', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/amazon/CNV00008.webp', alt: 'Hammocks on Amazon slow boat', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/amazon/CNV00030.webp', alt: 'Side view of Amazon slow boat', width: 800, height: 1195 },
-  { src: '/images/DestinationsHeroPhotos/amazon/CNV00031__.webp', alt: 'Large old tree in the Amazon', width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/amazon/amazon-14.webp", alt: "Cabin doorways and hammocks on the deck of an Amazon river boat", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/amazon/amazon-17.webp", alt: "Villagers on the dried mud riverbank at an Amazon boat stop", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/amazon/amazon-21.webp", alt: "Sacks of cargo stacked on the Amazon riverbank", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/amazon/amazon-22.webp", alt: "Carrying cargo up a plank from an Amazon slow boat", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/amazon/amazon-27.webp", alt: "Looking along the side of an Amazon slow boat towards a river stop", width: 800, height: 1194 },
 ];
 
 export const DESTINATIONS_LISBON_HERO_PHOTOS = [
-  { src: "/images/DestinationsHeroPhotos/lisbon/000340820031.webp", alt: "Lisbon", width: 800, height: 1207 },
-  { src: "/images/DestinationsHeroPhotos/lisbon/000340840002.webp", alt: "Lisbon", width: 800, height: 1207 },
-  { src: "/images/DestinationsHeroPhotos/lisbon/000340840022.webp", alt: "Lisbon", width: 800, height: 1207 },
-  { src: "/images/DestinationsHeroPhotos/lisbon/000340820030.webp", alt: "Lisbon", width: 800, height: 1207 },
-  { src: "/images/DestinationsHeroPhotos/lisbon/000340840025.webp", alt: "Lisbon", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/lisbon/lisbon-02.webp", alt: "Tram on a street in central Lisbon", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/lisbon/lisbon-10.webp", alt: "Monument to the founder of the Diário de Notícias, Lisbon", width: 800, height: 1206 },
+  { src: "/images/destinations-hero-photos/lisbon/lisbon-20.webp", alt: "Skateboarders outside a church in Lisbon", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/lisbon/lisbon-21.webp", alt: "Twisted tree over stone steps in Lisbon", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/lisbon/lisbon-22.webp", alt: "Street corner in Chiado, Lisbon", width: 800, height: 1207 },
+];
+
+export const DESTINATIONS_PERU_HERO_PHOTOS = [
+  { src: "/images/destinations-hero-photos/peru/peru-10.webp", alt: "River winding through a valley in the Peruvian Andes", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/peru/peru-11.webp", alt: "Animals grazing in a valley below a snow peak in the Peruvian Andes", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/peru/peru-14.webp", alt: "The terraces of Machu Picchu below Huayna Picchu, Peru", width: 800, height: 1195 },
+  { src: "/images/destinations-hero-photos/peru/peru-01.webp", alt: "Rocky trail towards a snow peak in the Huaraz region, Peru", width: 800, height: 1194 },
+  { src: "/images/destinations-hero-photos/peru/peru-04.webp", alt: "Meltwater falling into the turquoise water of Laguna 69, Peru", width: 800, height: 1195 },
+];
+
+export const DESTINATIONS_ICELAND_HERO_PHOTOS = [
+  { src: "/images/destinations-hero-photos/iceland/iceland-10.webp", alt: "Waterfall framed by basalt columns in east Iceland", width: 800, height: 1201 },
+  { src: "/images/destinations-hero-photos/iceland/iceland-11.webp", alt: "Sheep and lambs grazing in an Icelandic field", width: 800, height: 1200 },
+  { src: "/images/destinations-hero-photos/iceland/iceland-15.webp", alt: "Standing among the basalt columns of Studlagil canyon, Iceland", width: 800, height: 1200 },
+  { src: "/images/destinations-hero-photos/iceland/iceland-18.webp", alt: "Icelandic horse in front of a crashed plane near Thorshofn", width: 800, height: 1201 },
+  { src: "/images/destinations-hero-photos/iceland/iceland-20.webp", alt: "Sitting on the wreck of a crashed plane near Thorshofn, Iceland", width: 800, height: 1201 },
+];
+
+export const DESTINATIONS_MESOAMERICA_HERO_PHOTOS = [
+  { src: "/images/destinations-hero-photos/mesoamerica/mesoamerica-01.webp", alt: "Twin-towered church behind palm trees in Valladolid, Mexico", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/mesoamerica/mesoamerica-10.webp", alt: "Spider monkey crossing a clearing in the jungle at Tikal, Guatemala", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/mesoamerica/mesoamerica-14.webp", alt: "Coatis in front of Mayan ruins at Tikal, Guatemala", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/mesoamerica/mesoamerica-15.webp", alt: "Boat crossing Lake Atitlán below a volcano, Guatemala", width: 800, height: 1207 },
+  { src: "/images/destinations-hero-photos/mesoamerica/mesoamerica-16.webp", alt: "Arcade on the central square in Antigua, Guatemala", width: 800, height: 1207 },
 ];

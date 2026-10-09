@@ -19,8 +19,8 @@ export function slugify(name) {
 
 /**
  * Derive every name the pipeline needs from the display name (or an explicit
- * slug override). Folder name == slug in both Galleries/ and
- * DestinationsHeroPhotos/, matching the kebab-case convention.
+ * slug override). Folder name == slug in both galleries/ and
+ * destinations-hero-photos/, matching the kebab-case convention.
  */
 export function deriveNames(name, slugOverride) {
   const slug = slugify(slugOverride || name);
@@ -28,8 +28,8 @@ export function deriveNames(name, slugOverride) {
     'DESTINATIONS_' + slug.toUpperCase().replace(/-/g, '_') + '_HERO_PHOTOS';
   return {
     slug,
-    galleryFolder: slug, // public/images/Galleries/<slug>/
-    destFolder: slug, //     public/images/DestinationsHeroPhotos/<slug>/
+    galleryFolder: slug, // public/images/galleries/<slug>/
+    destFolder: slug, //     public/images/destinations-hero-photos/<slug>/
     destConst,
   };
 }

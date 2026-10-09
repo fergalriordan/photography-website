@@ -33,8 +33,8 @@ const DEST_INDEX = path.join(projectRoot, 'src', 'pages', 'destinations', 'index
 const HOST = '127.0.0.1';
 const PORT = 4343;
 
-const GALLERY_CFG = configFor('Galleries');
-const HERO_CFG = configFor('DestinationsHeroPhotos');
+const GALLERY_CFG = configFor('galleries');
+const HERO_CFG = configFor('destinations-hero-photos');
 
 // --- small helpers -----------------------------------------------------------
 
@@ -108,36 +108,39 @@ async function handleSave(req, res) {
     return sendJson(res, 409, { error: `A gallery with slug "${slug}" already exists` });
   }
 
-  const galleryDir = path.join(publicImages, 'Galleries', galleryFolder);
-  const heroDir = path.join(publicImages, 'DestinationsHeroPhotos', destFolder);
+  const galleryDir = path.join(publicImages, 'galleries', galleryFolder);
+  const heroDir = path.join(publicImages, 'destinations-hero-photos', destFolder);
   await fs.mkdir(galleryDir, { recursive: true });
   await fs.mkdir(heroDir, { recursive: true });
 
-  // Optimize gallery photos in the user's chosen order -> img1..N.webp
+  // Optimize gallery photos in the user's chosen order -> <slug>-01..NN.webp.
+  // The number is a stable per-gallery id, not a display position — display
+  // order comes from the array order in galleries.ts.
   const galleryPhotos = [];
   const heroPhotos = [];
   let heroCount = 0;
   for (let i = 0; i < photos.length; i++) {
     const p = photos[i];
     const staged = sanitizeFilename(p.file);
-    const outBase = `img${i + 1}`;
+    const outBase = `${slug}-${String(i + 1).padStart(2, '0')}`;
     const meta = await optimizeTo(
       staged,
       galleryDir,
       outBase,
-      `/images/Galleries/${galleryFolder}`,
+      `/images/galleries/${galleryFolder}`,
       GALLERY_CFG
     );
     galleryPhotos.push({ src: meta.src, alt: p.alt || '', width: meta.width, height: meta.height });
 
     if (p.isHero) {
       heroCount++;
-      const heroBase = path.parse(staged).name.replace(/^\d+__/, ''); // strip staging prefix; keep original base name
+      // A hero is a second derivative of the same photo, so it reuses the
+      // gallery image's name.
       const hmeta = await optimizeTo(
         staged,
         heroDir,
-        heroBase,
-        `/images/DestinationsHeroPhotos/${destFolder}`,
+        outBase,
+        `/images/destinations-hero-photos/${destFolder}`,
         HERO_CFG
       );
       heroPhotos.push({ src: hmeta.src, alt: p.alt || name, width: hmeta.width, height: hmeta.height });
@@ -148,12 +151,11 @@ async function handleSave(req, res) {
   if (heroPhotos.length === 0) {
     for (let i = 0; i < Math.min(3, photos.length); i++) {
       const staged = sanitizeFilename(photos[i].file);
-      const heroBase = path.parse(staged).name;
       const hmeta = await optimizeTo(
         staged,
         heroDir,
-        heroBase,
-        `/images/DestinationsHeroPhotos/${destFolder}`,
+        `${slug}-${String(i + 1).padStart(2, '0')}`,
+        `/images/destinations-hero-photos/${destFolder}`,
         HERO_CFG
       );
       heroPhotos.push({

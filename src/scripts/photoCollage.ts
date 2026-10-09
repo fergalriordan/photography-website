@@ -16,6 +16,9 @@ export default function initPhotoCollage() {
     const allImgs = Array.from(grid.querySelectorAll<HTMLImageElement>('img'));
     initLightbox('.collage-columns img');
 
+    const eagerImgs = allImgs.filter(img => img.dataset.lazy !== 'true');
+    const lazyImgs = allImgs.filter(img => img.dataset.lazy === 'true');
+
     let expanded = false;
 
     const colCount = () =>
@@ -23,21 +26,21 @@ export default function initPhotoCollage() {
 
     const isPortrait = (img: HTMLImageElement) => img.classList.contains('portrait');
 
-    const layout = () => {
-      const cols = colCount();
-
-      // Active tiles: eager always, lazy only once expanded — in data order.
-      const active = allImgs.filter(
-        img => expanded || img.dataset.lazy !== 'true'
-      );
-
-      // For columns to end perfectly level, every column must hold the SAME
-      // number of portraits and the SAME number of landscapes (the two tile
-      // heights differ, so matching totals is the only way to guarantee a flush
-      // bottom). Keep the largest multiple of `cols` of each orientation and
-      // drop the leftover few (in data order) that can't be divided evenly.
-      const portraits = active.filter(isPortrait);
-      const landscapes = active.filter(img => !isPortrait(img));
+    // Append one group of tiles to `columns`, in data order, keeping the columns
+    // level. For columns to end flush, every column must take the SAME number of
+    // portraits and the SAME number of landscapes (the two tile heights differ,
+    // so matching totals is the only way). Keep the largest multiple of `cols` of
+    // each orientation and drop the leftover few that can't be divided evenly.
+    // `heights` is carried in and mutated so a later group stacks on top of an
+    // earlier one.
+    const packGroup = (
+      imgs: HTMLImageElement[],
+      columns: HTMLDivElement[],
+      heights: number[]
+    ) => {
+      const cols = columns.length;
+      const portraits = imgs.filter(isPortrait);
+      const landscapes = imgs.filter(img => !isPortrait(img));
       const perColPortrait = Math.floor(portraits.length / cols);
       const perColLandscape = Math.floor(landscapes.length / cols);
       const keep = new Set<HTMLImageElement>([
@@ -45,20 +48,10 @@ export default function initPhotoCollage() {
         ...landscapes.slice(0, perColLandscape * cols),
       ]);
 
-      const columns: HTMLDivElement[] = [];
-      const heights: number[] = [];
-      const portraitLeft: number[] = [];
-      const landscapeLeft: number[] = [];
-      for (let i = 0; i < cols; i++) {
-        const col = document.createElement('div');
-        col.className = 'collage-col';
-        columns.push(col);
-        heights.push(0);
-        portraitLeft.push(perColPortrait);
-        landscapeLeft.push(perColLandscape);
-      }
+      const portraitLeft = new Array<number>(cols).fill(perColPortrait);
+      const landscapeLeft = new Array<number>(cols).fill(perColLandscape);
 
-      active.forEach(img => {
+      imgs.forEach(img => {
         if (!keep.has(img)) {
           // Excess tile for this column count — leave it out of the grid.
           img.style.display = 'none';
@@ -79,8 +72,32 @@ export default function initPhotoCollage() {
         img.style.display = '';
         columns[target].appendChild(img);
       });
+    };
 
-      // Swap the freshly built columns in as the grid's only children.
+    const layout = () => {
+      const cols = colCount();
+
+      const columns: HTMLDivElement[] = [];
+      const heights: number[] = [];
+      for (let i = 0; i < cols; i++) {
+        const col = document.createElement('div');
+        col.className = 'collage-col';
+        columns.push(col);
+        heights.push(0);
+      }
+
+      // Pack the eager tiles as their own group, so where each one lands depends
+      // only on the eager set. Expanding then appends the lazy tiles *below*
+      // them rather than re-flowing everything — the images already on screen
+      // stay exactly where they were. Each group ends level on its own, so the
+      // columns are still flush once both are placed.
+      packGroup(eagerImgs, columns, heights);
+      if (expanded) {
+        packGroup(lazyImgs, columns, heights);
+      }
+
+      // Swap the freshly built columns in as the grid's only children. Lazy
+      // tiles are simply left out while collapsed, so they stay detached.
       grid.replaceChildren(...columns);
       grid.classList.add('cols-ready');
     };
