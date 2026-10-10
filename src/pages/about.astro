@@ -4,7 +4,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../data/site";
 import { Image } from "astro:assets";
-import ProfilePhoto from "../assets/ProfilePhoto.jpeg";
+import ProfilePhoto from "../assets/ProfilePhotoSummit.jpeg";
 ---
 
 <!doctype html>
@@ -15,15 +15,19 @@ import ProfilePhoto from "../assets/ProfilePhoto.jpeg";
       description={SITE_DESCRIPTION}
     />
   </head>
-  <body class="bg-background pt-16">
+  <body class="bg-background pt-16 min-h-screen flex flex-col">
     <Header />
-    <main class="max-w-4xl mx-auto px-4 md:px-8 py-10">
-      <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8">
-        <!-- Profile Image -->
+    <main class="flex-1 w-full max-w-4xl mx-auto px-4 md:px-8 py-10 flex items-center">
+      <div class="w-full flex flex-col md:flex-row items-center gap-8 md:gap-10">
+        <!-- Profile Image: shown at the source asset's native 3:4 portrait
+             ratio, so nothing is cropped and the framing stays rectangular
+             like the rest of the site. -->
         <Image
           src={ProfilePhoto}
           alt="Fergal Riordan"
-          class="w-48 h-48 md:w-80 md:h-80 rounded-full object-cover shadow-md"
+          width={640}
+          height={853}
+          class="w-44 md:w-56 h-auto flex-none shadow-md"
         />
         <!-- Text & Socials -->
         <div
