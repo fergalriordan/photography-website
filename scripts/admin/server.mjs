@@ -170,13 +170,15 @@ async function handleSave(req, res) {
 
   // Build the source snippets.
   const description = splitParagraphs(data.description);
-  const blurb = splitParagraphs(data.destBlurb);
   const galleryObj = renderGalleryObject({
     slug,
     name,
     shortName: (data.shortName || '').trim() || undefined,
     title: (data.title || '').trim() || `${name} Gallery - Fergal's Photography`,
-    description: description.length ? description : ['Photos from this gallery.'],
+    metaDescription: description.length
+      ? description[0]
+      : `Photographs from ${name}.`,
+    description,
     photos: galleryPhotos,
   });
   const heroConst = renderHeroConst({ constName: destConst, photos: heroPhotos });
@@ -184,7 +186,6 @@ async function handleSave(req, res) {
     destTitle: (data.destTitle || '').trim() || name.toUpperCase(),
     destConst,
     slug,
-    blurb: blurb.length ? blurb : [`Photos from ${name}.`],
   });
 
   // Apply insertions and write all three files.

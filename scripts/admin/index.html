@@ -82,10 +82,6 @@
             <label>Section title <span class="hint">auto-uppercased if blank</span></label>
             <input type="text" id="destTitle" placeholder="SANTO ANTÃO" />
           </div>
-          <div>
-            <label>Section blurb <span class="hint">short overlay caption</span></label>
-            <input type="text" id="destBlurb" placeholder="Hiking the volcanic valleys of Cape Verde." />
-          </div>
         </div>
         <p class="hint" style="margin:10px 0 0">Hero carousel uses the photos you mark <strong>Hero</strong> below (defaults to the first 3).</p>
       </fieldset>
@@ -225,7 +221,7 @@
             body: JSON.stringify({
               name: $('name').value, slug: $('slug').value, shortName: $('shortName').value,
               title: $('title').value, description: $('description').value,
-              destTitle: $('destTitle').value, destBlurb: $('destBlurb').value, photos: items,
+              destTitle: $('destTitle').value, photos: items,
             }),
           });
           const res = await r.json();

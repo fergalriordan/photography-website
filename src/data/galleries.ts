@@ -1,11 +1,11 @@
 export const galleries = [
   {
     slug: "lisbon",
-    name: "Lisbon",
+    name: "Lisbon, Portugal",
     title: "Lisbon Gallery",
-    description: [
-    "Some shots from a trip to Lisbon in July 2026."
-    ],
+    metaDescription:
+    "Photographs from Lisbon, Portugal — trams, tiled facades and the cobbled streets of Chiado, shot in July 2026.",
+    description: [],
     photos: [
     { src: "/images/galleries/lisbon/lisbon-01.webp", alt: "", width: 1400, height: 2112 },
     { src: "/images/galleries/lisbon/lisbon-02.webp", alt: "", width: 1400, height: 2112 },
@@ -33,11 +33,11 @@ export const galleries = [
   },
   {
     slug: "santo-antao",
-    name: "Santo Antão",
-    title: "Santo Antão Gallery - Fergal's Photography",
-    description: [
-    "Santo Antão is the second largest island in the Cape Verde archipelago and arguably the most dramatically beautiful. Its rugged interior is defined by deep volcanic valleys, towering peaks, and terraced fields carved into near-vertical hillsides. I visited in November 2025 and spent several days hiking in the lush green valleys of Paul, the arid peaks of the northeast, and along the remote western coast."
-    ],
+    name: "Santo Antão, Cape Verde",
+    title: "Santo Antão Gallery",
+    metaDescription:
+    "Photographs from Santo Antão, Cape Verde — volcanic valleys, terraced hillsides and remote coastal villages, shot hiking in November 2025.",
+    description: [],
     photos: [
     { src: "/images/galleries/santo-antao/santo-antao-01.webp", alt: "", width: 1400, height: 938 },
     { src: "/images/galleries/santo-antao/santo-antao-02.webp", alt: "", width: 1400, height: 2090 },
@@ -79,11 +79,11 @@ export const galleries = [
   },
   {
     slug: "sao-vicente",
-    name: "São Vicente",
-    title: "São Vicente Gallery - Fergal's Photography",
-    description: [
-    "São Vicente is home to Mindelo, the cultural heart of the archipelago. Known for its vibrant music scene, colourful colonial architecture, and lively waterfront, Mindelo has a distinct atmosphere unlike anywhere else in Cape Verde. This collection captures the city's streets, waterfront, and local markets."
-    ],
+    name: "São Vicente, Cape Verde",
+    title: "São Vicente Gallery",
+    metaDescription:
+    "Photographs from São Vicente, Cape Verde — street scenes, the harbour and the markets of Mindelo, the archipelago's cultural capital.",
+    description: [],
     photos: [
     { src: "/images/galleries/sao-vicente/sao-vicente-01.webp", alt: "", width: 1400, height: 938 },
     { src: "/images/galleries/sao-vicente/sao-vicente-02.webp", alt: "", width: 1400, height: 2090 },
@@ -111,11 +111,11 @@ export const galleries = [
   },
   {
     slug: "three-castle-head",
-    name: "Three Castle Head",
-    title: "Three Castle Head Gallery - Fergal's Photography",
-    description: [
-    "Three Castle Head is a rugged headland at the western tip of the Mizen Peninsula, the most southwesterly point of Ireland. It is the site of three fortified towers, constituting the ruins of Dunlough Castle, a Norman castle built in the 13th century. The area is known for its rich history, ties to local mythology, and dramatic coastal landscapes."
-    ],
+    name: "Three Castle Head, West Cork",
+    title: "Three Castle Head Gallery",
+    metaDescription:
+    "Photographs from Three Castle Head on the Mizen Peninsula, West Cork — the ruins of Dunlough Castle on Ireland's most southwesterly cliffs.",
+    description: [],
     photos: [
     { src: "/images/galleries/three-castle-head/three-castle-head-01.webp", alt: "", width: 1400, height: 2090 },
     { src: "/images/galleries/three-castle-head/three-castle-head-02.webp", alt: "", width: 1400, height: 938 },
@@ -145,12 +145,12 @@ export const galleries = [
   },
   {
     slug: "amazon",
-    name: "Amazon River Slow Boat",
+    name: "Slow Boat from Leticia to Iquitos",
     shortName: "Amazon River",
-    title: "The Amazon River Gallery - Fergal's Photography",
-    description: [
-    "In 2024, I spent three nights travelling up the Amazon River on a slow boat from Leticia, Colombia to Iquitos, Peru. The ferry along the river is the primary means of transportation and trade for locals in this part of the Amazon. The ferry stops constantly at small inlets and remote communities, offloading and onboarding passengers, livestock, food, and other goods. The journey provides a unique insight into the way of life of the people who live in this remote region."
-    ],
+    title: "Amazon River Gallery",
+    metaDescription:
+    "Photographs from three nights on a slow boat up the Amazon from Leticia, Colombia to Iquitos, Peru — river stops, cargo and life on board.",
+    description: [],
     photos: [
     { src: "/images/galleries/amazon/amazon-01.webp", alt: "", width: 1400, height: 937 },
     { src: "/images/galleries/amazon/amazon-02.webp", alt: "", width: 1400, height: 937 },
@@ -183,12 +183,11 @@ export const galleries = [
   },
   {
     slug: "peru",
-    name: "Peru",
-    title: "Peru Gallery - Fergal's Photography",
-    description: [
-    "In the summer of 2024, after completing my Master's degree, I spent four months travelling through Latin America. My trip started in Colombia, with the original plan being to travel south through the Amazon into Peru, and then continue south to Bolivia. However, due to political unrest in Bolivia I changed my plans, and instead spent the final month of my trip in Central America, visiting Costa Rica and Nicaragua.",
-    "This gallery contains photos from my time in Peru, shot on treks in the Huaraz region, the Sacred Valley, and the Salkantay Trek to Machu Picchu."
-    ],
+    name: "The Peruvian Andes",
+    title: "Peru Gallery",
+    metaDescription:
+    "Photographs from Peru — trekking the peaks around Huaraz, the Sacred Valley and the Salkantay trail to Machu Picchu.",
+    description: [],
     photos: [
     { src: "/images/galleries/peru/peru-01.webp", alt: "", width: 1219, height: 1820 },
     { src: "/images/galleries/peru/peru-02.webp", alt: "", width: 1400, height: 937 },
@@ -210,13 +209,12 @@ export const galleries = [
   },
   {
     slug: "iceland",
-    name: "Iceland: The Ring Road",
+    name: "The Ring Road of Iceland",
     shortName: "Iceland",
-    title: "Iceland Gallery - Fergal's Photography",
-    description: [
-    "In May 2023, at the end of my Erasmus semester in Reykjavík, I travelled around the Ring Road of Iceland, spending 8 days driving 2500km around the country, starting in Reykjavík before heading south, to Vík, then east to Höfn, north to Akureyri, and then to the remote Westfjords, before finally returning to Reykjavík.",
-    "The trip rounded off an incredible five months in Iceland, which remains the most unique and naturally beautiful country I have ever visited. Unfortunately, one roll of film was damaged, so my photos from the second half of the trip (Akureyri and the Westfjords) are lost forever. However, I still have a large collection of digital photos from the trip, which I may eventually incorporate into this gallery."
-    ],
+    title: "Iceland Gallery",
+    metaDescription:
+    "Photographs from eight days driving Iceland's Ring Road in May 2023 — waterfalls, basalt canyons, horses and the wreck near Thorshofn.",
+    description: [],
     photos: [
     { src: "/images/galleries/iceland/iceland-01.webp", alt: "", width: 1400, height: 933 },
     { src: "/images/galleries/iceland/iceland-02.webp", alt: "", width: 1400, height: 2101 },
@@ -242,11 +240,11 @@ export const galleries = [
   },
   {
     slug: "mesoamerica",
-    name: "Mesoamerica",
-    title: "Mesoamerica Gallery - Fergal's Photography",
-    description: [
-    "In the summer of 2023, I made my first visit to Latin America, backpacking for six weeks from the Yucatán peninsula in Mexico to Belize, Guatemala, and El Salvador. This gallery contains photos from across this trip, including Valladolid, Bacalar, Tikal, Lake Atitlán, Antigua, and Santa Ana."
-    ],
+    name: "Mexico, Guatemala and El Salvador",
+    title: "Mesoamerica Gallery",
+    metaDescription:
+    "Photographs from six weeks backpacking Mexico, Guatemala and El Salvador — Valladolid, Tikal, Lake Atitlán and Antigua, shot in 2023.",
+    description: [],
     photos: [
     { src: "/images/galleries/mesoamerica/mesoamerica-01.webp", alt: "", width: 1400, height: 2112 },
     { src: "/images/galleries/mesoamerica/mesoamerica-02.webp", alt: "", width: 1400, height: 2112 },

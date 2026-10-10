@@ -27,46 +27,29 @@ export default function initDestinationSection() {
       // CRITICAL: Reset scroll position to start
       container.scrollLeft = 0;
 
-      // Overlay functionality
-      const overlayEl = section.querySelector('.overlay-text');
+      // The "View Gallery" button stays hidden on the first slide and fades
+      // in once the user scrolls into the carousel.
       const galleryBtnEl = section.querySelector('.gallery-button');
 
-      if (overlayEl instanceof HTMLElement && galleryBtnEl instanceof HTMLElement) {
-        const overlay = overlayEl;
+      if (galleryBtnEl instanceof HTMLElement) {
         const galleryButton = galleryBtnEl;
         const startTolerance = 10;
+        let isInView = false;
 
-        const showOverlay = () => {
-          overlay.style.opacity = '1';
-          overlay.style.transform = 'translate(0, 0)';
-          galleryButton.style.opacity = '0';
-        };
-
-        const hideOverlay = () => {
-          overlay.style.opacity = '0';
-          overlay.style.transform = 'translate(0, 1rem)';
-          galleryButton.style.opacity = '1';
-        };
-
-        const updateOverlayVisibility = () => {
+        const updateGalleryButton = () => {
           const isAtStart = container.scrollLeft <= startTolerance;
-          if (isAtStart) {
-            showOverlay();
-          } else {
-            hideOverlay();
-          }
+          galleryButton.style.opacity = isInView && !isAtStart ? '1' : '0';
         };
 
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
+            isInView = entry.isIntersecting;
             if (entry.isIntersecting) {
               // Force scroll to start when section becomes visible
               container.scrollLeft = 0;
-              setTimeout(() => updateOverlayVisibility(), 200);
+              setTimeout(updateGalleryButton, 200);
             } else {
-              overlay.style.opacity = '0';
-              overlay.style.transform = 'translate(0, 1rem)';
-              galleryButton.style.opacity = '0';
+              updateGalleryButton();
             }
           });
         }, {
@@ -74,11 +57,11 @@ export default function initDestinationSection() {
           rootMargin: '0px 0px -10% 0px'
         });
 
-        container.addEventListener('scroll', updateOverlayVisibility);
+        container.addEventListener('scroll', updateGalleryButton);
         observer.observe(section);
 
         // Initial state
-        updateOverlayVisibility();
+        updateGalleryButton();
       }
 
       function updateArrows() {
