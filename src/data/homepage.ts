@@ -2,18 +2,18 @@
 
 export const WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
   { src: "/images/hero-photos/wide/santo-antao-29.webp", alt: "Two hikers on a ridge above a cloud-filled valley in Santo Antão, Cape Verde" },
-  { src: "/images/hero-photos/wide/sao-vicente-22.webp", alt: "People silhouetted on the shoreline at sunset in São Vicente, Cape Verde" },
   { src: "/images/hero-photos/wide/iceland-05.webp", alt: "Two Icelandic horses grooming each other below a mountain" },
+  { src: "/images/hero-photos/wide/sao-vicente-22.webp", alt: "People silhouetted on the shoreline at sunset in São Vicente, Cape Verde" },
   { src: "/images/hero-photos/wide/santo-antao-32.webp", alt: "Hiker on a cobbled switchback path cut into a steep hillside in Santo Antão, Cape Verde" },
   { src: "/images/hero-photos/wide/santo-antao-36.webp", alt: "Cliffs and a coastal village on the north coast of Santo Antão, Cape Verde" },
 ];
 
 export const NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
+  { src: "/images/hero-photos/narrow/santo-antao-28.webp", alt: "Hikers on a cliff path above the clouds in Santo Antão, Cape Verde" },
+  { src: "/images/hero-photos/narrow/iceland-06.webp", alt: "Icelandic horse grazing below a mountain" },
   { src: "/images/hero-photos/narrow/sao-vicente-18.webp", alt: "People silhouetted on the shoreline at sunset in São Vicente, Cape Verde" },
   { src: "/images/hero-photos/narrow/santo-antao-25.webp", alt: "Sandals, oars and rope in a wooden fishing boat, Santo Antão, Cape Verde" },
-  { src: "/images/hero-photos/narrow/santo-antao-28.webp", alt: "Hikers on a cliff path above the clouds in Santo Antão, Cape Verde" },
   { src: "/images/hero-photos/narrow/peru-04.webp", alt: "Meltwater falling into the turquoise water of Laguna 69, Peru" },
-  { src: "/images/hero-photos/narrow/iceland-06.webp", alt: "Icelandic horse grazing below a mountain" },
 ];
 
 // Home Page Collage Photos
