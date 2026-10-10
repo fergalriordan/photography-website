@@ -1,35 +1,37 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
-import Logo from "../assets/logos/initials_logo_black.png";
 ---
 
-<header class="fixed top-0 left-0 w-full bg-background border-b border-gray-300 py-2 z-50">
-  <nav class="flex items-center justify-between flex-wrap w-full min-h-0 py-2">
-    <h1 class="leading-none m-0 px-10 text-left md:text-left flex-none">
-      <a href="/" class="no-underline text-text block px-5 m-0">
-        <img
-          src={Logo.src}
-          alt="Fergal Riordan Photography Logo"
-          class="h-8 w-auto block"
-        />
-      </a>
-    </h1>
+<header class="fixed top-0 left-0 w-full bg-background border-b border-gray-300 z-50">
+  <nav class="flex flex-wrap items-center w-full">
+    <!-- Top row: fixed 64px tall so the bar keeps its height whether or not
+         the mobile menu below it is open. -->
+    <div class="flex items-center justify-between w-full md:w-auto md:flex-1 h-16">
+      <h1 class="leading-none m-0 px-10 text-left md:text-left flex-none">
+        <a
+          href="/"
+          class="no-underline text-text block m-0 text-sm tracking-[0.12em] uppercase font-bold"
+        >
+          Fergal Riordan
+        </a>
+      </h1>
 
-    <button
-      class="md:hidden px-4 text-2xl text-text focus:outline-none"
-      aria-label="Toggle navigation menu"
-      id="burger-menu-btn"
-      type="button"
-    >
-      &#9776;
-    </button>
+      <button
+        class="md:hidden px-4 text-2xl text-text focus:outline-none"
+        aria-label="Toggle navigation menu"
+        id="burger-menu-btn"
+        type="button"
+      >
+        &#9776;
+      </button>
+    </div>
 
     <div
       id="header-links"
-      class="flex-col md:flex-row flex gap-10 items-center px-10 w-full md:w-auto hidden md:flex mt-6 md:mt-0"
+      class="flex-col md:flex-row flex gap-10 items-center px-10 w-full md:w-auto hidden md:flex pb-6 md:pb-0"
     >
       <HeaderLink href="/">HOME</HeaderLink>
-      <HeaderLink href="/destinations">DESTINATIONS</HeaderLink>
+      <HeaderLink href="/destinations">GALLERIES</HeaderLink>
       <!--- <HeaderLink href="/blog">Blog</HeaderLink> -->
       <HeaderLink href="/about">ABOUT</HeaderLink>
     </div>

@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION } from "../data/site";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../data/site";
 import {
   WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
   NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS,
@@ -26,7 +26,7 @@ const HERO_PLACEHOLDER_MOBILE =
 <html lang="en">
   <head>
     <BaseHead
-      title={`${SITE_TITLE} | ${SITE_TAGLINE}`}
+      title={SITE_TITLE}
       description={SITE_DESCRIPTION}
     />
     <!--
@@ -76,7 +76,6 @@ const HERO_PLACEHOLDER_MOBILE =
           images={WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
           mobileImages={NARROW_SCREEN_HOMEPAGE_CAROUSEL_PHOTOS}
           alt="Hero image"
-          overlayText="Travel, nature and film photography — across Europe, the Americas, Africa, and beyond."
           placeholderDesktop={HERO_PLACEHOLDER_DESKTOP}
           placeholderMobile={HERO_PLACEHOLDER_MOBILE}
         />

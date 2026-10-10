@@ -7,7 +7,7 @@ const { href, class: className, ...props } = Astro.props;
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
 const subpath = pathname.match(/[^\/]+/g);
 let matchPath = '/' + (subpath?.[0] || '');
-if (matchPath === '/galleries') matchPath = '/destinations'; // Keep destinations link active on galleries page
+if (matchPath === '/galleries') matchPath = '/destinations'; // Keep the GALLERIES link (/destinations) active on individual gallery pages
 const isActive = href === pathname || href === matchPath;
 ---
 
