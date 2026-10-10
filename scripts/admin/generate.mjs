@@ -41,12 +41,14 @@ export function gallerySlugExists(galleriesSrc, slug) {
 }
 
 /** Render one gallery object literal matching the existing 2/4-space style. */
-export function renderGalleryObject({ slug, name, shortName, title, description, photos }) {
+export function renderGalleryObject({ slug, name, shortName, title, metaDescription, description, photos }) {
   const lines = ['  {'];
   lines.push(`    slug: ${q(slug)},`);
   lines.push(`    name: ${q(name)},`);
   if (shortName) lines.push(`    shortName: ${q(shortName)},`);
   lines.push(`    title: ${q(title)},`);
+  lines.push('    metaDescription:');
+  lines.push(`    ${q(metaDescription)},`);
   lines.push('    description: [');
   description.forEach((p, i) => {
     lines.push(`    ${q(p)}${i < description.length - 1 ? ',' : ''}`);
@@ -72,14 +74,12 @@ export function renderHeroConst({ constName, photos }) {
 }
 
 /** Render a <DestinationSection> for destinations/index.astro. */
-export function renderDestinationSection({ destTitle, destConst, slug, blurb }) {
-  const blurbArr = '[' + blurb.map((b) => q(b)).join(', ') + ']';
+export function renderDestinationSection({ destTitle, destConst, slug }) {
   return [
     '      <DestinationSection',
     `        title=${q(destTitle)}`,
     `        images={${destConst}}`,
     `        galleryUrl="/galleries/${slug}"`,
-    `        description={${blurbArr}}`,
     '        class="snap-start"',
     '      />',
   ].join('\n');

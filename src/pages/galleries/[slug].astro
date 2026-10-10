@@ -3,6 +3,7 @@ import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { galleries } from "../../data/galleries";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../data/site";
 
 export async function getStaticPaths() {
   return galleries.map((gallery) => ({
@@ -20,7 +21,13 @@ if (!gallery) {
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={gallery.title} description={gallery.description.join(' ')} />
+    <BaseHead
+      title={`${SITE_TITLE} | ${gallery.title.toUpperCase()}`}
+      description={gallery.metaDescription ??
+        (gallery.description.length
+          ? gallery.description.join(' ')
+          : SITE_DESCRIPTION)}
+    />
     <style>
       .header-fade-in {
         animation: headerFadeIn 0.9s ease both;
@@ -51,13 +58,19 @@ if (!gallery) {
 
         <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
 
-        {gallery.description.map((paragraph) => (
-          <p class="text-gray text-xs md:text-base mb-4 px-4 md:px-20 text-center">
-              {paragraph}
-          </p>
-          ))}
+        {/* Galleries with no description show a single rule under the title
+            instead of an empty gap between two rules. */}
+        {gallery.description.length > 0 && (
+          <>
+            {gallery.description.map((paragraph) => (
+              <p class="text-gray text-xs md:text-base mb-4 px-4 md:px-20 text-center">
+                {paragraph}
+              </p>
+            ))}
 
-        <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
+            <hr class="border-t border-gray-light mb-6 w-2/3 mx-auto" />
+          </>
+        )}
       </div>
 
       <div class="masonry-galleries grid-fade-up">

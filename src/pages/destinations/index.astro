@@ -3,7 +3,7 @@ import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import DestinationSection from "../../components/DestinationSection.astro";
-import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION } from "../../data/site";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../data/site";
 import {
   DESTINATIONS_SANTO_ANTAO_HERO_PHOTOS,
   DESTINATIONS_SAO_VICENTE_HERO_PHOTOS,
@@ -20,7 +20,7 @@ import {
 <html lang="en" class="snap-y snap-proximity scroll-smooth">
   <head
     ><BaseHead
-      title={`${SITE_TITLE} | ${SITE_TAGLINE}`}
+      title={`${SITE_TITLE} | GALLERIES`}
       description={SITE_DESCRIPTION}
     />
   </head>
@@ -28,60 +28,52 @@ import {
     <Header />
     <main>
       <DestinationSection
+        title="THREE CASTLE HEAD"
+        images={DESTINATIONS_THREE_CASTLE_HEAD_HERO_PHOTOS}
+        galleryUrl="/galleries/three-castle-head"
+        class="snap-start"
+        firstSection={true}
+      />
+      <DestinationSection
         title="SANTO ANTÃO"
         images={DESTINATIONS_SANTO_ANTAO_HERO_PHOTOS}
         galleryUrl="/galleries/santo-antao"
-        description={["Hiking through the volcanic valleys and terraced hillsides of Cape Verde's most rugged island."]}
         class="snap-start"
-        firstSection={true}
       />
       <DestinationSection
         title="SÃO VICENTE"
         images={DESTINATIONS_SAO_VICENTE_HERO_PHOTOS}
         galleryUrl="/galleries/sao-vicente"
-        description={["Scenes from Mindelo, Cape Verde's cultural capital."]}
-        class="snap-start"
-      />
-      <DestinationSection
-        title="THREE CASTLE HEAD"
-        images={DESTINATIONS_THREE_CASTLE_HEAD_HERO_PHOTOS}
-        galleryUrl="/galleries/three-castle-head"
-        description={["Shots from Three Castle Head in West Cork, Ireland."]}
-        class="snap-start"
-      />
-      <DestinationSection
-        title="THE AMAZON RIVER"
-        images={DESTINATIONS_AMAZON_HERO_PHOTOS}
-        galleryUrl="/galleries/amazon"
-        description={["Three nights on a ferry up the Amazon River from Leticia, Colombia to Iquitos, Peru."]}
         class="snap-start"
       />
       <DestinationSection
         title="LISBON"
         images={DESTINATIONS_LISBON_HERO_PHOTOS}
         galleryUrl="/galleries/lisbon"
-        description={["Walking the cobbled streets of Lisbon, Portugal"]}
+        class="snap-start"
+      />
+      <DestinationSection
+        title="THE AMAZON RIVER"
+        images={DESTINATIONS_AMAZON_HERO_PHOTOS}
+        galleryUrl="/galleries/amazon"
         class="snap-start"
       />
       <DestinationSection
         title="PERU"
         images={DESTINATIONS_PERU_HERO_PHOTOS}
         galleryUrl="/galleries/peru"
-        description={["Trekking in the Andes, from the peaks around Huaraz to the Sacred Valley."]}
         class="snap-start"
       />
       <DestinationSection
         title="ICELAND"
         images={DESTINATIONS_ICELAND_HERO_PHOTOS}
         galleryUrl="/galleries/iceland"
-        description={["Shots from a road trip around the Ring Road of Iceland."]}
         class="snap-start"
       />
       <DestinationSection
         title="MESOAMERICA"
         images={DESTINATIONS_MESOAMERICA_HERO_PHOTOS}
         galleryUrl="/galleries/mesoamerica"
-        description={["A collection from my travels through Mexico, Guatemala, and El Salvador."]}
         class="snap-start"
       />
       <!-- Placeholder to allow snap onto footer -->

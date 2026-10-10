@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION } from "../data/site";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../data/site";
 import { Image } from "astro:assets";
 import ProfilePhoto from "../assets/ProfilePhoto.jpeg";
 ---
@@ -11,7 +11,7 @@ import ProfilePhoto from "../assets/ProfilePhoto.jpeg";
 <html lang="en" class="snap-y snap-proximity scroll-smooth">
   <head
     ><BaseHead
-      title={`${SITE_TITLE} | ${SITE_TAGLINE}`}
+      title={`${SITE_TITLE} | ABOUT`}
       description={SITE_DESCRIPTION}
     />
   </head>
@@ -33,18 +33,7 @@ import ProfilePhoto from "../assets/ProfilePhoto.jpeg";
             ABOUT ME
           </h1>
           <p class="mb-3 md:mb-4 max-w-full md:max-w-xl text-gray-800">
-            I'm an engineer from Ireland with a passion for backpacking, the outdoors and photography.
-          </p>
-          <p class="mb-3 md:mb-4 max-w-full md:max-w-xl text-gray-800">
-            This site is where I share my travel photos, and over time, I may
-            add short travel stories or blog posts alongside them. It's also a way to
-            keep myself practicing photography consistently, organise my
-            galleries, and track my progress as I improve. It doubles as a
-            project to practice web development.
-          </p>
-          <p class="mb-4 md:mb-6 max-w-full md:max-w-xl text-gray-800">
-            To contact me about software projects, travel, or photography, feel
-            free to connect!
+            An engineer and amateur film photographer from Cork, Ireland. 
           </p>
           <div class="flex flex-col gap-1">
             <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Get in touch</p>

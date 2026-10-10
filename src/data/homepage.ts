@@ -1,8 +1,8 @@
 // Home Page Carousel Photos
 
 export const WIDESCREEN_HOMEPAGE_CAROUSEL_PHOTOS = [
-  { src: "/images/hero-photos/wide/sao-vicente-22.webp", alt: "People silhouetted on the shoreline at sunset in São Vicente, Cape Verde" },
   { src: "/images/hero-photos/wide/santo-antao-29.webp", alt: "Two hikers on a ridge above a cloud-filled valley in Santo Antão, Cape Verde" },
+  { src: "/images/hero-photos/wide/sao-vicente-22.webp", alt: "People silhouetted on the shoreline at sunset in São Vicente, Cape Verde" },
   { src: "/images/hero-photos/wide/iceland-05.webp", alt: "Two Icelandic horses grooming each other below a mountain" },
   { src: "/images/hero-photos/wide/santo-antao-32.webp", alt: "Hiker on a cobbled switchback path cut into a steep hillside in Santo Antão, Cape Verde" },
   { src: "/images/hero-photos/wide/santo-antao-36.webp", alt: "Cliffs and a coastal village on the north coast of Santo Antão, Cape Verde" },
