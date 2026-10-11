@@ -1,4 +1,4 @@
-export function initLightbox(selector = '.masonry-galleries img') {
+export function initLightbox(selector = '.photo-columns img') {
   const galleryImgs = Array.from(
     document.querySelectorAll<HTMLImageElement>(selector)
   );

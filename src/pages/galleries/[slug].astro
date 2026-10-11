@@ -17,6 +17,13 @@ const gallery = galleries.find((g) => g.slug === slug);
 if (!gallery) {
   throw new Error(`Gallery not found: ${slug}`);
 }
+
+// Each image is snapped to one of two fixed aspect ratios (landscape 3:2 /
+// portrait 2:3) so the column packer deals with just two tile heights and can
+// end the grid flush. The source photos are already very close to these ratios,
+// so the object-cover crop is minimal.
+const orientation = (p: { width: number; height: number }) =>
+  p.width >= p.height ? "landscape" : "portrait";
 ---
 <!doctype html>
 <html lang="en">
@@ -73,18 +80,18 @@ if (!gallery) {
         )}
       </div>
 
-      <div class="masonry-galleries grid-fade-up">
+      {/* Packing spreads the first few data images across all four columns, so
+          eager-load enough to cover the top row of every column. */}
+      <div class="photo-columns grid-fade-up" data-gallery={slug}>
         {gallery.photos.map((photo, i) => (
           <img
             src={photo.src}
             alt={photo.alt || `${gallery.name} — photo ${i + 1}`}
-            loading={i < 3 ? "eager" : "lazy"}
+            loading={i < 6 ? "eager" : "lazy"}
             decoding="async"
             width={photo.width}
             height={photo.height}
-            data-w={photo.width}
-            data-h={photo.height}
-            class="w-full block"
+            class={`w-full block ${orientation(photo)}`}
           />
         ))}
       </div>
@@ -92,29 +99,9 @@ if (!gallery) {
 
     <Footer />
 
-    <style is:global>
-      .masonry-galleries img {
-        cursor: pointer;
-        transition: filter 0.2s ease;
-      }
-      .masonry-galleries img:hover {
-        filter: brightness(0.88);
-      }
-    </style>
-
     <script>
-      import { initMasonry } from '../../scripts/masonry.ts';
-      import { initLightbox } from '../../scripts/lightbox.ts';
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          initMasonry();
-          initLightbox();
-        });
-      } else {
-        initMasonry();
-        initLightbox();
-      }
+      import initGalleryColumns from '../../scripts/galleryColumns.ts';
+      initGalleryColumns();
     </script>
   </body>
 </html>

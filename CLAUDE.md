@@ -22,7 +22,7 @@ Photo collections are **plain TypeScript arrays in `src/data/`, not a content co
 - `homepage.ts` — carousel photos (widescreen/narrow sets) and collage photos (eager hero set + lazy "show more" set) for `pages/index.astro`. Each collage entry's `gallery` field is the slug its lightbox links to.
 - `site.ts` — title/tagline/description constants.
 
-**To add a gallery:** optimize images → `npm run scaffold` for the entries → add an object to `galleries` (usually also a hero set in `destinations.ts` + a `DestinationSection`). Route + page generate from the slug.
+**To add a gallery:** optimize images → `npm run scaffold` for the entries → add an object to `galleries` (usually also a hero set in `destinations.ts` + a `DestinationSection`). Route + page generate from the slug. Keep the portrait and landscape counts each divisible by 4, or the grid won't end flush — see the counting rule under Client-side interaction.
 
 The MDX blog (`src/content/`, `pages/blog/`) is unmodified Astro starter scaffolding, not linked in nav — don't use it as a convention reference.
 
@@ -47,11 +47,14 @@ Per-gallery subfolders under `galleries/` and `destinations-hero-photos/` are **
 ### Client-side interaction (`src/scripts/`)
 Interactivity lives in these TS modules, imported via `<script>`:
 
-- `masonry.ts` — JS masonry. Grid uses `grid-auto-rows: 4px` + 8px gap; `recalcGrid` sets each image's `grid-row-end: span N` from `data-w`/`data-h`. **`ROW_HEIGHT`/`GAP` here must stay in sync with `grid-auto-rows`/`gap` in `global.css`** (`.masonry-columns`, `.masonry-galleries`). Recalcs on resize.
-- `lightbox.ts` — fullscreen viewer (3-slide prev/current/next track). Styles are global in `global.css` (`#lightbox`, `.lightbox-*`).
-- `photoCollage.ts` — homepage collage: masonry + lightbox + "Show More" revealing lazy (`data-lazy`, `display:none`) photos.
+- `columnPacker.ts` — the shared flush-column packer used by both the galleries and the homepage collage. Every image is snapped to one of **two** fixed aspect ratios (`.landscape` 3:2 / `.portrait` 2:3, via `object-fit: cover`), so `packGroup` only juggles two tile heights and can give every column the same number of portraits *and* the same number of landscapes — which is the only way to make columns end level. Styles are global in `global.css` (`.photo-columns`, `.photo-col`); the column count lives in JS (2 mobile / 4 desktop at the 768px breakpoint) and must match in both callers.
+- `galleryColumns.ts` — gallery grid: one `packGroup` pass + lightbox. Reads `data-gallery` off the grid to name the gallery in its dev-only dropped-photo warning.
+- `lightbox.ts` — fullscreen viewer (3-slide prev/current/next track). Styles are global in `global.css` (`#lightbox`, `.lightbox-*`). Both callers init it **before** packing, so prev/next follows data order rather than the packed DOM's column order.
+- `photoCollage.ts` — homepage collage: two `packGroup` passes (eager set, then the lazy set appended below on "Show More", so revealing doesn't reflow what's already on screen) + lightbox.
 
-Gallery/collage masonry depends on `data-w`/`data-h` being the real pixel dimensions (scaffold fills these from WebP metadata).
+**Flush grids need counts divisible by the column count.** `packGroup` can't level columns unless each orientation divides evenly, so with 2/4 columns every collection needs its portrait count and its landscape count both **divisible by 4**. This is an authoring constraint on the data arrays, not something to fix in code: prune `galleries.ts` / `homepage.ts` to hit it (or add one more photo).
+
+**`packGroup` never hides a photo.** Surplus tiles are appended below the levelled block, each into the shortest column, so the grid ends ragged. **The ragged bottom is the intended failure mode** — it's the signal that a collection needs attention, and it's deliberately preferred over a tidy grid that quietly drops photos off the site. Don't "fix" raggedness by hiding tiles; fix the counts. The dev console also names the surplus per collection (the collage's eager and lazy sets each have to divide evenly on their own).
 
 ### Styling
 Tailwind, custom palette in `tailwind.config.js` (semantic: `background`, `text`, `accent`, `gray.{light,DEFAULT,dark}`, `shadow-soft`). Global styles + self-hosted Inter in `src/styles/global.css`. Prefer semantic color tokens over raw hex.
