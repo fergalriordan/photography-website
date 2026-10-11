@@ -86,18 +86,39 @@ hr {
   scrollbar-width: none;
 }
 
-.masonry-galleries {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 4px;
-  gap: 0.5rem;
-  align-items: start;
-}
+/* Flush-bottom photo columns, shared by the homepage collage and the gallery
+   pages. The column count is set in JS (2 mobile / 4 desktop); each image is
+   snapped to one of two fixed aspect ratios so the packer only ever deals with
+   two tile heights and can produce perfectly level columns. */
 
-@media (min-width: 768px) {
-  .masonry-galleries {
-    grid-template-columns: repeat(3, 1fr);
-  }
+/* Before JS runs the images stack full-width (graceful fallback). */
+.photo-columns.cols-ready {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.photo-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.photo-columns img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+.photo-columns img.landscape {
+  aspect-ratio: 3 / 2;
+}
+.photo-columns img.portrait {
+  aspect-ratio: 2 / 3;
+}
+.photo-columns img:hover {
+  filter: brightness(0.88);
 }
 
 #lightbox {

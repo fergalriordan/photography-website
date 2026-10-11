@@ -12,7 +12,7 @@ interface Photo {
 const { photosEager = [] as Photo[], photosLazy = [] as Photo[] } = Astro.props;
 
 // Each image is snapped to one of two fixed aspect ratios (landscape 3:2 /
-// portrait 2:3) so the masonry packer deals with just two tile heights and can
+// portrait 2:3) so the column packer deals with just two tile heights and can
 // produce perfectly level columns. The source photos are already very close to
 // these ratios, so the object-cover crop is minimal.
 const orientation = (p: Photo) => (p.width >= p.height ? "landscape" : "portrait");
@@ -28,7 +28,7 @@ const galleryLabel = (p: Photo) =>
 ---
 
 <div class="bg-background px-5 pt-2">
-  <div class="collage-columns" id="photoGrid">
+  <div class="photo-columns" id="photoGrid">
     {photosEager.map((photo: Photo, i: number) => (
       <img
         src={photo.src}
@@ -66,38 +66,6 @@ const galleryLabel = (p: Photo) =>
     Show More
   </button>
 </div>
-
-<style is:global>
-  /* Before JS runs the images stack full-width (graceful fallback). */
-  .collage-columns.cols-ready {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  .collage-col {
-    flex: 1 1 0;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .collage-columns img {
-    width: 100%;
-    display: block;
-    object-fit: cover;
-    cursor: pointer;
-    transition: filter 0.2s ease;
-  }
-  .collage-columns img.landscape {
-    aspect-ratio: 3 / 2;
-  }
-  .collage-columns img.portrait {
-    aspect-ratio: 2 / 3;
-  }
-  .collage-columns img:hover {
-    filter: brightness(0.88);
-  }
-</style>
 
 <script>
   import initPhotoCollage from '../scripts/photoCollage.ts';
