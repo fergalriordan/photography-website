@@ -32,6 +32,14 @@ body {
   overflow-wrap: break-word;
 }
 
+/* Set by lightbox.ts while the page is pinned behind the lightbox: stands in
+   for the scrollbar that pinning removes, so the page and the fixed header
+   don't shift sideways on open/close. */
+body,
+body > header {
+  padding-right: var(--locked-scrollbar-width, 0px);
+}
+
 img {
   max-width: 100%;
   height: auto;

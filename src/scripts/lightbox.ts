@@ -107,16 +107,22 @@ export function initLightbox(imgs: HTMLImageElement[]) {
   // Pin the page in place while open. `overflow: hidden` alone doesn't stop
   // touch scrolling on iOS Safari, so the page could drift behind the
   // lightbox. Unlocked on destroy, after the zoom-out has read the tile rects.
+  // Pinning also removes a desktop browser's scrollbar, so the page and the
+  // fixed header are padded by its width (see --locked-scrollbar-width in
+  // global.css) to stop them shifting sideways; 0 on overlay scrollbars.
   let lockedScrollY = 0;
+  const root = document.documentElement;
 
   lightbox.on('beforeOpen', () => {
     lockedScrollY = window.scrollY;
+    root.style.setProperty('--locked-scrollbar-width', `${window.innerWidth - root.clientWidth}px`);
     Object.assign(document.body.style, {
       position: 'fixed', top: `-${lockedScrollY}px`, left: '0', right: '0', overflow: 'hidden',
     });
   });
 
   lightbox.on('destroy', () => {
+    root.style.removeProperty('--locked-scrollbar-width');
     Object.assign(document.body.style, { position: '', top: '', left: '', right: '', overflow: '' });
     window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
   });
