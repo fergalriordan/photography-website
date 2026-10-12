@@ -97,6 +97,9 @@ export function initLightbox(selector = '.photo-columns img') {
 
   function updateGalleryLink() {
     const { gallerySlug, galleryLabel } = getItem(currentIndex).dataset;
+    // The persistent link needs clear space below the image; without it the
+    // image can use the full height (see .has-gallery-link in global.css).
+    overlay.classList.toggle('has-gallery-link', Boolean(gallerySlug && galleryLabel));
     if (gallerySlug && galleryLabel) {
       galleryLink.href = `/galleries/${gallerySlug}`;
       galleryLink.textContent = `${galleryLabel} Gallery →`;
