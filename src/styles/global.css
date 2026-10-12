@@ -146,6 +146,9 @@ hr {
   transform: translateX(-33.333%);
   will-change: transform;
 }
+/* The image fills the whole viewport edge to edge; the controls and the
+   auto-hiding counter overlay it. Only when the persistent gallery link is shown
+   (homepage collage) is the image inset, with clear space below for the link. */
 .lightbox-slide {
   width: 33.333%;
   display: flex;
@@ -153,10 +156,16 @@ hr {
   justify-content: center;
 }
 .lightbox-img {
-  max-width: 90%;
-  max-height: calc(90vh - 2rem);
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   display: block;
+}
+#lightbox.has-gallery-link .lightbox-slide {
+  padding: 1.25rem 0 3.5rem;
+}
+#lightbox.has-gallery-link .lightbox-img {
+  max-width: 90%;
 }
 .lightbox-close {
   position: absolute;
@@ -170,6 +179,7 @@ hr {
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   transition: color 0.15s ease;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 .lightbox-close:hover {
   color: #ffffff;
@@ -188,6 +198,8 @@ hr {
   padding: 0.5rem 1rem;
   transition: color 0.15s ease;
   user-select: none;
+  /* Keeps them visible where they overlap a full-bleed image. */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 .lightbox-prev:hover,
 .lightbox-next:hover {
@@ -200,6 +212,15 @@ hr {
   .lightbox-next {
     display: none;
   }
+  /* Phones are width-bound, so the image can run edge to edge and still clear
+     the gallery link. Symmetric vertical padding keeps it centred (matching
+     gallery pages) and only shrinks it on unusually short screens. */
+  #lightbox.has-gallery-link .lightbox-slide {
+    padding: 3.5rem 0;
+  }
+  #lightbox.has-gallery-link .lightbox-img {
+    max-width: 100%;
+  }
 }
 .lightbox-counter {
   position: absolute;
@@ -209,6 +230,8 @@ hr {
   color: #d9d9d9;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
+  /* Keeps it legible where it overlaps a bright image. */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
