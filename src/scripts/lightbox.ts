@@ -1,439 +1,135 @@
-export function initLightbox(selector = '.photo-columns img') {
-  const galleryImgs = Array.from(
-    document.querySelectorAll<HTMLImageElement>(selector)
-  );
+import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import type { SlideData } from 'photoswipe';
+import 'photoswipe/style.css';
 
-  if (galleryImgs.length === 0) return;
+/**
+ * Fullscreen viewer (PhotoSwipe v5) over `imgs`, in the order given. Callers
+ * pass the images captured before packing, so prev/next follows the data
+ * arrays rather than the column-by-column order of the packed DOM.
+ */
+export function initLightbox(imgs: HTMLImageElement[]) {
+  if (imgs.length === 0) return;
 
-  let currentIndex = 0;
-  // Direction of the slide animation in flight, or 0 when the track is at rest.
-  let pendingDirection: 0 | 1 | -1 = 0;
-  let hideCounterTimer: ReturnType<typeof setTimeout>;
+  // Width/height come from the attributes (the source photo's size from
+  // src/data/), not the rendered tile. Tiles are cropped to 3:2 / 2:3 with
+  // object-fit: cover, hence thumbCropped for the zoom in/out animation.
+  const dataSource: SlideData[] = imgs.map((img) => ({
+    src: img.src,
+    msrc: img.src,
+    width: Number(img.getAttribute('width')),
+    height: Number(img.getAttribute('height')),
+    alt: img.alt,
+    element: img,
+    thumbCropped: true,
+    gallerySlug: img.dataset.gallerySlug,
+    galleryLabel: img.dataset.galleryLabel,
+  }));
 
-  // Which DOM slot index currently plays each role.
-  // After each navigation we rotate these rather than copying image srcs.
-  let leftSlot = 0, centerSlot = 1, rightSlot = 2;
-
-  const overlay = document.createElement('div');
-  overlay.id = 'lightbox';
-  overlay.setAttribute('role', 'dialog');
-  overlay.setAttribute('aria-modal', 'true');
-
-  const container = document.createElement('div');
-  container.className = 'lightbox-container';
-
-  const track = document.createElement('div');
-  track.className = 'lightbox-track';
-
-  // Each slot holds whichever photo element setSlot() last moved into it.
-  const slots: HTMLDivElement[] = [];
-
-  for (let i = 0; i < 3; i++) {
-    const slide = document.createElement('div') as HTMLDivElement;
-    slide.className = 'lightbox-slide';
-    slots.push(slide);
-    track.appendChild(slide);
-  }
-
-  container.appendChild(track);
-
-  const closeBtn = document.createElement('button');
-  closeBtn.className = 'lightbox-close';
-  closeBtn.innerHTML = '&times;';
-  closeBtn.setAttribute('aria-label', 'Close');
-
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'lightbox-prev';
-  prevBtn.innerHTML = '&#8249;';
-  prevBtn.setAttribute('aria-label', 'Previous image');
-
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'lightbox-next';
-  nextBtn.innerHTML = '&#8250;';
-  nextBtn.setAttribute('aria-label', 'Next image');
-
-  const counter = document.createElement('span');
-  counter.className = 'lightbox-counter';
-
-  // Optional "<Name> Gallery →" link, shown only for images that carry
-  // data-gallery-slug/label (the homepage collage). Stays visible the whole
-  // time the lightbox is open, unlike the auto-hiding counter.
-  const galleryLink = document.createElement('a');
-  galleryLink.className = 'lightbox-gallery-link';
-  galleryLink.addEventListener('click', (e) => e.stopPropagation());
-
-  overlay.appendChild(container);
-  overlay.appendChild(closeBtn);
-  overlay.appendChild(prevBtn);
-  overlay.appendChild(nextBtn);
-  overlay.appendChild(galleryLink);
-  overlay.appendChild(counter);
-  document.body.appendChild(overlay);
-
-  // The slideshow stops at both ends rather than looping, so the slots beside
-  // the first and last photos are left empty.
-  const inRange = (index: number) => index >= 0 && index < galleryImgs.length;
-
-  function getItem(index: number) {
-    return galleryImgs[index];
-  }
-
-  // One <img> per photo, created on first use and kept. Slots are filled by
-  // moving these elements in rather than changing a src: a src change leaves
-  // the old pixels on screen until the new file arrives (a fast swipe could
-  // slide in the photo from two steps back), and re-setting a src makes the
-  // browser revalidate the file with the host, so a preloaded photo still
-  // waited a round trip. A moved element is already fetched and decoded.
-  const photoEls = new Map<string, HTMLImageElement>();
-
-  function getPhotoEl(index: number) {
-    const { src, alt } = getItem(index);
-    let img = photoEls.get(src);
-    if (!img) {
-      img = document.createElement('img');
-      img.className = 'lightbox-img';
-      img.alt = alt;
-      img.decoding = 'async';
-      img.src = src;
-      photoEls.set(src, img);
-    }
-    return img;
-  }
-
-  function setSlot(slot: number, index: number) {
-    if (!inRange(index)) {
-      slots[slot].replaceChildren();
-      return;
-    }
-    const img = getPhotoEl(index);
-    // Stay hidden until decoded, so a slot never shows a half-loaded photo.
-    if (!img.complete) {
-      img.classList.add('loading');
-      const reveal = () => img.classList.remove('loading');
-      img.decode().then(reveal, reveal);
-    }
-    slots[slot].replaceChildren(img);
-  }
-
-  // Start fetching a few photos beyond the neighbouring slots, so the next
-  // slot is usually ready before a fast swiper gets there. Gallery photos load
-  // lazily on the page, so most aren't fetched yet.
-  const PRELOAD_DISTANCE = 3;
-
-  function preloadAround(index: number) {
-    for (let d = 2; d <= PRELOAD_DISTANCE; d++) {
-      if (inRange(index + d)) getPhotoEl(index + d);
-      if (inRange(index - d)) getPhotoEl(index - d);
-    }
-  }
-
-  function setOrders() {
-    slots[leftSlot].style.order = '0';
-    slots[centerSlot].style.order = '1';
-    slots[rightSlot].style.order = '2';
-  }
-
-  function resetTrack() {
-    track.style.transition = 'none';
-    track.style.transform = 'translateX(-33.333%)';
-  }
-
-  function showCounter() {
-    counter.textContent = `${currentIndex + 1} / ${galleryImgs.length}`;
-    counter.classList.add('visible');
-    clearTimeout(hideCounterTimer);
-    hideCounterTimer = setTimeout(() => counter.classList.remove('visible'), 2000);
-  }
-
-  function updateArrows() {
-    prevBtn.hidden = !inRange(currentIndex - 1);
-    nextBtn.hidden = !inRange(currentIndex + 1);
-  }
-
-  function updateGalleryLink() {
-    const { gallerySlug, galleryLabel } = getItem(currentIndex).dataset;
-    // The persistent link needs clear space below the image; without it the
-    // image can use the full height (see .has-gallery-link in global.css).
-    overlay.classList.toggle('has-gallery-link', Boolean(gallerySlug && galleryLabel));
-    if (gallerySlug && galleryLabel) {
-      galleryLink.href = `/galleries/${gallerySlug}`;
-      galleryLink.textContent = `${galleryLabel} Gallery →`;
-      galleryLink.classList.add('visible');
-    } else {
-      galleryLink.classList.remove('visible');
-    }
-  }
-
-  // Rotate slot roles so the just-visible slot becomes center — its src is
-  // never touched. Only the newly-offscreen slot gets a src update.
-  function completeNavigation(direction: 1 | -1) {
-    if (direction > 0) {
-      const oldLeft = leftSlot;
-      leftSlot = centerSlot;
-      centerSlot = rightSlot;
-      rightSlot = oldLeft;
-      currentIndex += 1;
-      setSlot(rightSlot, currentIndex + 1);
-    } else {
-      const oldRight = rightSlot;
-      rightSlot = centerSlot;
-      centerSlot = leftSlot;
-      leftSlot = oldRight;
-      currentIndex -= 1;
-      setSlot(leftSlot, currentIndex - 1);
-    }
-    // Both style changes land in the same paint — no intermediate frame.
-    setOrders();
-    resetTrack();
-    showCounter();
-    updateArrows();
-    updateGalleryLink();
-    preloadAround(currentIndex);
-    pendingDirection = 0;
-  }
-
-  // Track position as a px offset from rest (centre slot in view); negative
-  // shows the next slot. One slide is one container width.
-  function trackOffset() {
-    const tx = new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
-    return tx + container.clientWidth;
-  }
-
-  function setTrackOffset(px: number, transition = 'none') {
-    track.style.transition = transition;
-    track.style.transform = `translateX(calc(-33.333% + ${px}px))`;
-  }
-
-  // Freeze the track where it is on screen right now, so an arrow click or key
-  // press can take over mid-animation instead of being ignored. A slide in flight is
-  // completed on the spot (slots rotated) and its offset re-expressed against
-  // the new centre slot, so nothing visibly jumps. Returns that offset.
-  function settleTrack() {
-    let offset = trackOffset();
-    if (pendingDirection) {
-      const direction = pendingDirection;
-      completeNavigation(direction);
-      offset += direction * container.clientWidth;
-    }
-    setTrackOffset(offset);
-    return offset;
-  }
-
-  function slideTo(direction: 1 | -1) {
-    // At an end, do nothing (checked before settling, which would freeze a
-    // slide in flight). The index counts a slide still in flight.
-    if (!inRange(currentIndex + pendingDirection + direction)) return;
-    const from = settleTrack();
-    const to = -direction * container.clientWidth;
-    // Already there: no transition would run, so no transitionend would fire.
-    if (Math.abs(to - from) < 1) {
-      completeNavigation(direction);
-      return;
-    }
-    void track.offsetWidth; // commit the settled position so the slide starts from it
-    pendingDirection = direction;
-    setTrackOffset(to, 'transform 0.3s ease');
-  }
-
-  function snapBack() {
-    setTrackOffset(0, 'transform 0.25s ease');
-  }
-
-  track.addEventListener('transitionend', (e) => {
-    if (e.target === track && pendingDirection) completeNavigation(pendingDirection);
+  const lightbox = new PhotoSwipeLightbox({
+    dataSource,
+    pswpModule: () => import('photoswipe'),
+    loop: false,
+    bgOpacity: 0.95,
+    closeOnVerticalDrag: true,
+    preload: [1, 3],
+    // Text glyphs styled in global.css instead of PhotoSwipe's icons; no zoom
+    // button, and the counter is our own (bottom, auto-hiding) below.
+    zoom: false,
+    counter: false,
+    closeSVG: '&times;',
+    arrowPrevSVG: '&#8249;',
+    arrowNextSVG: '&#8250;',
+    // A tap beside the photo closes; a tap on it does nothing. (PhotoSwipe's
+    // default toggles the controls, which would hide the arrows and close.)
+    tapAction: (_point, e) => {
+      if (!(e.target as Element).classList.contains('pswp__img')) lightbox.pswp?.close();
+    },
+    // Photos go edge to edge, except where the persistent gallery link is
+    // shown (homepage collage): then the image needs clear space below it.
+    // Phones are width-bound, so there the image keeps full width and gets
+    // symmetric vertical padding to stay centred.
+    paddingFn: (viewportSize, itemData) => {
+      if (!itemData.gallerySlug) return { top: 0, bottom: 0, left: 0, right: 0 };
+      if (viewportSize.x < 768) return { top: 56, bottom: 56, left: 0, right: 0 };
+      const side = viewportSize.x * 0.05;
+      return { top: 20, bottom: 56, left: side, right: side };
+    },
   });
 
-  function open(index: number) {
-    currentIndex = index;
-    pendingDirection = 0; // drop a slide still in flight from a previous close
-    leftSlot = 0; centerSlot = 1; rightSlot = 2;
-    setSlot(0, currentIndex - 1);
-    setSlot(1, currentIndex);
-    setSlot(2, currentIndex + 1);
-    preloadAround(currentIndex);
-    setOrders();
-    resetTrack();
-    resetDismiss();
-    overlay.classList.add('active');
-    lockScroll();
-    showCounter();
-    updateArrows();
-    updateGalleryLink();
-  }
+  lightbox.on('uiRegister', () => {
+    // "3 / 20" at the bottom, shown on open and on every slide change, then
+    // fading out after 2s.
+    lightbox.pswp?.ui?.registerElement({
+      name: 'bottom-counter',
+      appendTo: 'root',
+      order: 8,
+      onInit: (el, pswp) => {
+        el.setAttribute('aria-live', 'polite');
+        let hideTimer: ReturnType<typeof setTimeout>;
+        pswp.on('change', () => {
+          el.textContent = `${pswp.currIndex + 1} / ${pswp.getNumItems()}`;
+          el.classList.add('is-shown');
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(() => el.classList.remove('is-shown'), 2000);
+        });
+        pswp.on('close', () => {
+          clearTimeout(hideTimer);
+          el.classList.remove('is-shown');
+        });
+      },
+    });
+
+    // "<Label> Gallery →" under the photo, for images that carry
+    // data-gallery-slug/label. It stays visible the whole time the lightbox
+    // is open, fading in and out with it (unlike the auto-hiding counter).
+    lightbox.pswp?.ui?.registerElement({
+      name: 'gallery-link',
+      tagName: 'a',
+      appendTo: 'root',
+      order: 9,
+      onInit: (el, pswp) => {
+        const link = el as HTMLAnchorElement;
+        const update = () => {
+          const { gallerySlug, galleryLabel } = pswp.currSlide?.data ?? {};
+          link.hidden = !(gallerySlug && galleryLabel);
+          if (gallerySlug && galleryLabel) {
+            link.href = `/galleries/${gallerySlug}`;
+            link.textContent = `${galleryLabel} Gallery →`;
+          }
+        };
+        pswp.on('change', update);
+        pswp.on('openingAnimationStart', () => link.classList.add('is-shown'));
+        pswp.on('closingAnimationStart', () => link.classList.remove('is-shown'));
+      },
+    });
+  });
 
   // Pin the page in place while open. `overflow: hidden` alone doesn't stop
-  // touch scrolling on iOS Safari, so the page could drift behind the lightbox
-  // (most visibly while panning a pinch-zoomed image).
+  // touch scrolling on iOS Safari, so the page could drift behind the
+  // lightbox. Unlocked on destroy, after the zoom-out has read the tile rects.
+  // Pinning also removes a desktop browser's scrollbar, so the page and the
+  // fixed header are padded by its width (see --locked-scrollbar-width in
+  // global.css) to stop them shifting sideways; 0 on overlay scrollbars.
   let lockedScrollY = 0;
+  const root = document.documentElement;
 
-  function lockScroll() {
+  lightbox.on('beforeOpen', () => {
     lockedScrollY = window.scrollY;
+    root.style.setProperty('--locked-scrollbar-width', `${window.innerWidth - root.clientWidth}px`);
     Object.assign(document.body.style, {
       position: 'fixed', top: `-${lockedScrollY}px`, left: '0', right: '0', overflow: 'hidden',
     });
-  }
+  });
 
-  function unlockScroll() {
+  lightbox.on('destroy', () => {
+    root.style.removeProperty('--locked-scrollbar-width');
     Object.assign(document.body.style, { position: '', top: '', left: '', right: '', overflow: '' });
     window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
-  }
-
-  function close() {
-    overlay.classList.remove('active');
-    unlockScroll();
-    clearTimeout(hideCounterTimer);
-    counter.classList.remove('visible');
-    galleryLink.classList.remove('visible');
-  }
-
-  galleryImgs.forEach((img, i) => {
-    img.addEventListener('click', () => open(i));
   });
 
-  closeBtn.addEventListener('click', close);
-  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); slideTo(-1); });
-  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); slideTo(1); });
+  lightbox.init();
 
-  slots.forEach(slot => {
-    slot.addEventListener('click', (e) => {
-      if (e.target === slot) close();
-    });
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (!overlay.classList.contains('active')) return;
-    if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') slideTo(-1);
-    if (e.key === 'ArrowRight') slideTo(1);
-  });
-
-  // Swipe-to-close, as in phone photo apps: dragging up or down moves the
-  // photo with the finger and fades the backdrop; letting go past the
-  // threshold (or after a quick flick) closes, otherwise it springs back.
-  const DISMISS_DISTANCE = 100;
-  const DISMISS_FLICK_SPEED = 0.5; // px/ms, averaged over the gesture
-
-  function setDismissDrag(dy: number) {
-    const progress = Math.min(Math.abs(dy) / 400, 1);
-    const slide = slots[centerSlot];
-    slide.style.transition = 'none';
-    slide.style.transform = `translateY(${dy}px) scale(${1 - progress * 0.15})`;
-    overlay.style.transition = 'none';
-    overlay.style.setProperty('--backdrop-alpha', String(0.95 * (1 - progress * 0.7)));
-  }
-
-  function endDismissDrag(dy: number, elapsedMs: number) {
-    const slide = slots[centerSlot];
-    slide.style.transition = 'transform 0.25s ease';
-    overlay.style.transition = ''; // back to the stylesheet's fades
-    const flicked = Math.abs(dy) > 30 && Math.abs(dy) / elapsedMs > DISMISS_FLICK_SPEED;
-    if (Math.abs(dy) > DISMISS_DISTANCE || flicked) {
-      // Carry on the way it was going while the lightbox fades out.
-      slide.style.transform = `translateY(${dy + Math.sign(dy) * 150}px) scale(0.8)`;
-      close();
-    } else {
-      slide.style.transform = '';
-      overlay.style.removeProperty('--backdrop-alpha');
-    }
-  }
-
-  // Undo any swipe-to-close styling; called on open.
-  function resetDismiss() {
-    slots.forEach(slide => { slide.style.transition = ''; slide.style.transform = ''; });
-    overlay.style.transition = '';
-    overlay.style.removeProperty('--backdrop-alpha');
-  }
-
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchStartT = 0;
-  // Locked once the finger has moved far enough to tell: 'x' swipes between
-  // photos, 'y' is swipe-to-close.
-  let axis: 'x' | 'y' | null = null;
-  // Track offset when the finger landed: non-zero if it caught a snap-back.
-  let dragBase = 0;
-  // True for a gesture that must not swipe: a pinch, a touch while the page is
-  // pinch-zoomed (a one-finger drag then pans the zoomed view), or a touch
-  // that lands while a slide is still in flight.
-  let ignoreGesture = false;
-
-  // Pinch-zoom is the browser's own (it scales the visual viewport), so read
-  // the zoom level from there. A small tolerance absorbs rounding at 1x.
-  const isPageZoomed = () => (window.visualViewport?.scale ?? 1) > 1.01;
-
-  container.addEventListener('touchstart', (e) => {
-    // Swipes mid-slide are dropped rather than taking over (unlike arrow clicks
-    // and keys): catching a slide in flight made rapid swiping jittery on
-    // phones, likely because the position read back from a compositor-run
-    // transition lags what's on screen. This caps the pace at one per slide.
-    if (e.touches.length > 1 || isPageZoomed() || pendingDirection) {
-      ignoreGesture = true;
-      return;
-    }
-    ignoreGesture = false;
-    axis = null;
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchStartT = e.timeStamp;
-    dragBase = settleTrack();
-  }, { passive: true });
-
-  container.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 1) {
-      // Second finger joined — treat as pinch, abort any swipe in progress.
-      if (!ignoreGesture) {
-        setTrackOffset(0);
-        resetDismiss();
-      }
-      ignoreGesture = true;
-      return;
-    }
-    if (ignoreGesture) return;
-    // Claim the drag so the browser doesn't run its own scroll alongside it:
-    // that could pull-to-refresh on a swipe down, and a fast swipe-to-close
-    // left a fling running that swallowed the next tap on the page. Pinches
-    // and zoomed pans are ignored gestures, so native zoom is untouched.
-    e.preventDefault();
-    const deltaX = e.touches[0].clientX - touchStartX;
-    const deltaY = e.touches[0].clientY - touchStartY;
-    if (!axis) {
-      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 10) return;
-      axis = Math.abs(deltaY) > Math.abs(deltaX) ? 'y' : 'x';
-      if (axis === 'y' && dragBase) snapBack();
-    }
-    if (axis === 'y') {
-      setDismissDrag(deltaY);
-      return;
-    }
-    let offset = dragBase + deltaX;
-    // Dragging past an end stretches with resistance, then springs back.
-    if ((offset < 0 && !inRange(currentIndex + 1)) || (offset > 0 && !inRange(currentIndex - 1))) {
-      offset *= 0.3;
-    }
-    setTrackOffset(offset);
-  }, { passive: false });
-
-  container.addEventListener('touchend', (e) => {
-    if (e.touches.length === 0 && ignoreGesture) {
-      ignoreGesture = false;
-      return;
-    }
-    if (ignoreGesture || e.touches.length > 0) return;
-    if (axis === 'y') {
-      endDismissDrag(e.changedTouches[0].clientY - touchStartY, e.timeStamp - touchStartT);
-      return;
-    }
-    // Decide by the finger's own travel, not the track position, so a swipe
-    // that caught a snap-back isn't biased by where the track was.
-    const deltaX = e.changedTouches[0].clientX - touchStartX;
-    const direction = deltaX < -50 ? 1 : deltaX > 50 ? -1 : 0;
-    if (direction && inRange(currentIndex + direction)) slideTo(direction);
-    else snapBack();
-  });
-
-  container.addEventListener('touchcancel', () => {
-    ignoreGesture = false;
-    if (axis === 'y') endDismissDrag(0, 1);
-    else if (!pendingDirection) snapBack();
+  imgs.forEach((img, i) => {
+    img.addEventListener('click', () => lightbox.loadAndOpen(i));
   });
 }

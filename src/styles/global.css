@@ -32,6 +32,14 @@ body {
   overflow-wrap: break-word;
 }
 
+/* Set by lightbox.ts while the page is pinned behind the lightbox: stands in
+   for the scrollbar that pinning removes, so the page and the fixed header
+   don't shift sideways on open/close. */
+body,
+body > header {
+  padding-right: var(--locked-scrollbar-width, 0px);
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -121,116 +129,60 @@ hr {
   filter: brightness(0.88);
 }
 
-#lightbox {
-  position: fixed;
-  inset: 0;
-  /* --backdrop-alpha is faded by swipe-to-close (lightbox.ts). */
-  background: rgba(20, 20, 20, var(--backdrop-alpha, 0.95));
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease, background-color 0.25s ease;
+/* PhotoSwipe lightbox (lightbox.ts). The `html` prefixes beat photoswipe's own
+   rules whatever order the stylesheets load in. With bgOpacity 0.95 the
+   backdrop is rgba(20, 20, 20, 0.95). */
+html .pswp {
+  --pswp-bg: rgb(20, 20, 20);
 }
-#lightbox.active {
+/* Close and arrows are text glyphs (closeSVG / arrow*SVG options), so undo
+   PhotoSwipe's fixed-size icon-button box. */
+html .pswp .pswp__button--close,
+html .pswp .pswp__button--arrow {
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
   opacity: 1;
-  pointer-events: all;
+  line-height: 1;
+  transition: color 0.15s ease;
 }
-.lightbox-container {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.lightbox-track {
-  display: flex;
-  width: 300%;
-  height: 100%;
-  transform: translateX(-33.333%);
-  will-change: transform;
-}
-/* The image fills the whole viewport edge to edge; the controls and the
-   auto-hiding counter overlay it. Only when the persistent gallery link is shown
-   (homepage collage) is the image inset, with clear space below for the link. */
-.lightbox-slide {
-  width: 33.333%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.lightbox-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: block;
-  transition: opacity 0.15s ease;
-}
-/* Set while a slot's new photo loads (see setSlot in lightbox.ts). Hiding is
-   instant so the stale photo never shows; removing it fades the new one in. */
-.lightbox-img.loading {
-  opacity: 0;
-  transition: none;
-}
-#lightbox.has-gallery-link .lightbox-slide {
-  padding: 1.25rem 0 3.5rem;
-}
-#lightbox.has-gallery-link .lightbox-img {
-  max-width: 90%;
-}
-.lightbox-close {
+html .pswp .pswp__button--close {
   position: absolute;
   top: 1rem;
   right: 1.25rem;
-  background: none;
-  border: none;
   color: #d9d9d9;
   font-size: 2rem;
-  line-height: 1;
-  cursor: pointer;
   padding: 0.25rem 0.5rem;
-  transition: color 0.15s ease;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
-.lightbox-close:hover {
+html .pswp .pswp__button--close:hover {
   color: #ffffff;
 }
-.lightbox-prev,
-.lightbox-next {
-  position: absolute;
+html .pswp .pswp__button--arrow {
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
   color: #5f7a8e;
   font-size: 3.5rem;
-  line-height: 1;
-  cursor: pointer;
   padding: 0.5rem 1rem;
-  transition: color 0.15s ease;
   user-select: none;
   /* Keeps them visible where they overlap a full-bleed image. */
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
-.lightbox-prev:hover,
-.lightbox-next:hover {
+html .pswp .pswp__button--arrow:hover {
   color: #a0b1b8;
 }
-.lightbox-prev { left: 0.5rem; }
-.lightbox-next { right: 0.5rem; }
+html .pswp .pswp__button--arrow--prev { left: 0.5rem; right: auto; }
+html .pswp .pswp__button--arrow--next { right: 0.5rem; left: auto; }
+/* Phones swipe; arrows are desktop only. */
 @media (max-width: 767px) {
-  .lightbox-prev,
-  .lightbox-next {
+  html .pswp .pswp__button--arrow {
     display: none;
   }
-  /* Phones are width-bound, so the image can run edge to edge and still clear
-     the gallery link. Symmetric vertical padding keeps it centred (matching
-     gallery pages) and only shrinks it on unusually short screens. */
-  #lightbox.has-gallery-link .lightbox-slide {
-    padding: 3.5rem 0;
-  }
-  #lightbox.has-gallery-link .lightbox-img {
-    max-width: 100%;
-  }
 }
-.lightbox-counter {
+/* Bottom counter (custom element in lightbox.ts): fades in on each slide
+   change and out 2s later. Overrides pswp__hide-on-close like the link below. */
+html .pswp .pswp__bottom-counter {
   position: absolute;
   bottom: 0.75rem;
   left: 50%;
@@ -244,10 +196,13 @@ hr {
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
-.lightbox-counter.visible {
+html .pswp .pswp__bottom-counter.is-shown {
   opacity: 1;
 }
-.lightbox-gallery-link {
+/* Persistent "<Label> Gallery →" link (homepage collage). Overrides
+   pswp__hide-on-close (which would show it at full opacity) with its own fade;
+   .is-shown is set only while the lightbox is opening/open. */
+html .pswp .pswp__gallery-link {
   position: absolute;
   bottom: 2.1rem;
   left: 50%;
@@ -260,20 +215,23 @@ hr {
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: color 0.15s ease, opacity 0.4s ease;
+  transition: color 0.15s ease, opacity var(--pswp-transition-duration) ease;
 }
-.lightbox-gallery-link.visible {
+html .pswp .pswp__gallery-link.is-shown {
   opacity: 0.85;
   pointer-events: auto;
 }
-.lightbox-gallery-link:hover {
+html .pswp .pswp__gallery-link:hover {
   color: #ffffff;
   opacity: 1;
+}
+html .pswp .pswp__gallery-link[hidden] {
+  display: none;
 }
 /* Desktop has more vertical breathing room below the image than mobile; nudge
    the link down a touch so it doesn't sit squashed against the image bottom. */
 @media (min-width: 768px) {
-  .lightbox-gallery-link {
+  html .pswp .pswp__gallery-link {
     bottom: 1.9rem;
   }
 }
