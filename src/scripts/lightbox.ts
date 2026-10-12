@@ -70,8 +70,12 @@ export function initLightbox(selector = '.photo-columns img') {
   overlay.appendChild(counter);
   document.body.appendChild(overlay);
 
+  // The slideshow stops at both ends rather than looping, so the slots beside
+  // the first and last photos are left empty.
+  const inRange = (index: number) => index >= 0 && index < galleryImgs.length;
+
   function getItem(index: number) {
-    return galleryImgs[(index + galleryImgs.length) % galleryImgs.length];
+    return galleryImgs[index];
   }
 
   // One <img> per photo, created on first use and kept. Slots are filled by
@@ -97,11 +101,11 @@ export function initLightbox(selector = '.photo-columns img') {
   }
 
   function setSlot(slot: number, index: number) {
-    let img = getPhotoEl(index);
-    // A gallery of under three photos needs one photo in two slots at once.
-    if (img.parentElement && img.parentElement !== slots[slot]) {
-      img = img.cloneNode() as HTMLImageElement;
+    if (!inRange(index)) {
+      slots[slot].replaceChildren();
+      return;
     }
+    const img = getPhotoEl(index);
     // Stay hidden until decoded, so a slot never shows a half-loaded photo.
     if (!img.complete) {
       img.classList.add('loading');
@@ -118,8 +122,8 @@ export function initLightbox(selector = '.photo-columns img') {
 
   function preloadAround(index: number) {
     for (let d = 2; d <= PRELOAD_DISTANCE; d++) {
-      getPhotoEl(index + d);
-      getPhotoEl(index - d);
+      if (inRange(index + d)) getPhotoEl(index + d);
+      if (inRange(index - d)) getPhotoEl(index - d);
     }
   }
 
@@ -139,6 +143,11 @@ export function initLightbox(selector = '.photo-columns img') {
     counter.classList.add('visible');
     clearTimeout(hideCounterTimer);
     hideCounterTimer = setTimeout(() => counter.classList.remove('visible'), 2000);
+  }
+
+  function updateArrows() {
+    prevBtn.hidden = !inRange(currentIndex - 1);
+    nextBtn.hidden = !inRange(currentIndex + 1);
   }
 
   function updateGalleryLink() {
@@ -163,20 +172,21 @@ export function initLightbox(selector = '.photo-columns img') {
       leftSlot = centerSlot;
       centerSlot = rightSlot;
       rightSlot = oldLeft;
-      currentIndex = (currentIndex + 1) % galleryImgs.length;
+      currentIndex += 1;
       setSlot(rightSlot, currentIndex + 1);
     } else {
       const oldRight = rightSlot;
       rightSlot = centerSlot;
       centerSlot = leftSlot;
       leftSlot = oldRight;
-      currentIndex = (currentIndex - 1 + galleryImgs.length) % galleryImgs.length;
+      currentIndex -= 1;
       setSlot(leftSlot, currentIndex - 1);
     }
     // Both style changes land in the same paint — no intermediate frame.
     setOrders();
     resetTrack();
     showCounter();
+    updateArrows();
     updateGalleryLink();
     preloadAround(currentIndex);
     pendingDirection = 0;
@@ -210,6 +220,9 @@ export function initLightbox(selector = '.photo-columns img') {
   }
 
   function slideTo(direction: 1 | -1) {
+    // At an end, do nothing (checked before settling, which would freeze a
+    // slide in flight). The index counts a slide still in flight.
+    if (!inRange(currentIndex + pendingDirection + direction)) return;
     const from = settleTrack();
     const to = -direction * container.clientWidth;
     // Already there: no transition would run, so no transitionend would fire.
@@ -243,6 +256,7 @@ export function initLightbox(selector = '.photo-columns img') {
     overlay.classList.add('active');
     lockScroll();
     showCounter();
+    updateArrows();
     updateGalleryLink();
   }
 
@@ -327,7 +341,12 @@ export function initLightbox(selector = '.photo-columns img') {
     }
     if (ignoreGesture) return;
     const deltaX = e.touches[0].clientX - touchStartX;
-    setTrackOffset(dragBase + deltaX);
+    let offset = dragBase + deltaX;
+    // Dragging past an end stretches with resistance, then springs back.
+    if ((offset < 0 && !inRange(currentIndex + 1)) || (offset > 0 && !inRange(currentIndex - 1))) {
+      offset *= 0.3;
+    }
+    setTrackOffset(offset);
   }, { passive: true });
 
   container.addEventListener('touchend', (e) => {
@@ -339,8 +358,8 @@ export function initLightbox(selector = '.photo-columns img') {
     // Decide by the finger's own travel, not the track position, so a swipe
     // that caught a snap-back isn't biased by where the track was.
     const deltaX = e.changedTouches[0].clientX - touchStartX;
-    if (deltaX < -50) slideTo(1);
-    else if (deltaX > 50) slideTo(-1);
+    const direction = deltaX < -50 ? 1 : deltaX > 50 ? -1 : 0;
+    if (direction && inRange(currentIndex + direction)) slideTo(direction);
     else snapBack();
   });
 
