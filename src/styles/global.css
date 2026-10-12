@@ -124,11 +124,12 @@ hr {
 #lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(20, 20, 20, 0.95);
+  /* --backdrop-alpha is faded by swipe-to-close (lightbox.ts). */
+  background: rgba(20, 20, 20, var(--backdrop-alpha, 0.95));
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, background-color 0.25s ease;
 }
 #lightbox.active {
   opacity: 1;
