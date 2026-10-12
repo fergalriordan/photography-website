@@ -134,6 +134,9 @@ hr {
    backdrop is rgba(20, 20, 20, 0.95). */
 html .pswp {
   --pswp-bg: rgb(20, 20, 20);
+  /* Soft dark halo behind the close/arrow glyphs, so at their quiet opacity
+     they still read where they overlap a bright full-bleed photo. */
+  --pswp-glyph-halo: 0 0 6px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 /* Close and arrows are text glyphs (closeSVG / arrow*SVG options), so undo
    PhotoSwipe's fixed-size icon-button box. Kept quiet so they don't compete
@@ -167,7 +170,7 @@ html .pswp .pswp__button--close {
   color: #d9d9d9;
   font-size: 1.6rem;
   padding: 0.25rem 0.5rem;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: var(--pswp-glyph-halo);
 }
 html .pswp .pswp__button--close:hover {
   color: #ffffff;
@@ -179,8 +182,7 @@ html .pswp .pswp__button--arrow {
   font-size: 2.75rem;
   padding: 0.5rem 1rem;
   user-select: none;
-  /* Keeps them visible where they overlap a full-bleed image. */
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: var(--pswp-glyph-halo);
 }
 html .pswp .pswp__button--arrow:hover {
   color: #a0b1b8;
