@@ -32,6 +32,14 @@ export function initLightbox(imgs: HTMLImageElement[]) {
     bgOpacity: 0.95,
     closeOnVerticalDrag: true,
     preload: [1, 3],
+    // Lay slides out in the lightbox's own box (fixed, 100% tall), the same
+    // box the gallery link is positioned in. PhotoSwipe's default height is
+    // window.innerHeight, which mobile browsers can report taller than that
+    // box (toolbars), centring the photo lower — down onto the link.
+    getViewportSizeFn: (_options, pswp) => ({
+      x: document.documentElement.clientWidth,
+      y: (pswp as { element?: HTMLElement }).element?.clientHeight || window.innerHeight,
+    }),
     // Text glyphs styled in global.css instead of PhotoSwipe's icons; no zoom
     // button, and the counter is our own (bottom, auto-hiding) below.
     zoom: false,
