@@ -6,7 +6,8 @@ export function initLightbox(selector = '.photo-columns img') {
   if (galleryImgs.length === 0) return;
 
   let currentIndex = 0;
-  let isAnimating = false;
+  // Direction of the slide animation in flight, or 0 when the track is at rest.
+  let pendingDirection: 0 | 1 | -1 = 0;
   let hideCounterTimer: ReturnType<typeof setTimeout>;
 
   // Which DOM slot index currently plays each role.
@@ -24,17 +25,13 @@ export function initLightbox(selector = '.photo-columns img') {
   const track = document.createElement('div');
   track.className = 'lightbox-track';
 
-  const slotImgs: HTMLImageElement[] = [];
+  // Each slot holds whichever photo element setSlot() last moved into it.
   const slots: HTMLDivElement[] = [];
 
   for (let i = 0; i < 3; i++) {
     const slide = document.createElement('div') as HTMLDivElement;
     slide.className = 'lightbox-slide';
-    const img = document.createElement('img');
-    img.className = 'lightbox-img';
-    slotImgs.push(img);
     slots.push(slide);
-    slide.appendChild(img);
     track.appendChild(slide);
   }
 
@@ -75,6 +72,55 @@ export function initLightbox(selector = '.photo-columns img') {
 
   function getItem(index: number) {
     return galleryImgs[(index + galleryImgs.length) % galleryImgs.length];
+  }
+
+  // One <img> per photo, created on first use and kept. Slots are filled by
+  // moving these elements in rather than changing a src: a src change leaves
+  // the old pixels on screen until the new file arrives (a fast swipe could
+  // slide in the photo from two steps back), and re-setting a src makes the
+  // browser revalidate the file with the host, so a preloaded photo still
+  // waited a round trip. A moved element is already fetched and decoded.
+  const photoEls = new Map<string, HTMLImageElement>();
+
+  function getPhotoEl(index: number) {
+    const { src, alt } = getItem(index);
+    let img = photoEls.get(src);
+    if (!img) {
+      img = document.createElement('img');
+      img.className = 'lightbox-img';
+      img.alt = alt;
+      img.decoding = 'async';
+      img.src = src;
+      photoEls.set(src, img);
+    }
+    return img;
+  }
+
+  function setSlot(slot: number, index: number) {
+    let img = getPhotoEl(index);
+    // A gallery of under three photos needs one photo in two slots at once.
+    if (img.parentElement && img.parentElement !== slots[slot]) {
+      img = img.cloneNode() as HTMLImageElement;
+    }
+    // Stay hidden until decoded, so a slot never shows a half-loaded photo.
+    if (!img.complete) {
+      img.classList.add('loading');
+      const reveal = () => img.classList.remove('loading');
+      img.decode().then(reveal, reveal);
+    }
+    slots[slot].replaceChildren(img);
+  }
+
+  // Start fetching a few photos beyond the neighbouring slots, so the next
+  // slot is usually ready before a fast swiper gets there. Gallery photos load
+  // lazily on the page, so most aren't fetched yet.
+  const PRELOAD_DISTANCE = 3;
+
+  function preloadAround(index: number) {
+    for (let d = 2; d <= PRELOAD_DISTANCE; d++) {
+      getPhotoEl(index + d);
+      getPhotoEl(index - d);
+    }
   }
 
   function setOrders() {
@@ -118,42 +164,80 @@ export function initLightbox(selector = '.photo-columns img') {
       centerSlot = rightSlot;
       rightSlot = oldLeft;
       currentIndex = (currentIndex + 1) % galleryImgs.length;
-      slotImgs[rightSlot].src = getItem(currentIndex + 1).src;
-      slotImgs[rightSlot].alt = getItem(currentIndex + 1).alt;
+      setSlot(rightSlot, currentIndex + 1);
     } else {
       const oldRight = rightSlot;
       rightSlot = centerSlot;
       centerSlot = leftSlot;
       leftSlot = oldRight;
       currentIndex = (currentIndex - 1 + galleryImgs.length) % galleryImgs.length;
-      slotImgs[leftSlot].src = getItem(currentIndex - 1).src;
-      slotImgs[leftSlot].alt = getItem(currentIndex - 1).alt;
+      setSlot(leftSlot, currentIndex - 1);
     }
     // Both style changes land in the same paint — no intermediate frame.
     setOrders();
     resetTrack();
     showCounter();
     updateGalleryLink();
-    isAnimating = false;
+    preloadAround(currentIndex);
+    pendingDirection = 0;
   }
 
-  function navigateWithAnimation(direction: 1 | -1) {
-    if (isAnimating) return;
-    isAnimating = true;
-    track.style.transition = 'transform 0.3s ease';
-    track.style.transform = direction > 0 ? 'translateX(-66.666%)' : 'translateX(0%)';
-    track.addEventListener('transitionend', () => completeNavigation(direction), { once: true });
+  // Track position as a px offset from rest (centre slot in view); negative
+  // shows the next slot. One slide is one container width.
+  function trackOffset() {
+    const tx = new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
+    return tx + container.clientWidth;
   }
+
+  function setTrackOffset(px: number, transition = 'none') {
+    track.style.transition = transition;
+    track.style.transform = `translateX(calc(-33.333% + ${px}px))`;
+  }
+
+  // Freeze the track where it is on screen right now, so an arrow click or key
+  // press can take over mid-animation instead of being ignored. A slide in flight is
+  // completed on the spot (slots rotated) and its offset re-expressed against
+  // the new centre slot, so nothing visibly jumps. Returns that offset.
+  function settleTrack() {
+    let offset = trackOffset();
+    if (pendingDirection) {
+      const direction = pendingDirection;
+      completeNavigation(direction);
+      offset += direction * container.clientWidth;
+    }
+    setTrackOffset(offset);
+    return offset;
+  }
+
+  function slideTo(direction: 1 | -1) {
+    const from = settleTrack();
+    const to = -direction * container.clientWidth;
+    // Already there: no transition would run, so no transitionend would fire.
+    if (Math.abs(to - from) < 1) {
+      completeNavigation(direction);
+      return;
+    }
+    void track.offsetWidth; // commit the settled position so the slide starts from it
+    pendingDirection = direction;
+    setTrackOffset(to, 'transform 0.3s ease');
+  }
+
+  function snapBack() {
+    setTrackOffset(0, 'transform 0.25s ease');
+  }
+
+  track.addEventListener('transitionend', (e) => {
+    if (e.target === track && pendingDirection) completeNavigation(pendingDirection);
+  });
 
   function open(index: number) {
     currentIndex = index;
+    pendingDirection = 0; // drop a slide still in flight from a previous close
     leftSlot = 0; centerSlot = 1; rightSlot = 2;
-    slotImgs[0].src = getItem(currentIndex - 1).src;
-    slotImgs[0].alt = getItem(currentIndex - 1).alt;
-    slotImgs[1].src = getItem(currentIndex).src;
-    slotImgs[1].alt = getItem(currentIndex).alt;
-    slotImgs[2].src = getItem(currentIndex + 1).src;
-    slotImgs[2].alt = getItem(currentIndex + 1).alt;
+    setSlot(0, currentIndex - 1);
+    setSlot(1, currentIndex);
+    setSlot(2, currentIndex + 1);
+    preloadAround(currentIndex);
     setOrders();
     resetTrack();
     overlay.classList.add('active');
@@ -185,7 +269,6 @@ export function initLightbox(selector = '.photo-columns img') {
     clearTimeout(hideCounterTimer);
     counter.classList.remove('visible');
     galleryLink.classList.remove('visible');
-    setTimeout(() => { slotImgs.forEach(img => { img.src = ''; }); }, 250);
   }
 
   galleryImgs.forEach((img, i) => {
@@ -193,8 +276,8 @@ export function initLightbox(selector = '.photo-columns img') {
   });
 
   closeBtn.addEventListener('click', close);
-  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); navigateWithAnimation(-1); });
-  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); navigateWithAnimation(1); });
+  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); slideTo(-1); });
+  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); slideTo(1); });
 
   slots.forEach(slot => {
     slot.addEventListener('click', (e) => {
@@ -205,14 +288,16 @@ export function initLightbox(selector = '.photo-columns img') {
   document.addEventListener('keydown', (e) => {
     if (!overlay.classList.contains('active')) return;
     if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') navigateWithAnimation(-1);
-    if (e.key === 'ArrowRight') navigateWithAnimation(1);
+    if (e.key === 'ArrowLeft') slideTo(-1);
+    if (e.key === 'ArrowRight') slideTo(1);
   });
 
   let touchStartX = 0;
-  let hasDragged = false;
-  // True for a gesture that must not swipe: a pinch, or any touch while the
-  // page is pinch-zoomed (a one-finger drag then pans the zoomed view).
+  // Track offset when the finger landed: non-zero if it caught a snap-back.
+  let dragBase = 0;
+  // True for a gesture that must not swipe: a pinch, a touch while the page is
+  // pinch-zoomed (a one-finger drag then pans the zoomed view), or a touch
+  // that lands while a slide is still in flight.
   let ignoreGesture = false;
 
   // Pinch-zoom is the browser's own (it scales the visual viewport), so read
@@ -220,55 +305,47 @@ export function initLightbox(selector = '.photo-columns img') {
   const isPageZoomed = () => (window.visualViewport?.scale ?? 1) > 1.01;
 
   container.addEventListener('touchstart', (e) => {
-    if (isAnimating) return;
-    if (e.touches.length > 1 || isPageZoomed()) {
+    // Swipes mid-slide are dropped rather than taking over (unlike arrow clicks
+    // and keys): catching a slide in flight made rapid swiping jittery on
+    // phones, likely because the position read back from a compositor-run
+    // transition lags what's on screen. This caps the pace at one per slide.
+    if (e.touches.length > 1 || isPageZoomed() || pendingDirection) {
       ignoreGesture = true;
       return;
     }
     ignoreGesture = false;
     touchStartX = e.touches[0].clientX;
-    hasDragged = false;
-    track.style.transition = 'none';
+    dragBase = settleTrack();
   }, { passive: true });
 
   container.addEventListener('touchmove', (e) => {
-    if (isAnimating) return;
     if (e.touches.length > 1) {
       // Second finger joined — treat as pinch, abort any swipe in progress.
+      if (!ignoreGesture) setTrackOffset(0);
       ignoreGesture = true;
-      track.style.transition = 'none';
-      track.style.transform = 'translateX(-33.333%)';
-      hasDragged = false;
       return;
     }
     if (ignoreGesture) return;
     const deltaX = e.touches[0].clientX - touchStartX;
-    if (Math.abs(deltaX) > 10) hasDragged = true;
-    track.style.transform = `translateX(calc(-33.333% + ${deltaX}px))`;
+    setTrackOffset(dragBase + deltaX);
   }, { passive: true });
 
   container.addEventListener('touchend', (e) => {
-    if (e.touches.length === 0) ignoreGesture = false;
-    if (isAnimating || !hasDragged || ignoreGesture) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartX;
-
-    if (Math.abs(deltaX) > 50) {
-      isAnimating = true;
-      const direction: 1 | -1 = deltaX < 0 ? 1 : -1;
-      track.style.transition = 'transform 0.3s ease';
-      track.style.transform = direction > 0 ? 'translateX(-66.666%)' : 'translateX(0%)';
-      track.addEventListener('transitionend', () => completeNavigation(direction), { once: true });
-    } else {
-      track.style.transition = 'transform 0.25s ease';
-      track.style.transform = 'translateX(-33.333%)';
+    if (e.touches.length === 0 && ignoreGesture) {
+      ignoreGesture = false;
+      return;
     }
+    if (ignoreGesture || e.touches.length > 0) return;
+    // Decide by the finger's own travel, not the track position, so a swipe
+    // that caught a snap-back isn't biased by where the track was.
+    const deltaX = e.changedTouches[0].clientX - touchStartX;
+    if (deltaX < -50) slideTo(1);
+    else if (deltaX > 50) slideTo(-1);
+    else snapBack();
   });
 
   container.addEventListener('touchcancel', () => {
     ignoreGesture = false;
-    if (!isAnimating) {
-      track.style.transition = 'transform 0.25s ease';
-      track.style.transform = 'translateX(-33.333%)';
-    }
+    if (!pendingDirection) snapBack();
   });
 }
