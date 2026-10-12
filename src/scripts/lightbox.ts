@@ -157,14 +157,31 @@ export function initLightbox(selector = '.photo-columns img') {
     setOrders();
     resetTrack();
     overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    lockScroll();
     showCounter();
     updateGalleryLink();
   }
 
+  // Pin the page in place while open. `overflow: hidden` alone doesn't stop
+  // touch scrolling on iOS Safari, so the page could drift behind the lightbox
+  // (most visibly while panning a pinch-zoomed image).
+  let lockedScrollY = 0;
+
+  function lockScroll() {
+    lockedScrollY = window.scrollY;
+    Object.assign(document.body.style, {
+      position: 'fixed', top: `-${lockedScrollY}px`, left: '0', right: '0', overflow: 'hidden',
+    });
+  }
+
+  function unlockScroll() {
+    Object.assign(document.body.style, { position: '', top: '', left: '', right: '', overflow: '' });
+    window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
+  }
+
   function close() {
     overlay.classList.remove('active');
-    document.body.style.overflow = '';
+    unlockScroll();
     clearTimeout(hideCounterTimer);
     counter.classList.remove('visible');
     galleryLink.classList.remove('visible');
@@ -194,15 +211,21 @@ export function initLightbox(selector = '.photo-columns img') {
 
   let touchStartX = 0;
   let hasDragged = false;
-  let isPinching = false;
+  // True for a gesture that must not swipe: a pinch, or any touch while the
+  // page is pinch-zoomed (a one-finger drag then pans the zoomed view).
+  let ignoreGesture = false;
+
+  // Pinch-zoom is the browser's own (it scales the visual viewport), so read
+  // the zoom level from there. A small tolerance absorbs rounding at 1x.
+  const isPageZoomed = () => (window.visualViewport?.scale ?? 1) > 1.01;
 
   container.addEventListener('touchstart', (e) => {
     if (isAnimating) return;
-    if (e.touches.length > 1) {
-      isPinching = true;
+    if (e.touches.length > 1 || isPageZoomed()) {
+      ignoreGesture = true;
       return;
     }
-    isPinching = false;
+    ignoreGesture = false;
     touchStartX = e.touches[0].clientX;
     hasDragged = false;
     track.style.transition = 'none';
@@ -212,21 +235,21 @@ export function initLightbox(selector = '.photo-columns img') {
     if (isAnimating) return;
     if (e.touches.length > 1) {
       // Second finger joined — treat as pinch, abort any swipe in progress.
-      isPinching = true;
+      ignoreGesture = true;
       track.style.transition = 'none';
       track.style.transform = 'translateX(-33.333%)';
       hasDragged = false;
       return;
     }
-    if (isPinching) return;
+    if (ignoreGesture) return;
     const deltaX = e.touches[0].clientX - touchStartX;
     if (Math.abs(deltaX) > 10) hasDragged = true;
     track.style.transform = `translateX(calc(-33.333% + ${deltaX}px))`;
   }, { passive: true });
 
   container.addEventListener('touchend', (e) => {
-    if (e.touches.length === 0) isPinching = false;
-    if (isAnimating || !hasDragged || isPinching) return;
+    if (e.touches.length === 0) ignoreGesture = false;
+    if (isAnimating || !hasDragged || ignoreGesture) return;
     const deltaX = e.changedTouches[0].clientX - touchStartX;
 
     if (Math.abs(deltaX) > 50) {
@@ -242,7 +265,7 @@ export function initLightbox(selector = '.photo-columns img') {
   });
 
   container.addEventListener('touchcancel', () => {
-    isPinching = false;
+    ignoreGesture = false;
     if (!isAnimating) {
       track.style.transition = 'transform 0.25s ease';
       track.style.transform = 'translateX(-33.333%)';
