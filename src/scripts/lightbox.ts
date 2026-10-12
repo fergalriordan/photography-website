@@ -206,6 +206,16 @@ export function initLightbox(imgs: HTMLImageElement[]) {
   // Re-lay out once it has opened; a no-op when nothing changed.
   lightbox.on('openingAnimationEnd', () => lightbox.pswp?.updateSize(true));
 
+  // Claim touch drags over the lightbox so the browser runs no scroll gesture
+  // of its own alongside PhotoSwipe's (which works from pointer events, so
+  // still fires). Without this, a fast swipe-down close at the top of the
+  // page left the browser in an overscroll that swallowed the next tap.
+  lightbox.on('afterInit', () => {
+    lightbox.pswp?.element?.addEventListener('touchmove', (e) => {
+      if (e.cancelable) e.preventDefault();
+    }, { passive: false });
+  });
+
   lightbox.init();
 
   imgs.forEach((img, i) => {
