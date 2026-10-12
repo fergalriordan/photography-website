@@ -127,14 +127,72 @@ hr {
 html .pswp {
   --pswp-bg: rgb(20, 20, 20);
 }
+/* Close and arrows are text glyphs (closeSVG / arrow*SVG options), so undo
+   PhotoSwipe's fixed-size icon-button box. */
+html .pswp .pswp__button--close,
+html .pswp .pswp__button--arrow {
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  opacity: 1;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+html .pswp .pswp__button--close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  color: #d9d9d9;
+  font-size: 2rem;
+  padding: 0.25rem 0.5rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+html .pswp .pswp__button--close:hover {
+  color: #ffffff;
+}
+html .pswp .pswp__button--arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5f7a8e;
+  font-size: 3.5rem;
+  padding: 0.5rem 1rem;
+  user-select: none;
+  /* Keeps them visible where they overlap a full-bleed image. */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+html .pswp .pswp__button--arrow:hover {
+  color: #a0b1b8;
+}
+html .pswp .pswp__button--arrow--prev { left: 0.5rem; right: auto; }
+html .pswp .pswp__button--arrow--next { right: 0.5rem; left: auto; }
 /* Phones swipe; arrows are desktop only. */
 @media (max-width: 767px) {
   html .pswp .pswp__button--arrow {
     display: none;
   }
 }
+/* Bottom counter (custom element in lightbox.ts): fades in on each slide
+   change and out 2s later. Overrides pswp__hide-on-close like the link below. */
+html .pswp .pswp__bottom-counter {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #d9d9d9;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  /* Keeps it legible where it overlaps a bright image. */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+html .pswp .pswp__bottom-counter.is-shown {
+  opacity: 1;
+}
 /* Persistent "<Label> Gallery →" link (homepage collage). Overrides
-   pswp__hide-on-close so a tap toggling PhotoSwipe's controls leaves it alone;
+   pswp__hide-on-close (which would show it at full opacity) with its own fade;
    .is-shown is set only while the lightbox is opening/open. */
 html .pswp .pswp__gallery-link {
   position: absolute;

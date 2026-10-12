@@ -32,6 +32,18 @@ export function initLightbox(imgs: HTMLImageElement[]) {
     bgOpacity: 0.95,
     closeOnVerticalDrag: true,
     preload: [1, 3],
+    // Text glyphs styled in global.css instead of PhotoSwipe's icons; no zoom
+    // button, and the counter is our own (bottom, auto-hiding) below.
+    zoom: false,
+    counter: false,
+    closeSVG: '&times;',
+    arrowPrevSVG: '&#8249;',
+    arrowNextSVG: '&#8250;',
+    // A tap beside the photo closes; a tap on it does nothing. (PhotoSwipe's
+    // default toggles the controls, which would hide the arrows and close.)
+    tapAction: (_point, e) => {
+      if (!(e.target as Element).classList.contains('pswp__img')) lightbox.pswp?.close();
+    },
     // Photos go edge to edge, except where the persistent gallery link is
     // shown (homepage collage): then the image needs clear space below it.
     // Phones are width-bound, so there the image keeps full width and gets
@@ -44,10 +56,32 @@ export function initLightbox(imgs: HTMLImageElement[]) {
     },
   });
 
-  // "<Label> Gallery →" under the photo, for images that carry
-  // data-gallery-slug/label. Unlike PhotoSwipe's own controls it stays put when
-  // a tap toggles the UI; it only fades in and out with the lightbox itself.
   lightbox.on('uiRegister', () => {
+    // "3 / 20" at the bottom, shown on open and on every slide change, then
+    // fading out after 2s.
+    lightbox.pswp?.ui?.registerElement({
+      name: 'bottom-counter',
+      appendTo: 'root',
+      order: 8,
+      onInit: (el, pswp) => {
+        el.setAttribute('aria-live', 'polite');
+        let hideTimer: ReturnType<typeof setTimeout>;
+        pswp.on('change', () => {
+          el.textContent = `${pswp.currIndex + 1} / ${pswp.getNumItems()}`;
+          el.classList.add('is-shown');
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(() => el.classList.remove('is-shown'), 2000);
+        });
+        pswp.on('close', () => {
+          clearTimeout(hideTimer);
+          el.classList.remove('is-shown');
+        });
+      },
+    });
+
+    // "<Label> Gallery →" under the photo, for images that carry
+    // data-gallery-slug/label. It stays visible the whole time the lightbox
+    // is open, fading in and out with it (unlike the auto-hiding counter).
     lightbox.pswp?.ui?.registerElement({
       name: 'gallery-link',
       tagName: 'a',
