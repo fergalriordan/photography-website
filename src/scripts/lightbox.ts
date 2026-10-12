@@ -253,6 +253,7 @@ export function initLightbox(selector = '.photo-columns img') {
     preloadAround(currentIndex);
     setOrders();
     resetTrack();
+    resetDismiss();
     overlay.classList.add('active');
     lockScroll();
     showCounter();
@@ -306,7 +307,49 @@ export function initLightbox(selector = '.photo-columns img') {
     if (e.key === 'ArrowRight') slideTo(1);
   });
 
+  // Swipe-to-close, as in phone photo apps: dragging up or down moves the
+  // photo with the finger and fades the backdrop; letting go past the
+  // threshold (or after a quick flick) closes, otherwise it springs back.
+  const DISMISS_DISTANCE = 100;
+  const DISMISS_FLICK_SPEED = 0.5; // px/ms, averaged over the gesture
+
+  function setDismissDrag(dy: number) {
+    const progress = Math.min(Math.abs(dy) / 400, 1);
+    const slide = slots[centerSlot];
+    slide.style.transition = 'none';
+    slide.style.transform = `translateY(${dy}px) scale(${1 - progress * 0.15})`;
+    overlay.style.transition = 'none';
+    overlay.style.setProperty('--backdrop-alpha', String(0.95 * (1 - progress * 0.7)));
+  }
+
+  function endDismissDrag(dy: number, elapsedMs: number) {
+    const slide = slots[centerSlot];
+    slide.style.transition = 'transform 0.25s ease';
+    overlay.style.transition = ''; // back to the stylesheet's fades
+    const flicked = Math.abs(dy) > 30 && Math.abs(dy) / elapsedMs > DISMISS_FLICK_SPEED;
+    if (Math.abs(dy) > DISMISS_DISTANCE || flicked) {
+      // Carry on the way it was going while the lightbox fades out.
+      slide.style.transform = `translateY(${dy + Math.sign(dy) * 150}px) scale(0.8)`;
+      close();
+    } else {
+      slide.style.transform = '';
+      overlay.style.removeProperty('--backdrop-alpha');
+    }
+  }
+
+  // Undo any swipe-to-close styling; called on open.
+  function resetDismiss() {
+    slots.forEach(slide => { slide.style.transition = ''; slide.style.transform = ''; });
+    overlay.style.transition = '';
+    overlay.style.removeProperty('--backdrop-alpha');
+  }
+
   let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartT = 0;
+  // Locked once the finger has moved far enough to tell: 'x' swipes between
+  // photos, 'y' is swipe-to-close.
+  let axis: 'x' | 'y' | null = null;
   // Track offset when the finger landed: non-zero if it caught a snap-back.
   let dragBase = 0;
   // True for a gesture that must not swipe: a pinch, a touch while the page is
@@ -328,26 +371,47 @@ export function initLightbox(selector = '.photo-columns img') {
       return;
     }
     ignoreGesture = false;
+    axis = null;
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartT = e.timeStamp;
     dragBase = settleTrack();
   }, { passive: true });
 
   container.addEventListener('touchmove', (e) => {
     if (e.touches.length > 1) {
       // Second finger joined — treat as pinch, abort any swipe in progress.
-      if (!ignoreGesture) setTrackOffset(0);
+      if (!ignoreGesture) {
+        setTrackOffset(0);
+        resetDismiss();
+      }
       ignoreGesture = true;
       return;
     }
     if (ignoreGesture) return;
+    // Claim the drag so the browser doesn't run its own scroll alongside it:
+    // that could pull-to-refresh on a swipe down, and a fast swipe-to-close
+    // left a fling running that swallowed the next tap on the page. Pinches
+    // and zoomed pans are ignored gestures, so native zoom is untouched.
+    e.preventDefault();
     const deltaX = e.touches[0].clientX - touchStartX;
+    const deltaY = e.touches[0].clientY - touchStartY;
+    if (!axis) {
+      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 10) return;
+      axis = Math.abs(deltaY) > Math.abs(deltaX) ? 'y' : 'x';
+      if (axis === 'y' && dragBase) snapBack();
+    }
+    if (axis === 'y') {
+      setDismissDrag(deltaY);
+      return;
+    }
     let offset = dragBase + deltaX;
     // Dragging past an end stretches with resistance, then springs back.
     if ((offset < 0 && !inRange(currentIndex + 1)) || (offset > 0 && !inRange(currentIndex - 1))) {
       offset *= 0.3;
     }
     setTrackOffset(offset);
-  }, { passive: true });
+  }, { passive: false });
 
   container.addEventListener('touchend', (e) => {
     if (e.touches.length === 0 && ignoreGesture) {
@@ -355,6 +419,10 @@ export function initLightbox(selector = '.photo-columns img') {
       return;
     }
     if (ignoreGesture || e.touches.length > 0) return;
+    if (axis === 'y') {
+      endDismissDrag(e.changedTouches[0].clientY - touchStartY, e.timeStamp - touchStartT);
+      return;
+    }
     // Decide by the finger's own travel, not the track position, so a swipe
     // that caught a snap-back isn't biased by where the track was.
     const deltaX = e.changedTouches[0].clientX - touchStartX;
@@ -365,6 +433,7 @@ export function initLightbox(selector = '.photo-columns img') {
 
   container.addEventListener('touchcancel', () => {
     ignoreGesture = false;
-    if (!pendingDirection) snapBack();
+    if (axis === 'y') endDismissDrag(0, 1);
+    else if (!pendingDirection) snapBack();
   });
 }
