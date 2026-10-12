@@ -27,7 +27,7 @@ const galleryLabel = (p: Photo) =>
   p.gallery ? galleryLabels.get(p.gallery) : undefined;
 ---
 
-<div class="bg-background px-5 pt-2">
+<div class="bg-background px-2 pt-2">
   <div class="photo-columns" id="photoGrid">
     {photosEager.map((photo: Photo, i: number) => (
       <img
