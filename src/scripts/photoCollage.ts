@@ -10,7 +10,7 @@ export default function initPhotoCollage() {
     // The lightbox keeps this order for prev/next navigation regardless of where
     // each tile ends up visually.
     const allImgs = Array.from(grid.querySelectorAll<HTMLImageElement>('img'));
-    initLightbox('.photo-columns img');
+    initLightbox(allImgs);
 
     const eagerImgs = allImgs.filter(img => img.dataset.lazy !== 'true');
     const lazyImgs = allImgs.filter(img => img.dataset.lazy === 'true');

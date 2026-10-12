@@ -35,6 +35,8 @@ const galleryLabel = (p: Photo) =>
         alt={photo.alt || `Photo ${i + 1}`}
         loading="eager"
         decoding="async"
+        width={photo.width}
+        height={photo.height}
         class={`w-full block ${orientation(photo)}`}
         data-gallery-slug={galleryLabel(photo) ? photo.gallery : undefined}
         data-gallery-label={galleryLabel(photo)}
@@ -46,6 +48,8 @@ const galleryLabel = (p: Photo) =>
         alt={photo.alt || `Photo ${photosEager.length + i + 1}`}
         loading="lazy"
         decoding="async"
+        width={photo.width}
+        height={photo.height}
         class={`w-full block ${orientation(photo)}`}
         data-lazy="true"
         data-gallery-slug={galleryLabel(photo) ? photo.gallery : undefined}

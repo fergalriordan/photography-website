@@ -17,7 +17,7 @@ export default function initGalleryColumns() {
     // and wire the lightbox up now so prev/next follows the order in
     // galleries.ts rather than the column-by-column order of the packed DOM.
     const imgs = Array.from(grid.querySelectorAll<HTMLImageElement>('img'));
-    initLightbox('.photo-columns img');
+    initLightbox(imgs);
 
     const colCount = () =>
       window.matchMedia('(min-width: 768px)').matches ? 4 : 2;
