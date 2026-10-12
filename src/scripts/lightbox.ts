@@ -33,9 +33,8 @@ export function initLightbox(imgs: HTMLImageElement[]) {
     closeOnVerticalDrag: true,
     preload: [1, 3],
     // Lay slides out in the lightbox's own box (fixed, 100% tall), the same
-    // box the gallery link is positioned in. PhotoSwipe's default height is
-    // window.innerHeight, which mobile browsers can report taller than that
-    // box (toolbars), centring the photo lower — down onto the link.
+    // box the gallery link is positioned in, rather than PhotoSwipe's default
+    // window.innerHeight, so the photo and the link can't disagree.
     getViewportSizeFn: (_options, pswp) => ({
       x: document.documentElement.clientWidth,
       y: (pswp as { element?: HTMLElement }).element?.clientHeight || window.innerHeight,
@@ -112,28 +111,34 @@ export function initLightbox(imgs: HTMLImageElement[]) {
     });
   });
 
-  // Pin the page in place while open. `overflow: hidden` alone doesn't stop
-  // touch scrolling on iOS Safari, so the page could drift behind the
-  // lightbox. Unlocked on destroy, after the zoom-out has read the tile rects.
-  // Pinning also removes a desktop browser's scrollbar, so the page and the
-  // fixed header are padded by its width (see --locked-scrollbar-width in
-  // global.css) to stop them shifting sideways; 0 on overlay scrollbars.
-  let lockedScrollY = 0;
+  // Hold the page still while open. PhotoSwipe already stops touch and wheel
+  // scrolling over its overlay (touch-action: none, its wheel handler);
+  // `overflow: hidden` on <html> covers the rest (keyboard, scrollbar) and
+  // keeps the scroll position, so there's nothing to restore. Don't pin the
+  // body with position: fixed: that collapses the page's height, and iOS
+  // Safari answers by expanding its toolbar mid-open, after PhotoSwipe has
+  // laid the photo out for the taller screen — leaving it low, over the link.
+  // Hiding the overflow removes a desktop browser's scrollbar, so the page
+  // and the fixed header are padded by its width (see
+  // --locked-scrollbar-width in global.css) to stop them shifting sideways;
+  // 0 on overlay scrollbars. Unlocked on destroy, after the zoom-out.
   const root = document.documentElement;
 
   lightbox.on('beforeOpen', () => {
-    lockedScrollY = window.scrollY;
     root.style.setProperty('--locked-scrollbar-width', `${window.innerWidth - root.clientWidth}px`);
-    Object.assign(document.body.style, {
-      position: 'fixed', top: `-${lockedScrollY}px`, left: '0', right: '0', overflow: 'hidden',
-    });
+    root.style.overflow = 'hidden';
   });
 
   lightbox.on('destroy', () => {
     root.style.removeProperty('--locked-scrollbar-width');
-    Object.assign(document.body.style, { position: '', top: '', left: '', right: '', overflow: '' });
-    window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
+    root.style.overflow = '';
   });
+
+  // PhotoSwipe ignores viewport resizes during its opening animation and then
+  // treats the new size as already handled, so a resize in that window (e.g.
+  // a mobile toolbar moving) would leave the photo laid out for the old size.
+  // Re-lay out once it has opened; a no-op when nothing changed.
+  lightbox.on('openingAnimationEnd', () => lightbox.pswp?.updateSize(true));
 
   lightbox.init();
 
