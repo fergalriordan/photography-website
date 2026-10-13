@@ -134,27 +134,43 @@ hr {
    backdrop is rgba(20, 20, 20, 0.95). */
 html .pswp {
   --pswp-bg: rgb(20, 20, 20);
+  /* Soft dark halo behind the close/arrow glyphs, so at their quiet opacity
+     they still read where they overlap a bright full-bleed photo. */
+  --pswp-glyph-halo: 0 0 6px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 /* Close and arrows are text glyphs (closeSVG / arrow*SVG options), so undo
-   PhotoSwipe's fixed-size icon-button box. */
+   PhotoSwipe's fixed-size icon-button box. Kept quiet so they don't compete
+   with the photo, and hidden entirely unless .pswp--awake (lightbox.ts: on
+   open, photo change or mouse movement, until 2s of stillness). Hover and
+   keyboard focus always show them at full strength. */
 html .pswp .pswp__button--close,
 html .pswp .pswp__button--arrow {
   width: auto;
   height: auto;
   margin: 0;
   overflow: visible;
-  opacity: 1;
+  opacity: 0;
   line-height: 1;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, opacity 0.4s ease;
+}
+html .pswp.pswp--awake .pswp__button--close,
+html .pswp.pswp--awake .pswp__button--arrow {
+  opacity: 0.65;
+}
+html .pswp .pswp__button--close:hover,
+html .pswp .pswp__button--arrow:hover,
+html .pswp .pswp__button--close:focus-visible,
+html .pswp .pswp__button--arrow:focus-visible {
+  opacity: 1;
 }
 html .pswp .pswp__button--close {
   position: absolute;
   top: 1rem;
   right: 1.25rem;
   color: #d9d9d9;
-  font-size: 2rem;
+  font-size: 1.6rem;
   padding: 0.25rem 0.5rem;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: var(--pswp-glyph-halo);
 }
 html .pswp .pswp__button--close:hover {
   color: #ffffff;
@@ -163,25 +179,26 @@ html .pswp .pswp__button--arrow {
   top: 50%;
   transform: translateY(-50%);
   color: #5f7a8e;
-  font-size: 3.5rem;
+  font-size: 2.75rem;
   padding: 0.5rem 1rem;
   user-select: none;
-  /* Keeps them visible where they overlap a full-bleed image. */
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: var(--pswp-glyph-halo);
 }
 html .pswp .pswp__button--arrow:hover {
   color: #a0b1b8;
 }
 html .pswp .pswp__button--arrow--prev { left: 0.5rem; right: auto; }
 html .pswp .pswp__button--arrow--next { right: 0.5rem; left: auto; }
-/* Phones swipe; arrows are desktop only. */
+/* Phones swipe between photos and swipe up/down (or tap beside the photo,
+   or press back) to close, so the arrows and close button are desktop only. */
 @media (max-width: 767px) {
-  html .pswp .pswp__button--arrow {
+  html .pswp .pswp__button--arrow,
+  html .pswp .pswp__button--close {
     display: none;
   }
 }
-/* Bottom counter (custom element in lightbox.ts): fades in on each slide
-   change and out 2s later. Overrides pswp__hide-on-close like the link below. */
+/* Bottom counter (custom element in lightbox.ts): shown with the controls
+   above while .pswp--awake. Overrides pswp__hide-on-close like the link below. */
 html .pswp .pswp__bottom-counter {
   position: absolute;
   bottom: 0.75rem;
@@ -196,7 +213,7 @@ html .pswp .pswp__bottom-counter {
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
-html .pswp .pswp__bottom-counter.is-shown {
+html .pswp.pswp--awake .pswp__bottom-counter {
   opacity: 1;
 }
 /* Persistent "<Label> Gallery →" link (homepage collage). Overrides

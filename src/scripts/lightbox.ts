@@ -64,24 +64,16 @@ export function initLightbox(imgs: HTMLImageElement[]) {
   });
 
   lightbox.on('uiRegister', () => {
-    // "3 / 20" at the bottom, shown on open and on every slide change, then
-    // fading out after 2s.
+    // "3 / 20" at the bottom. Shown and hidden with the other controls (see
+    // pswp--awake below).
     lightbox.pswp?.ui?.registerElement({
       name: 'bottom-counter',
       appendTo: 'root',
       order: 8,
       onInit: (el, pswp) => {
         el.setAttribute('aria-live', 'polite');
-        let hideTimer: ReturnType<typeof setTimeout>;
         pswp.on('change', () => {
           el.textContent = `${pswp.currIndex + 1} / ${pswp.getNumItems()}`;
-          el.classList.add('is-shown');
-          clearTimeout(hideTimer);
-          hideTimer = setTimeout(() => el.classList.remove('is-shown'), 2000);
-        });
-        pswp.on('close', () => {
-          clearTimeout(hideTimer);
-          el.classList.remove('is-shown');
         });
       },
     });
@@ -107,8 +99,82 @@ export function initLightbox(imgs: HTMLImageElement[]) {
         pswp.on('change', update);
         pswp.on('openingAnimationStart', () => link.classList.add('is-shown'));
         pswp.on('closingAnimationStart', () => link.classList.remove('is-shown'));
+        // Replace the lightbox's history entry (below) rather than adding
+        // after it, so back from the gallery lands on this page as it was.
+        // Modified clicks (new tab etc.) are left to the browser.
+        link.addEventListener('click', (e) => {
+          if (!ownsHistoryEntry || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          e.preventDefault();
+          ownsHistoryEntry = false;
+          location.replace(link.href);
+        });
       },
     });
+  });
+
+  // The close button, arrows and counter show when the lightbox opens, on
+  // every photo change and whenever the mouse moves, then fade out after 2s
+  // of stillness, leaving just the photo. Styled off pswp--awake in
+  // global.css; on phones only the counter is left to show.
+  let idleTimer: ReturnType<typeof setTimeout>;
+
+  const wake = () => {
+    const el = lightbox.pswp?.element;
+    if (!el) return;
+    el.classList.add('pswp--awake');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => el.classList.remove('pswp--awake'), 2000);
+  };
+
+  lightbox.on('change', wake);
+  lightbox.on('afterInit', () => {
+    lightbox.pswp?.element?.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'mouse') wake();
+    });
+  });
+  lightbox.on('close', () => {
+    clearTimeout(idleTimer);
+    lightbox.pswp?.element?.classList.remove('pswp--awake');
+  });
+
+  // Back closes the lightbox instead of leaving the page. Opening adds one
+  // history entry (same URL), whichever photos are viewed; closing any other
+  // way steps back over it, so history ends up as it was before opening.
+  let ownsHistoryEntry = false;
+  // Set while our own history.back() is in flight, so its popstate is ignored.
+  let ownBackPending = false;
+
+  lightbox.on('beforeOpen', () => {
+    history.pushState({ lightbox: true }, '');
+    ownsHistoryEntry = true;
+  });
+
+  lightbox.on('close', () => {
+    if (!ownsHistoryEntry) return;
+    ownsHistoryEntry = false;
+    ownBackPending = true;
+    history.back();
+  });
+
+  window.addEventListener('popstate', () => {
+    if (ownBackPending) {
+      ownBackPending = false;
+      return;
+    }
+    const pswp = lightbox.pswp;
+    if (!ownsHistoryEntry || !pswp) return;
+    ownsHistoryEntry = false;
+    // close() is ignored while the opening animation runs, so wait it out.
+    if (pswp.opener.isOpen) pswp.close();
+    else pswp.on('openingAnimationEnd', () => pswp.close());
+  });
+
+  // Leaving the page with the lightbox open (the gallery link) would leave it
+  // open in the back/forward cache, so coming back showed it still open.
+  window.addEventListener('pagehide', (e) => {
+    if (!e.persisted || !lightbox.pswp) return;
+    ownsHistoryEntry = false;
+    lightbox.pswp.destroy();
   });
 
   // Hold the page still while open. PhotoSwipe already stops touch and wheel
@@ -139,6 +205,16 @@ export function initLightbox(imgs: HTMLImageElement[]) {
   // a mobile toolbar moving) would leave the photo laid out for the old size.
   // Re-lay out once it has opened; a no-op when nothing changed.
   lightbox.on('openingAnimationEnd', () => lightbox.pswp?.updateSize(true));
+
+  // Claim touch drags over the lightbox so the browser runs no scroll gesture
+  // of its own alongside PhotoSwipe's (which works from pointer events, so
+  // still fires). Without this, a fast swipe-down close at the top of the
+  // page left the browser in an overscroll that swallowed the next tap.
+  lightbox.on('afterInit', () => {
+    lightbox.pswp?.element?.addEventListener('touchmove', (e) => {
+      if (e.cancelable) e.preventDefault();
+    }, { passive: false });
+  });
 
   lightbox.init();
 
